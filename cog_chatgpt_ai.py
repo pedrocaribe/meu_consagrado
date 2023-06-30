@@ -25,15 +25,13 @@ class ChatGPT(commands.Cog):
 
 
     # Mario Less function
-    @commands.command(name='ai', aliases=['chatgpt'], help='API do ChatGPT com limite de 100 caracteres por resposta\n\n Uso: %ai EscrevaOQueQuiser')
+    @commands.command(name='ai', aliases=['chatgpt'], help='API do ChatGPT com limite de 1000 caracteres por resposta\n\n Uso: %ai EscrevaOQueQuiser')
     async def ai(self, ctx, *, message):
 
-        async with ctx.message.channel.typing():
             if ctx.message.author == self.bot:
                 return
-            
-            bot_response = chatgpt_response(prompt=message)
-            async with ctx.message.channel.typing():
+            async with ctx.message.channel.typing():            
+                bot_response = chatgpt_response(prompt=message)
                 await ctx.reply(f'{bot_response}')
 
 
