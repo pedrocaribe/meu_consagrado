@@ -1,5 +1,5 @@
 # Import main modules
-import discord, random, asyncio, time
+import discord, random, asyncio, time, difflib
 
 # Import secondary modules
 from discord.ext import commands
@@ -399,6 +399,81 @@ class General(commands.Cog):
         except:
             pass
 
+    @commands.group(name = 'pomodoro', aliases = ['estudo'], help = f'Uso: %pomodoro')
+    async def pomodoro(self, ctx):
+
+        if ctx.invoked_subcommand is None:
+            member = ctx.message.author
+            user = await self.bot.fetch_user(ctx.message.author.id)
+
+            embed = discord.Embed(title = f'__MÉTODO POMODORO DE ESTUDOS__ - {datetime.now().strftime("%d/%m - %H:%M")}', description = '```Bem vindo ao sistema Pomodoro de estudos! Para que possamos iniciar seu ciclo de estudos por favor defina por quanto tempo gostaria de estudar (tempo total), responda apenas com o número em minutos\n\nEx.: 120```\n', colour = 0x01ffff)
+            embed.set_footer(text = '\nO método Pomodoro é uma técnica de produtividade que envolve períodos de trabalho focado seguidos por pausas curtas e regulares.')
+
+            await user.send(embed = embed)
+            study_t = await self.bot.wait_for('message', check = lambda message: message.author == member, timeout = 60.0)
+            study_t = int(study_t.content)
+
+            embed.remove_footer()
+            embed.title = f'__POMODORO__ - {datetime.now().strftime("%d/%m - %H:%M")} - TOTAL **__{study_t} MINUTOS__**'
+            embed.description = '```Qual será o intervalo de estudos sem pausa?\n\nEx.: 15``` \n--------------------------------------------------------------------'
+
+            await user.send(embed = embed)
+
+            study_t2 = await self.bot.wait_for('message', check = lambda message: message.author == member, timeout = 60.0)
+            study_t2 = int(study_t2.content)
+
+            if study_t2 > study_t:
+                return await user.send(f'Tempo inválido. Maior que o tempo total de estudo.')
+
+            embed.add_field(name = f'Intervalo de estudo: `{study_t2} min`', value = '---')
+            embed.description = '```Qual será o tempo da pausa entre estudos?\n\nEx.: 60``` \n--------------------------------------------------------------------'
+            
+            await user.send(embed = embed)
+
+            pause_t = await self.bot.wait_for('message', check = lambda message: message.author == member, timeout = 60.0)
+            pause_t = int(pause_t.content)
+
+            embed.description = '```Por favor verifique as informações abaixo e responda "Confirmar" para confirmar o Pomodoro, ou "Cancelar" para descartar:```\n--------------------------------------------------------------------'
+            embed.add_field(name = f'Tempo de pausa: `{pause_t} min`', value = '---')
+
+            await user.send(embed = embed)
+
+            confirmation = await self.bot.wait_for('message', check = lambda message: message.author == member, timeout = 60.0)
+
+            async def study_pause(minutes):
+                await asyncio.sleep(minutes * 60)
+                return
+
+            async def loop(study_t, study_t2, pause_t):
+                if study_t <= 0:
+                    await user.send(f'Parabéns! Você concluiu todos os ciclos de estudo e descanso programados! Foi um ótimo trabalho. Descanse um pouco antes de continuar seus estudos ou aproveite seu tempo livre.')
+                    return
+                elif study_t >= 1:
+                    await user.send(f'Hora de focar! O período de estudo de **{study_t2}** minutos começou. Mantenha-se concentrado e aproveite ao máximo esse tempo.')
+                    await study_pause(study_t2)
+
+                    await user.send(f'Excelente trabalho! Agora é hora de descansar. Aproveite a pausa de **{pause_t}** minutos para relaxar e recarregar suas energias.')
+                    await study_pause(pause_t)
+                    
+                    study_t -= (study_t2 + pause_t)
+
+                    await loop(study_t, study_t2, pause_t)
+
+            if difflib.SequenceMatcher(None, confirmation.content.lower(), 'confirmar').ratio() > 0.6:
+                await user.send(f'Pomodoro confirmado!\n\n')
+                await loop(study_t, study_t2, pause_t)
+
+            elif difflib.SequenceMatcher(None, confirmation.content.lower(), 'confirmar').ratio() < 0.6:
+                await user.send(f'Não consegui identificar sua resposta. Cancelando Pomodoro!')
+
+            elif confirmation.content.lower() == 'cancelar':
+                return await user.send(f'Pomodoro cancelado!\n\n')
+    # @pomodoro.command(name = 'cancel', help = 'Comando utilizado para cancelar o Pomodoro atual. Uso: %pomodoro cancel')
+    # async def cancel_pomodoro(self, ctx):
+
+
+
+    
 # Define setup function for Cog according to recent changes (//https://gist.github.com/Rapptz/6706e1c8f23ac27c98cee4dd985c8120//)
 
 async def setup(bot):
