@@ -1,5 +1,5 @@
 # Import main modules
-import discord, random, asyncio, time, difflib
+import discord, random, asyncio, time, difflib, requests, json
 
 # Import secondary modules
 from discord.ext import commands
@@ -461,9 +461,13 @@ class General(commands.Cog):
     # async def cancel_pomodoro(self, ctx):
 
 
-
-    
+    @commands.command(name = 'motivacional', aliases = ['motivational'], help = 'Uso: %motivacional')
+    async def motivational(self, ctx):
+        compliment = requests.get("https://complimentr.com/api" ).text
+        compliment = json.loads(compliment)
+        await ctx.reply(compliment['compliment'])
 # Define setup function for Cog according to recent changes (//https://gist.github.com/Rapptz/6706e1c8f23ac27c98cee4dd985c8120//)
+
 
 async def setup(bot):
     await bot.add_cog(General(bot))
