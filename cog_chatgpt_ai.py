@@ -30,10 +30,12 @@ class ChatGPT(commands.Cog):
 
             if ctx.message.author == self.bot:
                 return
+            
+            reply = await ctx.reply(f'Aguarde, buscando resposta.')        
+            
             async with ctx.message.channel.typing():
-                await ctx.reply(f'Aguarde, buscando resposta.')            
                 bot_response = chatgpt_response(prompt=message)
-                await ctx.reply(f'{bot_response}')
+                await discord.message.Edit(reply, bot_response)
 
 
 def chatgpt_response(prompt):
