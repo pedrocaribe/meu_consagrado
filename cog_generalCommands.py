@@ -143,7 +143,7 @@ class General(commands.Cog):
 
     # Google translate using translators API, default translator engine is set to Google
     @commands.command(name = 'translate', aliases = ['traduzir'], help = 'Uso: %traduzir Sua Frase Aqui // LinguaDestino(Opcional - padrão PTBR)\nAcentuação importa.')
-    async def translate(ctx, *, args = None):
+    async def translate(self, ctx, *, args = None):
 
         # Usage of translator api to translate portions of text to desired language
         
