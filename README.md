@@ -33,6 +33,7 @@ Requests==2.31.0
 spotipy==2.23.0
 youtube_dl==2021.12.17
 youtube_search_python==1.6.6
+translators
 ```
 
 # List of Commands:
