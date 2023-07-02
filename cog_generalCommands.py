@@ -19,7 +19,7 @@ class General(commands.Cog):
     '''Commands defined in this cog are general purpose commands
     mostly fun and useful commands for users to enjoy.
 
-    cog_generalCommands v3.08'''
+    cog_generalCommands v4.00'''
 
 
     # Google search using googlesearch API
