@@ -465,7 +465,9 @@ class General(commands.Cog):
     async def motivational(self, ctx):
         compliment = requests.get("https://complimentr.com/api" ).text
         compliment = json.loads(compliment)
-        await ctx.reply(compliment['compliment'])
+
+        trans = ts.translate_text(translator = "google", query_text = compliment['compliment'], to_language = 'pt')
+        await ctx.reply(trans.capitalize())
 # Define setup function for Cog according to recent changes (//https://gist.github.com/Rapptz/6706e1c8f23ac27c98cee4dd985c8120//)
 
 
