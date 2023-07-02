@@ -5,7 +5,7 @@ import discord, random, asyncio, time, difflib
 from discord.ext import commands
 from googlesearch import search
 from datetime import datetime
-# from googletrans import Translator
+import translators as ts
 
 # Import variables and standard functions from local file
 from var_Reuse import *
@@ -141,50 +141,42 @@ class General(commands.Cog):
         await ctx.reply('Ping!')
 
 
-    # Google translate using googletranslator API -  XX deprecated due to incompatibility for hhtpx between youtubesearchpython (used in Music cog) and googletrans XX
+    # Google translate using translators API, default translator engine is set to Google
     @commands.command(name = 'translate', aliases = ['traduzir'], help = 'Uso: %traduzir Sua Frase Aqui // LinguaDestino(Opcional - padrão PTBR)\nAcentuação importa.')
     async def translate(self, ctx, *, args = None):
 
-        return await ctx.reply('Comando temporariamente indisponivel.')
-        # # Usage of Googletrans api to translate portions of text to desired language
-        # translator = Translator()
+        # Usage of translator api to translate portions of text to desired language
+        
+        # If no text provided by user, return
+        if not args: return await ctx.reply(f'Como vou traduzir, se você não me passou um texto, **{random.choice(fraseMeio)}**?\nLembrando que a acentuação durante o comando importa!')
 
-        # # If no text provided by user, return
-        # if not args: return await ctx.reply(f'Como vou traduzir, se você não me passou um texto, **{random.choice(fraseMeio)}**?\nLembrando que a acentuação durante o comando importa!')
+        # Default declarations
+        text = args
+        lang = 'pt'
 
-        # # Default declarations
-        # text = args
-        # lang = 'pt'
+        # If custom translation language desired
+        if '//' in args:
+            args_p = args.split('//')
+            text = args_p[0]
+            lang = args_p[1]
+            output = ts.translate_text(translator = "google", query_text = text, to_language = lang)
+            
+        else:
+            text = args
 
-        # # If custom translation language desired
-        # if '//' in args:
-        #     args_p = args.split('//')
-        #     text = args_p[0]
-        #     lang_o = translator.translate(args_p[1])
-        #     lang = lang_o.text
+        transText = ts.translate_text(translator = "google", query_text = text, to_language = lang)
 
-        # else:
-        #     text = args
+        org_lang = transText.extra_data['original-language']
 
-        # transText = translator.translate(text, dest = lang)
-
-        # org_lang = transText.extra_data['original-language']
-
-        # for i in range(len(languages)):
-        #     if org_lang in languages[i]:
-        #         org_lang = languages[i][1]
-
-        # transConf = translator.detect(text)
-
-        # embed = discord.Embed(title = f'Ta na mão sua tradução, **{random.choice(fraseMeio)}**:', description = '', colour = discord.Color.purple())
-        # embed.add_field(name = 'Frase original:', value = text, inline = False)
-        # embed.add_field(name = 'Lingua origem identificada:', value = org_lang.upper(), inline = False)
-        # embed.add_field(name = 'Frase traduzida:', value = transText.text, inline = False)
-        # embed.add_field(name = 'Lingua destino:', value = lang.upper(), inline = False)
-        # embed.add_field(name = 'Percentual de certeza na detecção de lingua origem:', value = f'{round((transConf.confidence * 100), 2)}%', inline = False)
-        # await ctx.send(ctx.message.author.mention)
-        # await ctx.send(embed = embed)
-        # await ctx.message.delete()
+        embed = discord.Embed(title = f'Ta na mão sua tradução, **{random.choice(fraseMeio)}**:', description = '', colour = discord.Color.purple())
+        embed.add_field(name = 'Frase original:', value = text, inline = False)
+        embed.add_field(name = 'Lingua origem identificada:', value = org_lang.upper(), inline = False)
+        embed.add_field(name = 'Frase traduzida:', value = transText.text, inline = False)
+        embed.add_field(name = 'Lingua destino:', value = lang.upper(), inline = False)
+        embed.add_field(name = 'Percentual de certeza na detecção de lingua origem:', value = f'{round((transConf.confidence * 100), 2)}%', inline = False)
+        await ctx.send(ctx.message.author.mention)
+        await ctx.send(embed = embed)
+        await ctx.message.delete()
 
 
     # Retrieve large user's avatar image
