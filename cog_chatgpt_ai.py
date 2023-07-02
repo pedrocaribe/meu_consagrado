@@ -36,6 +36,7 @@ class ChatGPT(commands.Cog):
             async with ctx.message.channel.typing():
                 bot_response = chatgpt_response(prompt=message)
                 await discord.Message.edit(reply, content = bot_response)
+                await ctx.message.add_reaction("✅")
 
 
 def chatgpt_response(prompt):
