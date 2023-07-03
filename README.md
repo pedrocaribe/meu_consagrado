@@ -86,7 +86,7 @@ System:
 ```
 # Contributors:
 
-Thanks to everyone contributing to this project, inclusing those not mentioned here.
+Thanks to everyone contributing to this project, including those not mentioned here.
 
 I included only contributors and people, who we can thank for their extensive reports to make the project better.
 
