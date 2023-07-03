@@ -1,6 +1,6 @@
 
 # Import main modules
-import discord, asyncio, pafy, random, requests, re, spotipy
+import discord, asyncio, pafy, random, requests, re, spotipy, yt_dlp
 
 # Import secondary modules
 from discord.ext import commands
@@ -127,35 +127,15 @@ class Player(commands.Cog):
         # Return counter to caller in order to inform how many songs were added to queue
         return counter
 
+    async def list_(self, ctx, pl):
+
+        ydl_opts = {'format': 'm4a/bestaudio/best', 'postprocessors':[{'key': 'FFmpegExtractAudio', 'preferredcodec': 'm4a',}]}
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            error_cord = ydl.download(pl)
+        
 
     # Parse Spotify playlist, search for songs in YouTube and extract URLs
     async def spotify_parse_playlist_(self, ctx, url):
-
-        # MODE 1 - NOT WORKING
-
-        # html = urlopen(url).read()
-        # soup = BeautifulSoup(html, features="html.parser")
-        # songs = []
-
-        # for script in soup('script'):
-        #     script.extract()
-
-        # songName = soup.find_all(attrs={'class':'EntityRowV2__Link-sc-ayafop-8 cGmPqp'})
-        # for i in songName:
-        #     j = str(i).split('>', 1)
-        #     j.pop(0)
-        #     k = j[0].split('<', 1)
-        #     k.pop(1)
-        #     songs.append(k[0])
-        # return songs
-
-        # MODE 2 - NOT WORKING
-
-        # r = requests.get(url, headers={'User-Agent':'Mozilla/5.0'})
-        # data = re.findall(r'(?<=aria-label=\"track )(.*?)(?=\" class=\")', r.text)
-        # return data
-
-        # MODE 3 - WORKING
 
         # Personal Client ID from Spotify API
         cid = "08d9e59cabea42c29b7c44e45e688693"
@@ -498,6 +478,20 @@ class Player(commands.Cog):
                 # OLD WAY v
                 # await self.play_(ctx, queue[0])
                 # return queue.pop(0)
+            
+            elif 'list=' in url:
+                await ctx.reply(f'Isso aí é um mix do YouTube né, **{random.choice(fraseMeio)}**? Adicionando!')
+
+                async with ctx.message.channel.typing():
+                    counter = await self.list_(ctx, url)
+
+                await ctx.reply(f'Adicionei {counter} músicas na playlist.')
+
+                if self.isPlaying: return
+                await ctx.send(f'Tocando: {queue[0]}')
+
+                return await self.play_(ctx, queue[0])
+                
         except Exception as e:
             await ctx.reply(f'{e}')
             return await ctx.reply(f'Não consegui processar nenhuma música ou playlist a partir desse link, **{random.choice(fraseMeio)}**, boa tentar outra? Usa o comando `%search Nome Da Musica`.')
