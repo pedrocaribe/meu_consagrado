@@ -2,7 +2,7 @@
 
 ## Description:
 
-Powerful Discord Bot powered by Python and solely created by  **Pedro Caribé**, designed to being an elevated level of functionality, entertainment and moderation to your Discord Server. Developed with a personal touch, by using local quotes and familiar languaging and without the use of AI-generated code, this bot offers a wide range of features to enhance your Discord experience.
+Powerful Discord Bot powered by Python and solely created by  **Pedro Caribé**, designed to bring an elevated level of functionality, entertainment and moderation to your Discord Server. Developed with a personal touch, by using local quotes and familiar languaging and without the use of AI-generated code, this bot offers a wide range of features to enhance your Discord experience.
 
 If you're a music enthusiast and would like to share the songs you enjoy with your Server's users, this bot allows you to stream them seamlessly directly from YouTube. 
 
