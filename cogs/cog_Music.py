@@ -133,7 +133,12 @@ class Player(commands.Cog):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             
             pl_p = ydl.extract_info(pl, download = False)
-            return pl_p['entries']
+            pl_urls = []
+
+            for i, item in enumerate(pl_p):
+                pl_urls += pl_p['entries'][i]['webpage_url']
+            
+            return pl_urls
         
 
     # Parse Spotify playlist, search for songs in YouTube and extract URLs
