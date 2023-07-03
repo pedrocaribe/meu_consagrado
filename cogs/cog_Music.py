@@ -132,7 +132,7 @@ class Player(commands.Cog):
         ydl_opts = {'format': 'm4a/bestaudio/best', 'postprocessors':[{'key': 'FFmpegExtractAudio', 'preferredcodec': 'm4a',}]}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             
-            pl_p = ydl.extract_info(pl, download = False)
+            pl_p = ydl.extract_info(pl, download = False, process = False)
             pl_urls = []
 
             for i, item in enumerate(pl_p):
