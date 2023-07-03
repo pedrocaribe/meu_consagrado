@@ -129,9 +129,11 @@ class Player(commands.Cog):
 
     async def list_(self, ctx, pl):
 
-        ydl_opts = {'format': 'm4a/bestaudio/best', 'postprocessors':[{'key': 'FFmpegExtractAudio', 'preferredcodec': 'm4a',}]}
+        ydl_opts = {'format': 'm4a/bestaudio/best', 'postprocessors':[{'key': 'FFmpegExtractAudio', 'preferredcodec': 'm4a','quiet': True,}]}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            return ydl.download(pl)
+            
+            pl_p = ydl.extract_info(pl, download = False)
+            return pl_p['entries']
         
 
     # Parse Spotify playlist, search for songs in YouTube and extract URLs
