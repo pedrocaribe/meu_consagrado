@@ -80,6 +80,7 @@ async def on_ready():
 
     await change_status.start()
 
+
 # If error, open bug report or handle
 @bot.event
 async def on_command_error(ctx, er):
