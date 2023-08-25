@@ -20,7 +20,7 @@ from settings import *
 from global_variables import *
 from utils import *
 
-# Declarations
+# GLOBAL Declarations
 intent = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intent)
     
