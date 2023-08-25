@@ -1,5 +1,11 @@
 # Import base modules
-import platform, time, discord, asyncio, os, random, sqlite3
+import platform
+import time
+import discord
+import asyncio
+import os
+import random
+import sqlite3
 
 # Import error logging modules
 import logging
