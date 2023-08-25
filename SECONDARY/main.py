@@ -26,15 +26,12 @@ bot = commands.Bot(command_prefix="!", intents=intent)
     
 # Set up logging for DEBUG
 # discord.utils.setup_logging(level=logging.DEBUG, root=False)
-'''
-FAZER FEEDBACK MODAL
-'''
-# Set up DBs
 
+# Set up DBs
 guild_db = db_connect(GUILD_DB)
 msg_db = db_connect(MSG_DB)
 
-    
+
 # Definition of main function, load all cogs and start bot
 async def main():
     async with bot:
@@ -46,15 +43,20 @@ async def main():
 @bot.event
 async def on_ready():
 
-    # Create Date/Time prefix for console
-    prefix = (Back.BLACK + Fore.GREEN + time.strftime("%H:%M:%S UTC", time.gmtime()) + Back.RESET + Fore.WHITE + Style.BRIGHT)
+    # Styling
     fy = Fore.YELLOW
     fw = Fore.WHITE
     fg = Fore.GREEN
     fr = Fore.RED
     bg = Back.GREEN
     br = Back.RED
-    sr = Style.RESET_ALL
+    bb = Back.BLACK
+    bres = Back.RESET
+    sb = Style.BRIGHT
+    sres = Style.RESET_ALL
+
+    # Create Date/Time prefix for console
+    prefix = (bb + fg + time.strftime("%H:%M:%S UTC", time.gmtime()) + bres + fw + sb)
 
     # Print useful information to console
     print(f'{prefix} Discord Version -> {fy}{discord.__version__}')
