@@ -79,11 +79,6 @@ async def on_ready():
         print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{MSG_DB}')
         error_code = 2
 
-    # Sync slash command tree
-    synced = await bot.tree.sync()
-
-    # Print sync success message
-    print(f'{prefix} Slash CMDs Synced {fy}{str(len(synced))} Commands{sres}')
     print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
 
     await change_status.start()
