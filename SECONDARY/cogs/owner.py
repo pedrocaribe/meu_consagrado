@@ -78,7 +78,7 @@ class Owner(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
 
-    @commands.command(hidden=True, name='reload_cog', brief='Somente para uso do Owner',help='Recarregar cog. Uso: !reload_cog COGNAME')
+    @commands.command(hidden=True, name='reload_cog', brief='Somente para uso do Owner', help='Recarregar cog. Uso: !reload_cog COGNAME')
     @commands.is_owner()
     async def reload_cog(self, ctx, module: str):
 
@@ -146,9 +146,30 @@ class Owner(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
 
-    @commands.command(hidden=True, name='sync', brief='Sync all slash commands')
+    @commands.command(hidden=True, name='sync', brief='Sync all slash commands', help="")
     @commands.is_owner()
     async def syncall(self, ctx, guilds: commands.Greedy[discord.Object], spec: Optional[Literal['~', '*', '^']] = None):
+        """ !sync
+                This takes all global commands within the CommandTree and sends them to Discord.
+            !sync ~
+                This will sync all guild commands for the current context’s guild.
+            !sync *
+                This command copies all global commands to the current guild (within the CommandTree) and syncs.
+            !sync ^
+                This command will remove all guild commands from the CommandTree and syncs, which
+                effectively removes all commands from the guild.
+            !sync 123 456 789
+                This command will sync the 3 guild ids we passed: 123, 456 and 789.
+                Only their guilds and guild-bound commands.
+
+        Parameters:
+            ctx: Can be replaced by your own context subclass if needed.
+            guilds: Guild number to be parsed as discord.Object
+            spec: [OPTIONAL] argument to define what the command will do
+
+        Returns:
+            This command returns an embed
+        """
 
         if not guilds:
             if spec == '~':
