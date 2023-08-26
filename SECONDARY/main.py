@@ -105,7 +105,13 @@ async def on_command_error(ctx, er):
 
             owner_embed = discord.Embed(
                 title='***__BUG REPORT__***',
-                description=f'**Timestamp:** ```{timestamp}```\n**Server Name:** ```{ctx.guild.name}```\n**Channel ID:** ```{ctx.channel.id}```\n**Channel Name:** ```{ctx.channel.name}```\n**Message ID: **```{ctx.message.id}```\n**ERROR:** ```{er}```\n**User:** ```{ctx.author.name}```',
+                description=f'**Timestamp:** ```{timestamp}```\n'
+                            f'**Server Name:** ```{ctx.guild.name}```\n'
+                            f'**Channel ID:** ```{ctx.channel.id}```\n'
+                            f'**Channel Name:** ```{ctx.channel.name}```\n'
+                            f'**Message ID: **```{ctx.message.id}```\n'
+                            f'**ERROR:** ```{er}```\n'
+                            f'**User:** ```{ctx.author.name}```',
                 colour=discord.Colour.red()
             )
 
