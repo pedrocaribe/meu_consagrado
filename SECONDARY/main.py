@@ -132,7 +132,11 @@ async def on_command_error(ctx, er):
 
     # If issue is due to command being sent to private message, return to user.
     # If issue is not related to private message return to user informing that syntax is incorrect.
-    return await ctx.reply(f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**' if 'private messages' in str(er) else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.\nManda um `/help commandoAqui` pra ter mais informações de como usar o comando.')
+    return await ctx.reply(
+        f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**'
+        if 'private messages' in str(er)
+        else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.\n'
+             f'Manda um `/help commandoAqui` pra ter mais informações de como usar o comando.')
 
 
 # When joining a guild, confirm if guild is already set up in DB and sent thankful note to owner
