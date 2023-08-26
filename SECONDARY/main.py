@@ -120,7 +120,8 @@ async def on_command_error(ctx, er):
 
             # Open bug report, inform owner and user.
             owner_user = await bot.fetch_user(bot.owner_id)
-            thumbnail = 'https://static.thenounproject.com/png/587438-200.png'
+            # thumbnail = 'https://static.thenounproject.com/png/587438-200.png'
+            thumbnail = ICONS['error.png']
 
             owner_embed = discord.Embed(
                 title='***__BUG REPORT__***',

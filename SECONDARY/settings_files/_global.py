@@ -23,7 +23,7 @@ REDDIT_SAFE_MEME_SUBREDDITS = [
     'engraçado'
 ]
 
-ICONS = [os.listdir("..//ICONS")]
+ICONS = [x for x in os.listdir("ICONS")]
 
 # Spotify configuratino
 SPOTIFY_CID = os.getenv("SPOTIFY_CID", False)
@@ -38,7 +38,7 @@ MONITOR_ERRORS = [
                 'was never awaited',
                 'ERROR',
                 'raised an exception'
-]
+                ]
 
 FRASE_MEIO = [
             'meu Magnata',
