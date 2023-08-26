@@ -229,7 +229,9 @@ async def on_message(message):
 
     with msg_db:
         msg_cursor = msg_db.cursor()
-        msg_cursor.execute("INSERT INTO messages (date, time, channel_id, message_id, author_id, content) VALUES (?, ?, ?, ?, ?, ?)", (date, time, channel_id, message_id, author_id, content))
+        msg_cursor.execute("INSERT INTO messages "
+                           "(date, time, channel_id, message_id, author_id, content) "
+                           "VALUES (?, ?, ?, ?, ?, ?)", (date, time, channel_id, message_id, author_id, content))
         msg_db.commit()
 
 
