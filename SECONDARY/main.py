@@ -135,8 +135,7 @@ async def on_command_error(ctx, er):
     return await ctx.reply(
         f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**'
         if 'private messages' in str(er)
-        else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.\n'
-             f'Manda um `/help commandoAqui` pra ter mais informações de como usar o comando.')
+        else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
 
 
 # When joining a guild, confirm if guild is already set up in DB and sent thankful note to owner
@@ -146,10 +145,11 @@ async def on_guild_join(ctx):
     owner = await bot.fetch_user(ctx.owner.id)
 
     embed = discord.Embed(
-    title="Olá! Eu sou o seu bot",
-    description="Acabei de ser adicionado a este servidor. Estou aqui para ajudar e trazer mais funcionalidades para o seu servidor.",
-    color=discord.Color.blue()
-    )
+        title="Olá, meu Consagrado!",
+        description="Acabei de ser adicionado a este servidor. "
+                    "Estou aqui para ajudar e trazer mais funcionalidades para todos.",
+        color=discord.Color.blue()
+        )
 
     # 
     embed.add_field(name="Dúvidas ou suporte", value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.")
