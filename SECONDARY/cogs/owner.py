@@ -7,6 +7,8 @@ from discord import app_commands
 from colorama import Fore, Back, Style
 from datetime import datetime
 # from utils import reload
+from typing import Literal, Optional
+
 
 class Owner(commands.Cog):
     def __init__(self, bot):
@@ -44,7 +46,6 @@ class Owner(commands.Cog):
 
         # Add reaction
         return await ctx.message.add_reaction("✅")
-
 
     @commands.command(hidden=True, name='unload_cog', brief='Somente para uso do Owner', help='Descarregar cog. Uso: !unload_cog COGNAME')
     @commands.is_owner()
@@ -144,36 +145,42 @@ class Owner(commands.Cog):
 
         # Add reaction
         return await ctx.message.add_reaction("✅")
-    
 
     @commands.command(hidden=True, name='sync', brief='Sync all slash commands')
     @commands.is_owner()
-    async def syncall(self, ctx):
+    async def syncall(self, ctx, guilds: commands.Greedy[discord.Object], spec: Optional[Literal['~', '*', '^']] = None):
 
-        try:
-            synced = await self.bot.tree.sync()
-        except Exception as e:
+        if not guilds:
+            if spec == '~':
+                synced = await self.bot.tree.sync(guild=ctx.guild)
+            elif spec == '*':
+                ctx.bot.tree.copy_global_to(guild=ctx.guild)
+                synced = await self.bot.tree.sync(guild=ctx.guild)
+            elif spec == '^':
+                self.bot.tree.clear_commands(guild=ctx.guild)
+                await self.bot.tree.sync(guild=ctx.guild)
+                synced = []
+            else:
+                synced = await self.bot.tree.sync()
 
             embed = discord.Embed(
-                description=f':no_entry:     *** Erro ao sincronizar Slash Commands.***',
-                colour=discord.Color.red()
-            )
-            embed.add_field(
-                name='DESCRIÇÃO DO ERRO:',
-                value=f'{e}'
+                description=f" **{len(synced)}** Comandos sincronizados {'global' if spec is None else 'na guilda atual'}",
+                colour=discord.Color.green()
             )
 
             await ctx.send(embed=embed)
-
         else:
+            ret = 0
+            for guild in guilds:
+                try:
+                    await self.bot.tree.sync(guild=guild)
+                except discord.HTTPException:
+                    pass
+                else:
+                    ret += 1
 
-            prefix = (Back.BLACK + Fore.GREEN + time.strftime("%H:%M:%S UTC", time.gmtime()) + Back.RESET + Fore.WHITE + Style.BRIGHT)
-            sr = Style.RESET_ALL
-            fy = Fore.YELLOW
-
-            print(f'{prefix} Slash CMDs Synced {fy}{str(len(synced))} Commands{sr}')
             embed = discord.Embed(
-                description=f':ok:     *** Slash Commands sincronizados ***',
+                description=f"Command Tree sincronizada para {ret}/{len(guilds)}.",
                 colour=discord.Color.green()
             )
 

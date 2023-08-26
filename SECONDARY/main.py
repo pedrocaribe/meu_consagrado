@@ -84,7 +84,7 @@ async def on_ready():
 
     # Print sync success message
     print(f'{prefix} Slash CMDs Synced {fy}{str(len(synced))} Commands{sres}')
-    print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else print(f'{prefix} {fw}{br}Code {error_code}{sres}')
+    print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
 
     await change_status.start()
 

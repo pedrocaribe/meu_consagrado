@@ -24,11 +24,13 @@ intent = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='%', intents=intent)
 
+
 # Define main (according to recent changes //https://gist.github.com/Rapptz/6706e1c8f23ac27c98cee4dd985c8120//)
 async def main():
     async with bot:
         await loadall()
         await bot.start(TOKEN)
+
 
 # Define behaviour once logged in
 @bot.event
