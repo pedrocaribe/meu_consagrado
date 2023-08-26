@@ -23,6 +23,18 @@ from utils import *
 # GLOBAL Declarations
 intent = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intent)
+
+# Styling
+fy = Fore.YELLOW
+fw = Fore.WHITE
+fg = Fore.GREEN
+fr = Fore.RED
+bg = Back.GREEN
+br = Back.RED
+bb = Back.BLACK
+bres = Back.RESET
+sb = Style.BRIGHT
+sres = Style.RESET_ALL
     
 # Set up logging for DEBUG
 # discord.utils.setup_logging(level=logging.DEBUG, root=False)
@@ -42,18 +54,6 @@ async def main():
 # Print load message once ready
 @bot.event
 async def on_ready():
-
-    # Styling
-    fy = Fore.YELLOW
-    fw = Fore.WHITE
-    fg = Fore.GREEN
-    fr = Fore.RED
-    bg = Back.GREEN
-    br = Back.RED
-    bb = Back.BLACK
-    bres = Back.RESET
-    sb = Style.BRIGHT
-    sres = Style.RESET_ALL
 
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC", time.gmtime()) + bres + fw + sb)
@@ -89,11 +89,11 @@ async def on_ready():
 async def on_command_error(ctx, er):
 
     # Create Date/Time prefix for console
-    prefix = (Back.BLACK + Fore.GREEN + time.strftime("%H:%M:%S UTC ", time.gmtime()) + Back.RED + Fore.WHITE + Style.BRIGHT)
+    prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
     
     # Create timestamp when error was encountered and print to Bot console for logging purposes
     timestamp = ctx.message.created_at.now()
-    print(f'{prefix}ERROR RAISED -> {er} {Back.RESET}')
+    print(f'{prefix}ERROR RAISED -> {er} {bres}')
 
     # Check if error fits in pre-defined list of errors to monitor and open Bug report
     for i in MONITOR_ERRORS:
