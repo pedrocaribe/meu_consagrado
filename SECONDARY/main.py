@@ -167,7 +167,8 @@ async def on_guild_join(ctx):
             cursor.execute("INSERT INTO joined_guilds (guild_id) VALUES (?)", (ctx.id,))
             guild_db.commit()
 
-# When removed from guild, send msg to server owner and set slash commands to disabled.    
+
+# When removed from guild, send msg to server owner and set slash commands to 'Disabled'.
 @bot.event
 async def on_guild_remove(ctx):
 
@@ -176,7 +177,9 @@ async def on_guild_remove(ctx):
 
     leaving_embed = discord.Embed(
         title='Que pena que está indo!', 
-        description='Sinto muito que o bot não tenha atendido suas expectativas.\n\nCaso tenha alguma sugestão, por favor mande diretamentamente através deste canal com o comando **/feedback** para que possamos melhorar e continuar oferecendo um serviço cada vez melhor.', 
+        description='Sinto muito que o bot não tenha atendido suas expectativas.\n\n'
+                    'Caso tenha alguma sugestão, por favor mande diretamentamente através deste canal com o comando '
+                    '**/feedback** para que possamos melhorar e continuar oferecendo um serviço cada vez melhor.',
         colour=discord.Colour.green()
     )
 
@@ -228,6 +231,7 @@ async def on_message(message):
         msg_cursor = msg_db.cursor()
         msg_cursor.execute("INSERT INTO messages (date, time, channel_id, message_id, author_id, content) VALUES (?, ?, ?, ?, ?, ?)", (date, time, channel_id, message_id, author_id, content))
         msg_db.commit()
+
 
 @tasks.loop(seconds=20)
 async def change_status():
