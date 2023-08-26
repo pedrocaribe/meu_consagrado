@@ -146,7 +146,12 @@ class Owner(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
 
-    @commands.command(hidden=True, name='sync', brief='Sync all slash commands', help="")
+    @commands.command(
+        hidden=True,
+        name='sync',
+        brief='Sync all slash commands',
+        help="No args for sending global commands to discord, ~ to sync all commands to current guild, "
+             "* to copy all global to current guild and ^ to remove all commands from CommandTree")
     @commands.is_owner()
     async def syncall(self, ctx, guilds: commands.Greedy[discord.Object], spec: Optional[Literal['~', '*', '^']] = None):
         """ !sync
