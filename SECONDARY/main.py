@@ -88,6 +88,15 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, er):
 
+    # TODO: Create a DB for ticket handling
+    #   DB must contain:
+    #       - Ticket ID AUTO INCREMENTAL
+    #       - Guild ID
+    #       - Timestamp
+    #       - ERROR
+    #       - User ID
+
+
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
     
