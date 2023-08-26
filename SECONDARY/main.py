@@ -138,7 +138,7 @@ async def on_command_error(ctx, er):
         else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
 
 
-# When joining a guild, confirm if guild is already set up in DB and sent thankful note to owner
+# When joining a guild, confirm if guild is already set up in DB and send thankful note to owner
 @bot.event
 async def on_guild_join(ctx):
 
