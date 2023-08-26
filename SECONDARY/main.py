@@ -95,7 +95,16 @@ async def on_command_error(ctx, er):
     #       - Timestamp
     #       - ERROR
     #       - User ID
-
+    #       - User Name
+    #       - Resolved: Bool
+    #       - Status: On Review/
+    #   Command must be ticket:
+    #       - Open/Close/Status//Number - Optional
+    #           - If number, check if existent, respond with status
+    #           - If not number, send list with tickets opened for that user
+    #       - Resolved: Bool
+    #       - Author
+    #       -
 
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
