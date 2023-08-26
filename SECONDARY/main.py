@@ -99,7 +99,7 @@ async def on_command_error(ctx, er):
     #       - Resolved: Bool
     #       - Status: On Review/
     #   Command must be ticket:
-    #       - ISSUEING COMMAND: Open/Close/Status//Number - Optional
+    #       - ARGS: Open/Close/Status//Number - Optional
     #           - If number, check if existent, respond with status
     #           - If not number, send list with tickets opened for that user
     #       - MUST CONTAIN:
