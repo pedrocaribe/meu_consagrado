@@ -14,6 +14,10 @@ from math import floor
 units = ['B', 'KiB','MiB','GiB','TiB']
 
 
+async def embed_empty_field(embed: discord.Embed):
+    return embed.add_field(name="\u200b", value="\u200b")
+
+
 async def icon(name: str, embed: discord.Embed):
     icons = {os.path.splitext(x)[0]: x for x in os.listdir("ICONS")}
     if name in icons:
