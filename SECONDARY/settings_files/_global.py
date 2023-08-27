@@ -35,7 +35,8 @@ MONITOR_ERRORS = [
                 'RuntimeWarning',
                 'was never awaited',
                 'ERROR',
-                'raised an exception'
+                'raised an exception',
+                'PermissionError'
                 ]
 
 FRASE_MEIO = [
