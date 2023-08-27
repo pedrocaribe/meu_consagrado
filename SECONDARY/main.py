@@ -160,9 +160,9 @@ async def on_command_error(ctx, er):
 
 # When joining a guild, confirm if guild is already set up in DB and send thankful note to owner
 @bot.event
-async def on_guild_join(ctx):
+async def on_guild_join(guild: discord.Guild):
 
-    owner = await bot.fetch_user(ctx.owner.id)
+    owner = await bot.fetch_user(guild.owner.id)
 
     embed = discord.Embed(
         title="Olá, meu Consagrado!",
@@ -193,12 +193,12 @@ async def on_guild_join(ctx):
     await owner.send(file=thumbnail, embed=embed)
 
     with guild_db:
-        guild_id = ctx.guild.id
-        guild_name = ctx.guild.name
-        guild_owner_id = ctx.owner.id
+        guild_id = guild.id
+        guild_name = guild.name
+        guild_owner_id = guild.owner.id
         joined_date = datetime.today().strftime('%Y-%m-%d')
         cursor = guild_db.cursor()
-        result = cursor.execute("SELECT * FROM joined_guilds WHERE guild_id = ?", (ctx.guild.id,)).fetchone()
+        result = cursor.execute("SELECT * FROM joined_guilds WHERE guild_id = ?", (guild_id,)).fetchone()
 
         if result is None:
             cursor.execute("INSERT INTO guilds ("
