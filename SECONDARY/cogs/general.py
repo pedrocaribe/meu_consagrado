@@ -146,6 +146,8 @@ class General(commands.Cog):
         
     @app_commands.command(name='motivacional', description='Frase motivacional para boostar o ânimo!')
     async def timer(self, interaction: discord.Interaction):
+
+        # TODO: Add timer tracker by user in order user wants to cancel the timer
         compliment = requests.get('https://complimentr.com/api').text
         compliment = json.loads(compliment)
 
