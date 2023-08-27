@@ -23,8 +23,6 @@ REDDIT_SAFE_MEME_SUBREDDITS = [
     'engraçado'
 ]
 
-ICONS = {os.path.splitext(x)[0]: x for x in os.listdir("ICONS")}
-
 # Spotify configuratino
 SPOTIFY_CID = os.getenv("SPOTIFY_CID", False)
 SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
