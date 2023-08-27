@@ -37,7 +37,7 @@ sb = Style.BRIGHT
 sres = Style.RESET_ALL
     
 # Set up logging for DEBUG
-# discord.utils.setup_logging(level=logging.DEBUG, root=False)
+discord.utils.setup_logging(level=logging.DEBUG, root=False)
 
 # Set up DBs
 guild_db = db_connect(GUILD_DB)
@@ -172,9 +172,21 @@ async def on_guild_join(ctx):
         )
 
     # 
-    embed.add_field(name="Dúvidas ou suporte", value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.")
-    embed.add_field(name="Funcionalidades personalizadas", value="Além das funcionalidades padrão, eu também posso oferecer recursos personalizados de acordo com as necessidades do seu servidor. Entre em contato com o desenvolvedor pelo comando **/feedback**")
-    embed.add_field(name="Comandos disponíveis", value="Digite !help para ver uma lista dos comandos disponíveis.")
+    embed.add_field(
+        name="Dúvidas ou suporte",
+        value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, "
+              "não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.",
+        inline=False)
+    embed.add_field(
+        name="Funcionalidades personalizadas",
+        value="Além das funcionalidades padrão, eu também posso oferecer recursos personalizados "
+              "de acordo com as necessidades do seu servidor. Entre em contato com o "
+              "desenvolvedor pelo comando **/feedback**",
+        inline=False)
+    embed.add_field(
+        name="Comandos disponíveis",
+        value="Digite !help para ver uma lista dos comandos disponíveis.",
+        inline=False)
 
     await owner.send(embed=embed)
 
@@ -193,7 +205,6 @@ async def on_guild_join(ctx):
 async def on_guild_remove(ctx):
 
     owner = await bot.fetch_user(ctx.owner.id)
-    thumbnail = ICONS['guild_remove']
 
     leaving_embed = discord.Embed(
         title='Que pena que está indo!', 
@@ -202,10 +213,9 @@ async def on_guild_remove(ctx):
                     '**/feedback** para que possamos melhorar e continuar oferecendo um serviço cada vez melhor.',
         colour=discord.Colour.green()
     )
+    thumbnail, leaving_embed = await icon("guild_remove", leaving_embed)
 
-    leaving_embed.set_thumbnail(url=thumbnail)
-
-    await owner.send(embed=leaving_embed)
+    await owner.send(file=thumbnail, embed=leaving_embed)
 
     with guild_db:
         cursor = guild_db.cursor()
@@ -240,19 +250,23 @@ async def on_member_join(member: discord.Member):
 
         e.add_field(
             name="Leia as regras",
-            value="Não deixe de ler as regras para que esteja sempre de acordo com o servidor!")
+            value="Não deixe de ler as regras para que esteja sempre de acordo com o servidor!",
+            inline=False)
         e.add_field(
             name="Dúvidas ou suporte",
             value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, "
-                  "não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.")
+                  "não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.",
+            inline=False)
         e.add_field(
             name="Funcionalidades personalizadas",
             value="Além das funcionalidades padrões, "
                   "eu também posso oferecer recursos personalizados de acordo com as necessidades do servidor. "
-                  "Entre em contato com o desenvolvedor pelo comando **/feedback** para qualquer solicitação.")
+                  "Entre em contato com o desenvolvedor pelo comando **/feedback** para qualquer solicitação.",
+            inline=False)
         e.add_field(
             name="Comandos disponíveis",
-            value="Digite !help para ver uma lista dos comandos disponíveis.")
+            value="Digite !help para ver uma lista dos comandos disponíveis.",
+            inline=False)
 
         await member.create_dm()
         await member.dm_channel.send(embed=e)
