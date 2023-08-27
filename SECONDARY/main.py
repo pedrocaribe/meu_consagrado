@@ -132,7 +132,7 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
             colour=discord.Colour.red()
         )
 
-        thumbnail, owner_embed = icon("error", owner_embed)
+        thumbnail, owner_embed = await icon("error", owner_embed)
 
         await owner_user.send(embed=owner_embed)
 
