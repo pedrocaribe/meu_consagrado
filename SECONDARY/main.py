@@ -245,11 +245,20 @@ async def on_member_join(member: discord.Member):
 
         await member.create_dm()
         await member.dm_channel.send(embed=e)
-        
 
-# Monitor for messages and keep DB with all messages, authors and dates for auditing purposes
+
 @bot.listen()
 async def on_message(message: discord.Message):
+    """Monitor for messages
+
+    Monitor for messages and keep DB updated with all messages, authors and dates,
+    for auditing purposes.
+
+    Parameters:
+        message: Message from which to retrieve all information.
+    Returns:
+         This function does Not return anything.
+    """
 
     date = datetime.today().strftime('%Y-%m-%d')
     time = datetime.today().strftime('%H:%M:%S')
