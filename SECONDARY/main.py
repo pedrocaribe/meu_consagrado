@@ -86,7 +86,7 @@ async def on_ready():
 
 # If error, open bug report or handle
 @bot.event
-async def on_command_error(ctx, er):
+async def on_command_error(ctx: commands.Context, er: commands.CommandError):
 
     # TODO: Create a DB for ticket handling
     #   DB must contain:
