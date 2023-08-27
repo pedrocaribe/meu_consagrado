@@ -210,15 +210,16 @@ async def on_guild_join(guild: discord.Guild):
                            "VALUES (?,?,?,?,?)", (guild_id, guild_name, guild_owner_id, joined_date, True))
             guild_db.commit()
         else:
-            cursor.execute("UPDATE guilds SET active = True WHERE guild_id = (?)", (guild_id,))
+            cursor.execute("UPDATE guilds SET active = (?) WHERE guild_id = (?)", (True, guild_id,))
             guild_db.commit()
 
 
 # When removed from guild, send msg to server owner and set slash commands to 'Disabled'.
 @bot.event
-async def on_guild_remove(ctx):
+async def on_guild_remove(guild: discord.Guild):
 
-    owner = await bot.fetch_user(ctx.owner.id)
+    owner = await bot.fetch_user(guild.owner.id)
+    guild_id = guild.id
 
     leaving_embed = discord.Embed(
         title='Que pena que está indo!', 
@@ -233,7 +234,7 @@ async def on_guild_remove(ctx):
 
     with guild_db:
         cursor = guild_db.cursor()
-        cursor.execute("UPDATE joined_guilds SET commands_enabled = ? WHERE guild_id = ?", (False, ctx.id))
+        cursor.execute("UPDATE guilds SET active = (?) WHERE guild_id = (?)", (False, guild_id,))
         guild_db.commit()
 
 
@@ -303,7 +304,7 @@ async def on_message(message: discord.Message):
 
     m_date = datetime.today().strftime('%Y-%m-%d')
     m_time = datetime.today().strftime('%H:%M:%S')
-    guild_id = message.guild.id
+    guild_id = message.guild.id if message.guild else None
     channel_id = message.channel.id
     message_id = message.id
     author_id = message.author.id
