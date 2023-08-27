@@ -114,40 +114,38 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     timestamp = ctx.message.created_at.now()
     print(f'{prefix}ERROR RAISED -> {er} {bres}')
 
-    # Check if error fits in pre-defined list of errors to monitor and open Bug report
-    for i in MONITOR_ERRORS:
-        if i in str(er):
+    error = getattr(er, 'original', er)
 
-            # Open bug report, inform owner and user.
-            owner_user = await bot.fetch_user(bot.owner_id)
-            # thumbnail = 'https://static.thenounproject.com/png/587438-200.png'
+    if not isinstance(er, IGNORE_ERRORS):
+        # Open bug report, inform owner and user.
+        owner_user = await bot.fetch_user(bot.owner_id)
 
-            owner_embed = discord.Embed(
-                title='***__BUG REPORT__***',
-                description=f'**Timestamp:** ```{timestamp}```\n'
-                            f'**Server Name:** ```{ctx.guild.name}```\n'
-                            f'**Channel ID:** ```{ctx.channel.id}```\n'
-                            f'**Channel Name:** ```{ctx.channel.name}```\n'
-                            f'**Message ID: **```{ctx.message.id}```\n'
-                            f'**ERROR:** ```{er}```\n'
-                            f'**User:** ```{ctx.author.name}```',
-                colour=discord.Colour.red()
-            )
+        owner_embed = discord.Embed(
+            title='***__BUG REPORT__***',
+            description=f'**Timestamp:** ```{timestamp}```\n'
+                        f'**Server Name:** ```{ctx.guild.name}```\n'
+                        f'**Channel ID:** ```{ctx.channel.id}```\n'
+                        f'**Channel Name:** ```{ctx.channel.name}```\n'
+                        f'**Message ID: **```{ctx.message.id}```\n'
+                        f'**ERROR:** ```{er}```\n'
+                        f'**User:** ```{ctx.author.name}```',
+            colour=discord.Colour.red()
+        )
 
-            thumbnail = icon("error", owner_embed)
+        thumbnail, owner_embed = icon("error", owner_embed)
 
-            await owner_user.send(embed=owner_embed)
+        await owner_user.send(embed=owner_embed)
 
-            user_embed = discord.Embed(
-                title='BUG Encontrado', 
-                description=f'Foi enviado um bug report para o Admin do bot. Correção em breve.', 
-                colour=discord.Colour.yellow()
-            )
+        user_embed = discord.Embed(
+            title='BUG Encontrado',
+            description=f'Foi enviado um bug report para o Admin do bot. Correção em breve.',
+            colour=discord.Colour.yellow()
+        )
 
-            user_embed.set_footer(text=f'ID: {ctx.message.id}')
-            user_embed.set_thumbnail(url=thumbnail)
+        user_embed.set_footer(text=f'ID: {ctx.message.id}')
+        user_embed.set_thumbnail(url=thumbnail)
 
-            return await ctx.reply(embed=user_embed)
+        return await ctx.reply(file=thumbnail, embed=user_embed)
 
     # If issue is due to command being sent to private message, return to user.
     # If issue is not related to private message return to user informing that syntax is incorrect.
