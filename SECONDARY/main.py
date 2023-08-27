@@ -198,7 +198,7 @@ async def on_guild_join(guild: discord.Guild):
         guild_owner_id = guild.owner.id
         joined_date = datetime.today().strftime('%Y-%m-%d')
         cursor = guild_db.cursor()
-        result = cursor.execute("SELECT * FROM joined_guilds WHERE guild_id = ?", (guild_id,)).fetchone()
+        result = cursor.execute("SELECT * FROM guilds WHERE guild_id = ?", (guild_id,)).fetchone()
 
         if result is None:
             cursor.execute("INSERT INTO guilds ("
