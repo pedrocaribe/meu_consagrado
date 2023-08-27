@@ -277,6 +277,7 @@ async def change_status():
     Returns:
         This function does Not return anything.
     """
+
     await bot.change_presence(status=discord.Status.online, activity=discord.Game(next(STATUS)))
 
 
