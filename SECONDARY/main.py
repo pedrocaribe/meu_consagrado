@@ -214,23 +214,34 @@ async def on_guild_remove(ctx):
 
 
 @bot.event
-async def on_member_join(member):
-    prefix = (Back.BLACK + Fore.GREEN + time.strftime("%H:%M:%S UTC ", time.gmtime()) + Back.RED + Fore.WHITE + Style.BRIGHT)
-    print(f'{prefix} JOIN -> {member} just joined the server.')
+async def on_member_join(member: discord.Member):
+    prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
+    print(f'{prefix} JOIN -> {member} just joined the {member.guild.name} server.')
     guild = bot.get_guild(member.guild.id)
 
     if not member.bot:
 
         e = discord.Embed(
                 title="BEM VINDO!",
-                description=f"Bem vindo ao servidor {member.guild.name}!",
+                description=f"Bem vindo ao servidor **{member.guild.name}**!",
                 color=discord.Color.blue()
                 )
 
-        e.add_field(name="Leia as regras", value="Não deixe de ler as regras para que esteja sempre de acordo com o servidor!")
-        e.add_field(name="Dúvidas ou suporte", value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.")
-        e.add_field(name="Funcionalidades personalizadas", value="Além das funcionalidades padrão, eu também posso oferecer recursos personalizados de acordo com as necessidades do seu servidor. Entre em contato com o desenvolvedor pelo comando **/feedback**")
-        e.add_field(name="Comandos disponíveis", value="Digite !help para ver uma lista dos comandos disponíveis.")
+        e.add_field(
+            name="Leia as regras",
+            value="Não deixe de ler as regras para que esteja sempre de acordo com o servidor!")
+        e.add_field(
+            name="Dúvidas ou suporte",
+            value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, "
+                  "não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.")
+        e.add_field(
+            name="Funcionalidades personalizadas",
+            value="Além das funcionalidades padrões, "
+                  "eu também posso oferecer recursos personalizados de acordo com as necessidades do servidor. "
+                  "Entre em contato com o desenvolvedor pelo comando **/feedback** para qualquer solicitação.")
+        e.add_field(
+            name="Comandos disponíveis",
+            value="Digite !help para ver uma lista dos comandos disponíveis.")
 
         await member.create_dm()
         await member.dm_channel.send(embed=e)
