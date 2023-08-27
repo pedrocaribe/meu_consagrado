@@ -188,7 +188,9 @@ async def on_guild_join(ctx):
         value="Digite !help para ver uma lista dos comandos disponíveis.",
         inline=False)
 
-    await owner.send(embed=embed)
+    thumbnail, embed = await icon("consagrado", embed)
+
+    await owner.send(file=thumbnail, embed=embed)
 
     with guild_db:
         cursor = guild_db.cursor()
@@ -268,8 +270,10 @@ async def on_member_join(member: discord.Member):
             value="Digite !help para ver uma lista dos comandos disponíveis.",
             inline=False)
 
+        thumbnail, e = await icon("consagrado", e)
+
         await member.create_dm()
-        await member.dm_channel.send(embed=e)
+        await member.dm_channel.send(file=thumbnail, embed=e)
 
 
 @bot.listen()
