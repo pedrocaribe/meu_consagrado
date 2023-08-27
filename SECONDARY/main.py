@@ -270,6 +270,13 @@ async def on_message(message: discord.Message):
 
 @tasks.loop(seconds=20)
 async def change_status():
+    """Initiate status rotation
+
+    Parameters:
+        This function does Not take any parameters.
+    Returns:
+        This function does Not return anything.
+    """
     await bot.change_presence(status=discord.Status.online, activity=discord.Game(next(STATUS)))
 
 
