@@ -292,6 +292,8 @@ async def on_message(message: discord.Message):
 async def change_status():
     """Initiate status rotation
 
+    Initiates task to change status every 20 seconds.
+
     Parameters:
         This function does Not take any parameters.
     Returns:
