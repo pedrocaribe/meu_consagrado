@@ -250,7 +250,7 @@ async def on_member_join(member: discord.Member):
         This function does Not return anything.
     """
 
-    prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
+    prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb + bres)
     print(f'{prefix} JOIN -> {member} just joined the {member.guild.name} server.')
     guild = bot.get_guild(member.guild.id)
 
@@ -262,21 +262,32 @@ async def on_member_join(member: discord.Member):
                 color=discord.Color.blue()
                 )
 
+        await embed_empty_field(e)
+
         e.add_field(
             name="Leia as regras",
             value="Não deixe de ler as regras para que esteja sempre de acordo com o servidor!",
             inline=False)
+
+        await embed_empty_field(e)
+
         e.add_field(
             name="Dúvidas ou suporte",
             value="Se você tiver alguma dúvida sobre como me usar ou precisar de suporte, "
                   "não hesite em entrar em contato comigo. Estou sempre disponível para ajudar.",
             inline=False)
+
+        await embed_empty_field(e)
+
         e.add_field(
             name="Funcionalidades personalizadas",
             value="Além das funcionalidades padrões, "
                   "eu também posso oferecer recursos personalizados de acordo com as necessidades do servidor. "
                   "Entre em contato com o desenvolvedor pelo comando **/feedback** para qualquer solicitação.",
             inline=False)
+
+        await embed_empty_field(e)
+
         e.add_field(
             name="Comandos disponíveis",
             value="Digite !help para ver uma lista dos comandos disponíveis.",
