@@ -49,7 +49,6 @@ async def main():
     async with bot:
         await load_cogs(bot)
         await bot.start(DISCORD_TOKEN)
-        await change_status.start()
 
 
 # Print load message once ready
@@ -81,6 +80,8 @@ async def on_ready():
         error_code = 2
 
     print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
+
+    await change_status.start()
 
 
 # If error, open bug report or handle
