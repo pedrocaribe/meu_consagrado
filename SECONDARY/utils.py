@@ -13,6 +13,15 @@ from math import floor
 
 units = ['B', 'KiB','MiB','GiB','TiB']
 
+
+async def icon(name: str, embed: discord.Embed):
+    icons = {os.path.splitext(x)[0]: x for x in os.listdir("ICONS")}
+    if name in icons:
+        file = discord.File(f'ICONS/{icons[name]}', icons[name])
+        embed.set_thumbnail(url=f'attachment://{icons[name]}')
+        return file, embed
+
+
 async def get_jokes():
     with open(os.path.join(DATA_DIR, "badwords.json"), encoding='utf8') as bw_file:
         bws = json.load(bw_file)
