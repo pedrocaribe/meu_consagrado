@@ -193,7 +193,7 @@ async def on_guild_join(ctx):
 async def on_guild_remove(ctx):
 
     owner = await bot.fetch_user(ctx.owner.id)
-    thumbnail = 'https://www.iconsdb.com/icons/preview/white/remove-user-xxl.png'
+    thumbnail = ICONS['user_remove']
 
     leaving_embed = discord.Embed(
         title='Que pena que está indo!', 
