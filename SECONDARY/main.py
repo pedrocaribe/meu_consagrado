@@ -193,12 +193,24 @@ async def on_guild_join(ctx):
     await owner.send(file=thumbnail, embed=embed)
 
     with guild_db:
+        guild_id = ctx.guild.id
+        guild_name = ctx.guild.name
+        guild_owner_id = ctx.owner.id
+        joined_date = datetime.today().strftime('%Y-%m-%d')
         cursor = guild_db.cursor()
-        cursor.execute("SELECT * FROM joined_guilds WHERE guild_id = ?", (ctx.id,))
-        result = cursor.fetchone()
+        result = cursor.execute("SELECT * FROM joined_guilds WHERE guild_id = ?", (ctx.guild.id,)).fetchone()
 
         if result is None:
-            cursor.execute("INSERT INTO joined_guilds (guild_id) VALUES (?)", (ctx.id,))
+            cursor.execute("INSERT INTO guilds ("
+                           "guild_id,"
+                           "guild_name,"
+                           "guild_owner_id,"
+                           "joined_date,"
+                           "active) "
+                           "VALUES (?,?,?,?,?)", (guild_id, guild_name, guild_owner_id, joined_date, True))
+            guild_db.commit()
+        else:
+            cursor.execute("UPDATE guilds SET active = True WHERE guild_id = (?)", (guild_id,))
             guild_db.commit()
 
 
