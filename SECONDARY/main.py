@@ -238,10 +238,11 @@ async def on_member_join(member):
 
 # Monitor for messages and keep DB with all messages, authors and dates for auditing purposes
 @bot.listen()
-async def on_message(message):
+async def on_message(message: discord.Message):
 
     date = datetime.today().strftime('%Y-%m-%d')
     time = datetime.today().strftime('%H:%M:%S')
+    guild_id = message.guild.id
     channel_id = message.channel.id
     message_id = message.id
     author_id = message.author.id
@@ -249,9 +250,10 @@ async def on_message(message):
 
     with msg_db:
         msg_cursor = msg_db.cursor()
-        msg_cursor.execute("INSERT INTO messages "
-                           "(date, time, channel_id, message_id, author_id, content) "
-                           "VALUES (?, ?, ?, ?, ?, ?)", (date, time, channel_id, message_id, author_id, content))
+        msg_cursor.execute("INSERT INTO messages("
+                           "guild_id, channel_id, message_id, author_id, date, time, content) "
+                           "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                           (guild_id, channel_id, message_id, author_id, date, time, content))
         msg_db.commit()
 
 
