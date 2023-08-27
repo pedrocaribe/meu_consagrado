@@ -260,8 +260,8 @@ async def on_message(message: discord.Message):
          This function does Not return anything.
     """
 
-    date = datetime.today().strftime('%Y-%m-%d')
-    time = datetime.today().strftime('%H:%M:%S')
+    m_date = datetime.today().strftime('%Y-%m-%d')
+    m_time = datetime.today().strftime('%H:%M:%S')
     guild_id = message.guild.id
     channel_id = message.channel.id
     message_id = message.id
@@ -273,7 +273,7 @@ async def on_message(message: discord.Message):
         msg_cursor.execute("INSERT INTO messages("
                            "guild_id, channel_id, message_id, author_id, date, time, content) "
                            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                           (guild_id, channel_id, message_id, author_id, date, time, content))
+                           (guild_id, channel_id, message_id, author_id, m_date, m_time, content))
         msg_db.commit()
 
 
