@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from itertools import cycle
+from discord.ext import commands
 
 SETTINGS_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SETTINGS_DIR)
@@ -29,15 +30,7 @@ SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
 
 
 # MISC
-MONITOR_ERRORS = [
-                'attribute',
-                'TypeError',
-                'RuntimeWarning',
-                'was never awaited',
-                'ERROR',
-                'raised an exception',
-                'PermissionError'
-                ]
+IGNORE_ERRORS = (commands.CommandNotFound,)
 
 FRASE_MEIO = [
             'meu Magnata',
