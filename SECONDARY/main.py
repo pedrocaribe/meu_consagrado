@@ -49,6 +49,7 @@ async def main():
     async with bot:
         await load_cogs(bot)
         await bot.start(DISCORD_TOKEN)
+        await change_status.start()
 
 
 # Print load message once ready
@@ -80,8 +81,6 @@ async def on_ready():
         error_code = 2
 
     print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
-
-    await change_status.start()
 
 
 # If error, open bug report or handle
@@ -121,7 +120,6 @@ async def on_command_error(ctx, er):
             # Open bug report, inform owner and user.
             owner_user = await bot.fetch_user(bot.owner_id)
             # thumbnail = 'https://static.thenounproject.com/png/587438-200.png'
-            thumbnail = ICONS['error.png']
 
             owner_embed = discord.Embed(
                 title='***__BUG REPORT__***',
@@ -135,7 +133,7 @@ async def on_command_error(ctx, er):
                 colour=discord.Colour.red()
             )
 
-            owner_embed.set_thumbnail(url=ctx.guild.icon)
+            thumbnail = icon("error", owner_embed)
 
             await owner_user.send(embed=owner_embed)
 
@@ -311,12 +309,13 @@ async def on_message(message: discord.Message):
     content = message.content
 
     with msg_db:
-        msg_cursor = msg_db.cursor()
-        msg_cursor.execute("INSERT INTO messages("
-                           "guild_id, channel_id, message_id, author_id, date, time, content) "
-                           "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                           (guild_id, channel_id, message_id, author_id, m_date, m_time, content))
-        msg_db.commit()
+        if not message.author.bot:
+            msg_cursor = msg_db.cursor()
+            msg_cursor.execute("INSERT INTO messages("
+                               "guild_id, channel_id, message_id, author_id, date, time, content) "
+                               "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                               (guild_id, channel_id, message_id, author_id, m_date, m_time, content))
+            msg_db.commit()
 
 
 @tasks.loop(seconds=20)
