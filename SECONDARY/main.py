@@ -215,6 +215,17 @@ async def on_guild_remove(ctx):
 
 @bot.event
 async def on_member_join(member: discord.Member):
+    """Monitor for new members
+
+    Monitors for new members and sends welcome message.
+
+    Parameters:
+        member: The member to send the welcoming message to.
+
+    Returns:
+        This function does Not return anything.
+    """
+
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
     print(f'{prefix} JOIN -> {member} just joined the {member.guild.name} server.')
     guild = bot.get_guild(member.guild.id)
