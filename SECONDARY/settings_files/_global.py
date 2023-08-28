@@ -24,7 +24,7 @@ REDDIT_SAFE_MEME_SUBREDDITS = [
     'engraçado'
 ]
 
-# Spotify configuratino
+# Spotify configuration
 SPOTIFY_CID = os.getenv("SPOTIFY_CID", False)
 SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
 
