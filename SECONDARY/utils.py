@@ -34,7 +34,8 @@ async def get_jokes():
 
 
 async def dummy_awaitable_callable(*args, **kwargs) -> NoReturn:
-	raise NotImplementedError("This function is a dummy function and is not meant to be called.")
+    raise NotImplementedError("This function is a dummy function and is not meant to be called.")
+
 
 # Connect to DB
 def db_connect(db):
@@ -43,7 +44,8 @@ def db_connect(db):
         return dbc
     else:
         return None
-    
+
+
 # Function to load cogs when initiating Bot
 async def load_cogs(bot):
     for filename in os.listdir("./cogs"):
@@ -60,7 +62,7 @@ def humanizer(size, d_unit):
 
 
 def get_size(size):
-    for unit in ['B', 'KiB','MiB','GiB','TiB']:
+    for unit in units:
         if size < 1024.0:
             break
         size /= 1024.0
