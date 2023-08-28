@@ -29,7 +29,7 @@ SPOTIFY_CID = os.getenv("SPOTIFY_CID", False)
 SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
 
 # MISC
-IGNORE_ERRORS = (commands.CommandNotFound,)
+IGNORE_ERRORS = ()
 
 FRASE_MEIO = [
             'meu Magnata',
