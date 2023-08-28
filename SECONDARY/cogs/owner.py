@@ -215,6 +215,11 @@ class Owner(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
     
+    @commands.command(help="Command used to force bug")
+    @commands.is_owner()
+    async def raise_bug(self, ctx: commands.Context):
+        raise commands.DisabledCommand("This is only a test")
+
 
 async def setup(bot):
     await bot.add_cog(Owner(bot))
