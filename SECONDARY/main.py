@@ -9,6 +9,7 @@ import sqlite3
 
 # Import error logging modules
 import logging
+import logging.handlers
 
 # Import secondary modules
 from discord.ext import commands, tasks
@@ -17,7 +18,6 @@ from datetime import datetime
 
 # Import local utilities and variables
 from settings import *
-from global_variables import *
 from utils import *
 
 # GLOBAL Declarations
@@ -35,13 +35,25 @@ bb = Back.BLACK
 bres = Back.RESET
 sb = Style.BRIGHT
 sres = Style.RESET_ALL
-    
-# Set up logging for DEBUG
-discord.utils.setup_logging(level=logging.DEBUG, root=False)
 
 # Set up DBs
 guild_db = db_connect(GUILD_DB)
 msg_db = db_connect(MSG_DB)
+
+# Set up Logging
+logger = logging.getLogger("discord")
+logger.setLevel(logging.DEBUG)
+logging.getLogger('discord.http').setLevel(logging.INFO)
+
+handler = logging.handlers.RotatingFileHandler(
+    filename="logs/debugs.log",
+    encoding="utf-8",
+    maxBytes=32 * 1024 * 1024,
+    backupCount=15,
+)
+formatter = logging.Formatter("[%(asctime)s] [%(levelname)-10s] %(name)-22s: %(module)-10s: %(message)s", style="%")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 # Definition of main function, load all cogs and start bot
@@ -84,20 +96,24 @@ async def on_ready():
     await change_status.start()
 
 
-# If error, open bug report or handle
 @bot.event
 async def on_command_error(ctx: commands.Context, er: commands.CommandError):
+    """Listen for errors and handle
+
+    Redefinition of on_command_error method to handle errors differently according to
+    user owner necessity.
+
+    Parameters:
+        ctx: commands.Context
+            The context used for command invocation.
+        er: commands.CommandError
+            The Exception raised.
+
+    Returns:
+        This method returns differently per Exception encountered.
+    """
 
     # TODO: Create a DB for ticket handling
-    #   DB must contain:
-    #       - Ticket ID AUTO INCREMENTAL
-    #       - Guild ID
-    #       - Timestamp
-    #       - ERROR
-    #       - User ID
-    #       - User Name
-    #       - Resolved: Bool
-    #       - Status: On Review/
     #   Command must be ticket:
     #       - ARGS: Open/Close/Status//Number - Optional
     #           - If number, check if existent, respond with status
@@ -107,16 +123,39 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     #           - Author
     #           - Description
 
+    # This prevents any commands with local handlers being handled here.
+    if hasattr(ctx.command, "on_error"):
+        return
+
+    # This prevents any cogs with an overwritten cog_command_error being handled here.
+    cog = ctx.cog
+    if cog:
+        if cog.has_error_handler():
+            return
+
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
-    
+
     # Create timestamp when error was encountered and print to Bot console for logging purposes
     timestamp = ctx.message.created_at.now()
     print(f'{prefix}ERROR RAISED -> {er} {bres}')
 
-    error = getattr(er, 'original', er)
+    er = getattr(er, 'original', er)
 
-    if not isinstance(er, IGNORE_ERRORS):
+    # If exception in ignore list, ignore
+    if isinstance(er, IGNORE_ERRORS):
+        return
+
+    # If issue is due to command being sent to private message, return to user.
+    elif isinstance(er, commands.NoPrivateMessage):
+        return await ctx.reply(
+            f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**')
+
+    # If issue is not related to private message return to user informing that syntax is incorrect.
+    elif isinstance(er, (commands.BadArgument, commands.CommandNotFound)):
+        return await ctx.reply(
+            f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
+    else:
         # Open bug report, inform owner and user.
         owner_user = await bot.fetch_user(bot.owner_id)
 
@@ -127,32 +166,25 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
                         f'**Channel ID:** ```{ctx.channel.id}```\n'
                         f'**Channel Name:** ```{ctx.channel.name}```\n'
                         f'**Message ID: **```{ctx.message.id}```\n'
-                        f'**ERROR:** ```{er}```\n'
+                        f'**ERROR:** ```{str(er)}```\n'
                         f'**User:** ```{ctx.author.name}```',
             colour=discord.Colour.red()
         )
 
         thumbnail, owner_embed = await icon("error", owner_embed)
 
-        await owner_user.send(embed=owner_embed)
+        await owner_user.send(file=thumbnail, embed=owner_embed)
 
         user_embed = discord.Embed(
             title='BUG Encontrado',
             description=f'Foi enviado um bug report para o Admin do bot. Correção em breve.',
             colour=discord.Colour.yellow()
         )
+        thumbnail, user_embed = await icon("error", user_embed)
 
         user_embed.set_footer(text=f'ID: {ctx.message.id}')
-        user_embed.set_thumbnail(url=thumbnail)
 
         return await ctx.reply(file=thumbnail, embed=user_embed)
-
-    # If issue is due to command being sent to private message, return to user.
-    # If issue is not related to private message return to user informing that syntax is incorrect.
-    return await ctx.reply(
-        f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**'
-        if 'private messages' in str(er)
-        else f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
 
 
 # When joining a guild, confirm if guild is already set up in DB and send thankful note to owner
