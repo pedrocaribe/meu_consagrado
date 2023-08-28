@@ -11,7 +11,7 @@ from discord import app_commands
 from typing import NoReturn
 from math import floor
 
-units = ['B', 'KiB','MiB','GiB','TiB']
+units = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
 
 
 async def embed_empty_field(embed: discord.Embed):
