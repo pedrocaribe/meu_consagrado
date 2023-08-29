@@ -11,6 +11,7 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN", False)
 GUILD_DB = os.getenv("GUILD_DB", False)
 MSG_DB = os.getenv("MSG_DB", False)
 STUDY_DB = os.getenv("STUDY_DB", False)
+TICKET_DB = os.getenv("TICKET_DB", False)
 CHATGPT_API_TOKEN = os.getenv("CHATGPT_API_TOKEN", False)
 
 # Reddit configuration
