@@ -39,6 +39,7 @@ sres = Style.RESET_ALL
 # Set up DBs
 guild_db = db_connect(GUILD_DB)
 msg_db = db_connect(MSG_DB)
+ticket_db = db_connect(TICKET_DB)
 
 # Set up Logging
 logger = logging.getLogger("discord")
@@ -90,6 +91,11 @@ async def on_ready():
     else:
         print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{MSG_DB}')
         error_code = 2
+    if ticket_db:
+        print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{TICKET_DB}')
+    else:
+        print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{TICKET_DB}')
+        error_code = 3
 
     print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
 
@@ -136,8 +142,6 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC ", time.gmtime()) + br + fw + sb)
 
-    # Create timestamp when error was encountered and print to Bot console for logging purposes
-    timestamp = ctx.message.created_at.now()
     print(f'{prefix}ERROR RAISED -> {er} {bres}')
 
     er = getattr(er, 'original', er)
@@ -158,18 +162,21 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     else:
         # Open bug report, inform owner and user.
         owner_user = await bot.fetch_user(bot.owner_id)
+        ticket = Ticket(ctx=ctx, error=er, db=ticket_db)
 
         owner_embed = discord.Embed(
             title='***__BUG REPORT__***',
-            description=f'**Timestamp:** ```{timestamp}```\n'
-                        f'**Server Name:** ```{ctx.guild.name}```\n'
-                        f'**Channel ID:** ```{ctx.channel.id}```\n'
-                        f'**Channel Name:** ```{ctx.channel.name}```\n'
-                        f'**Message ID: **```{ctx.message.id}```\n'
-                        f'**ERROR:** ```{str(er)}```\n'
-                        f'**User:** ```{ctx.author.name}```',
+            description=f'**Timestamp:** ```{ticket.timestamp}```\n'
+                        f'**Server Name:** ```{ticket.guild_name}```\n'
+                        f'**Channel ID:** ```{ticket.channel_id}```\n'
+                        f'**Channel Name:** ```{ticket.channel_name}```\n'
+                        f'**Message ID: **```{ticket.message_id}```\n'
+                        f'**ERROR:** ```{str(ticket.error)}```\n'
+                        f'**User:** ```{ticket.user}```',
             colour=discord.Colour.red()
         )
+
+        ticket.create_ticket()
 
         thumbnail, owner_embed = await icon("error", owner_embed)
 

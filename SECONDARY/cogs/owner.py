@@ -1,5 +1,7 @@
 # Import base modules
-import discord, os, time
+import sqlite3
+
+import discord, os, time, re
 
 # Import secondary modules
 from discord.ext import commands
@@ -8,6 +10,8 @@ from colorama import Fore, Back, Style
 from datetime import datetime
 # from utils import reload
 from typing import Literal, Optional
+from utils import *
+from settings import *
 
 
 class Owner(commands.Cog):
@@ -219,6 +223,68 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def raise_bug(self, ctx: commands.Context):
         raise commands.DisabledCommand("This is only a test")
+
+    @commands.command(help="List tickets for bug reports")
+    @commands.is_owner()
+    async def list_bugs(self, ctx: commands.Context):
+        db = sqlite3.connect(TICKET_DB)
+        db.row_factory = sqlite3.Row
+        with db:
+            cur = db.cursor()
+            tickets = cur.execute("SELECT * FROM tickets WHERE status = 'OPEN'").fetchall()
+
+            embed_list = list()
+
+            thumbnail = None
+            for n, ticket in enumerate(tickets):
+                if n < 10:
+                    e = discord.Embed(title=f"Bug Ticket {ticket['ticket_id']}",
+                                      description=f"**Opened at:** {ticket['timestamp']}\n"
+                                                  f"**Opened by:** {await self.bot.fetch_user(ticket['user_id'])}\n"
+                                                  f"**Description:** {ticket['error']}")
+
+                    thumbnail, e = await icon("error", e)
+
+                    embed_list.append(e)
+            return await ctx.send(
+                content="__Mostrando os primeiros 10 tickets abertos:__",
+                file=thumbnail,
+                embeds=embed_list) if tickets else await ctx.send("Nenhum ticket aberto.")
+
+    @commands.command(help="Resolve bug in DB")
+    @commands.is_owner()
+    async def resolve_bug(self, ctx, *, ticket_id):
+
+        indexes = re.split("[, ]", ticket_id)
+
+        db = sqlite3.connect(TICKET_DB)
+        with db:
+            cur = db.cursor()
+            db.row_factory = sqlite3.Row
+
+            for num, index in enumerate(indexes):
+                try:
+                    ticket = dict(cur.execute(
+                        "SELECT * FROM tickets "
+                        "WHERE ticket_id = ?", (int(index),)
+                    ).fetchone()[0])
+
+                    cur.execute("UPDATE tickets "
+                                "SET status = ? "
+                                "WHERE ticket_id = ?", ('CLOSED', int(index),))
+                except Exception as e:
+                    raise e
+                else:
+                    user = await self.bot.fetch_user(ticket['user_id'])
+                    e = discord.Embed(title="**Bug Resolvido!**", description="O bug que você havia reportado"
+                                                                              "foi resolvido!\n\n"
+                                                                              "Segue abaixo detalhes.")
+                    e.add_field(name="ERROR:", value=f"{ticket['error']}")
+                    e.add_field(name="Aberto em:", value=f"{ticket['timestamp']}", inline=False)
+                    await user.send(embed=e)
+                    db.commit()
+                    await ctx.send(f"Bug {index} set as **CLOSED**")
+
 
 
 async def setup(bot):

@@ -3,6 +3,7 @@ import json
 import os
 import random
 import discord
+import dill
 
 # Import secondary modules
 from settings import *
@@ -100,3 +101,39 @@ def lastDigitExtractedProcessed(card_number):
 class EnableModal(discord.ui.Modal, title='Regras'):
 
     info = discord.ui.Button
+
+
+class Ticket:
+    def __init__(self, ctx: commands.Context, db: sqlite3.Connection, error: commands.CommandError = None):
+        self.timestamp = ctx.message.created_at.now()
+        self.guild_name = ctx.guild.name
+        self.guild_id = ctx.guild.id
+        self.channel_id = ctx.channel.id
+        self.channel_name = ctx.channel.name
+        self.message_id = ctx.message.id
+        self.error = str(error)
+        self.user = ctx.author.name
+        self.user_id = ctx.author.id
+        self.db = db
+
+    def create_ticket(self):
+        with self.db:
+            cur = self.db.cursor()
+            cur.execute(
+                "INSERT INTO tickets ("
+                "guild_id, "
+                "channel_id, "
+                "message_id, "
+                "timestamp, "
+                "error, "
+                "user_id, "
+                "status) VALUES (?,?,?,?,?,?,?)",
+                (self.guild_id,
+                 self.channel_id,
+                 self.message_id,
+                 self.timestamp,
+                 self.error,
+                 self.user_id,
+                 "OPEN")
+                )
+            self.db.commit()
