@@ -1,5 +1,7 @@
 # Import main modules
-import discord, datetime, sqlite3
+import discord
+import datetime
+import sqlite3
 
 # Import secondary modules
 from discord.ext import commands
@@ -7,6 +9,7 @@ from discord import app_commands, ui
 from discord.interactions import Interaction
 from discord.ui import Button, View
 from utils import *
+
 
 # Define Modal class
 class EnableModal(discord.ui.Modal, title=" Formulário📝"):
@@ -40,11 +43,11 @@ class EnableModal(discord.ui.Modal, title=" Formulário📝"):
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
 
     # Command to retrieve user information
     @app_commands.guild_only()
-    @app_commands.command(name='user_info', description="Verificar informações detalhadas de usuários. Uso: @NomeDoUsuario (opcional)")
+    @app_commands.command(name='user_info',
+                          description="Verificar informações detalhadas de usuários. Uso: @NomeDoUsuario (opcional)")
     async def status(self, interaction: discord.Interaction, member: discord.Member = None):
 
         # Check if member was provided, if not default to user
