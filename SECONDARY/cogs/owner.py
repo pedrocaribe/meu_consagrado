@@ -286,6 +286,5 @@ class Owner(commands.Cog):
                     await ctx.send(f"Bug {index} set as **CLOSED**")
 
 
-
 async def setup(bot):
     await bot.add_cog(Owner(bot))
