@@ -119,16 +119,6 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
         This method returns differently per Exception encountered.
     """
 
-    # TODO: Create a DB for ticket handling
-    #   Command must be ticket:
-    #       - ARGS: Open/Close/Status//Number - Optional
-    #           - If number, check if existent, respond with status
-    #           - If not number, send list with tickets opened for that user
-    #       - MUST CONTAIN:
-    #           - Resolved: Bool
-    #           - Author
-    #           - Description
-
     # This prevents any commands with local handlers being handled here.
     if hasattr(ctx.command, "on_error"):
         return
