@@ -231,21 +231,20 @@ class Owner(commands.Cog):
         db.row_factory = sqlite3.Row
         with db:
             cur = db.cursor()
-            tickets = cur.execute("SELECT * FROM tickets WHERE status = 'OPEN'").fetchall()
+            tickets = cur.execute("SELECT * FROM tickets WHERE status = 'OPEN' LIMIT 10").fetchall()
 
             embed_list = list()
 
             thumbnail = None
-            for n, ticket in enumerate(tickets):
-                if n < 10:
-                    e = discord.Embed(title=f"Bug Ticket {ticket['ticket_id']}",
-                                      description=f"**Opened at:** {ticket['timestamp']}\n"
-                                                  f"**Opened by:** {await self.bot.fetch_user(ticket['user_id'])}\n"
-                                                  f"**Description:** {ticket['error']}")
+            for ticket in tickets:
+                e = discord.Embed(title=f"Bug Ticket {ticket['ticket_id']}",
+                                  description=f"**Opened at:** {ticket['timestamp']}\n"
+                                              f"**Opened by:** {await self.bot.fetch_user(ticket['user_id'])}\n"
+                                              f"**Description:** {ticket['error']}")
 
-                    thumbnail, e = await icon("error", e)
+                thumbnail, e = await icon("error", e)
 
-                    embed_list.append(e)
+                embed_list.append(e)
             return await ctx.send(
                 content="__Mostrando os primeiros 10 tickets abertos:__",
                 file=thumbnail,
