@@ -72,7 +72,6 @@ class Admin(commands.Cog):
         
         return await interaction.response.send_message(embed=embed)
 
-
     # Command to retrieve server information
     @app_commands.guild_only()
     @app_commands.command(name='server_info', description='Verificar informações detalhadas do servidor.')
@@ -94,7 +93,6 @@ class Admin(commands.Cog):
 
         return await interaction.response.send_message(embed=embed)
     
-
 
 async def setup(bot):
     await bot.add_cog(Admin(bot))
