@@ -269,7 +269,7 @@ class Owner(commands.Cog):
                     ticket = cur.execute("SELECT * FROM tickets WHERE ticket_id = ?", (int(index),)).fetchone()
                     if ticket:
                         if ticket['status'] == "CLOSED":
-                            await ctx.send(f"**Bug** `{ticket} is already `CLOSED`")
+                            await ctx.send(f"**Bug** `{index}` is already `CLOSED`")
                             continue
                         cur.execute("UPDATE tickets "
                                     "SET status = ? "
