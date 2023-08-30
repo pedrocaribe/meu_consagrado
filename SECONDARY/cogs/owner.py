@@ -275,7 +275,7 @@ class Owner(commands.Cog):
                     raise e
                 else:
                     if not ticket:
-                        await ctx.send(f"**Bug** {index} `not found`.")
+                        await ctx.send(f"**Bug** `{index}` was `not found`.")
                     else:
                         user = await self.bot.fetch_user(ticket['user_id'])
                         e = discord.Embed(
