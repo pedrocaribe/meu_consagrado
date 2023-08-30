@@ -106,10 +106,10 @@ class EnableModal(discord.ui.Modal, title='Regras'):
 class Ticket:
     def __init__(self, ctx: commands.Context, db: sqlite3.Connection, error: commands.CommandError = None):
         self.timestamp = ctx.message.created_at.now()
-        self.guild_name = ctx.guild.name
-        self.guild_id = ctx.guild.id
-        self.channel_id = ctx.channel.id
-        self.channel_name = ctx.channel.name
+        self.guild_name = ctx.guild.name if ctx.guild else None
+        self.guild_id = ctx.guild.id if ctx.guild else None
+        self.channel_id = ctx.channel.id if ctx.guild else None
+        self.channel_name = ctx.channel.name if ctx.guild else None
         self.message_id = ctx.message.id
         self.error = str(error)
         self.user = ctx.author.name
