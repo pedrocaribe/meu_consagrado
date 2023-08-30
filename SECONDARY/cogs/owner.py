@@ -221,11 +221,13 @@ class Owner(commands.Cog):
     
     @commands.command(help="Command used to force bug")
     @commands.is_owner()
+    @commands.guild_only()
     async def raise_bug(self, ctx: commands.Context):
         raise commands.DisabledCommand("This is only a test")
 
     @commands.command(help="List tickets for bug reports")
     @commands.is_owner()
+    @commands.guild_only()
     async def list_bugs(self, ctx: commands.Context):
         db = sqlite3.connect(TICKET_DB)
         db.row_factory = sqlite3.Row
@@ -252,21 +254,19 @@ class Owner(commands.Cog):
 
     @commands.command(help="Resolve bug in DB")
     @commands.is_owner()
+    @commands.guild_only()
     async def resolve_bug(self, ctx, *, ticket_id):
 
         indexes = re.split("[, ]", ticket_id)
 
         db = sqlite3.connect(TICKET_DB)
+        db.row_factory = sqlite3.Row
         with db:
             cur = db.cursor()
-            db.row_factory = sqlite3.Row
 
-            for num, index in enumerate(indexes):
+            for index in indexes:
                 try:
-                    ticket = dict(cur.execute(
-                        "SELECT * FROM tickets "
-                        "WHERE ticket_id = ?", (int(index),)
-                    ).fetchone()[0])
+                    ticket = cur.execute("SELECT * FROM tickets WHERE ticket_id = ?", (int(index),)).fetchone()
 
                     cur.execute("UPDATE tickets "
                                 "SET status = ? "
@@ -275,9 +275,12 @@ class Owner(commands.Cog):
                     raise e
                 else:
                     user = await self.bot.fetch_user(ticket['user_id'])
-                    e = discord.Embed(title="**Bug Resolvido!**", description="O bug que você havia reportado"
-                                                                              "foi resolvido!\n\n"
-                                                                              "Segue abaixo detalhes.")
+                    e = discord.Embed(
+                        title="**Bug Resolvido!**",
+                        description="O bug que você havia reportado "
+                                    "foi **resolvido**!\n\n"
+                                    "Segue abaixo detalhes.\n",
+                        colour=discord.Color.green())
                     e.add_field(name="ERROR:", value=f"{ticket['error']}")
                     e.add_field(name="Aberto em:", value=f"{ticket['timestamp']}", inline=False)
                     await user.send(embed=e)
