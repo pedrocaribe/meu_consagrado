@@ -87,7 +87,9 @@ class Admin(commands.Cog):
         
         embed.set_thumbnail(url=interaction.guild.icon)
         embed.add_field(name="Membros", value=interaction.guild.member_count)
-        embed.add_field(name="Canais", value=f'{len(interaction.guild.text_channels)} Texto | {len(interaction.guild.voice_channels)} Voz')
+        embed.add_field(name="Canais",
+                        value=f'{len(interaction.guild.text_channels)} Texto | '
+                              f'{len(interaction.guild.voice_channels)} Voz')
         embed.add_field(name="Criador", value=f'{interaction.guild.owner.mention}')
         embed.add_field(name="Criado em", value=f'{interaction.guild.created_at.strftime("%a, %B %#d, %Y, %I:%M %p ")}')
 
