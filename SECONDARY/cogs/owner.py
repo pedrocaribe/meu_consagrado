@@ -268,6 +268,9 @@ class Owner(commands.Cog):
                 try:
                     ticket = cur.execute("SELECT * FROM tickets WHERE ticket_id = ?", (int(index),)).fetchone()
                     if ticket:
+                        if ticket['status'] == "CLOSED":
+                            await ctx.send(f"**Bug** `{ticket} is already `CLOSED`")
+                            continue
                         cur.execute("UPDATE tickets "
                                     "SET status = ? "
                                     "WHERE ticket_id = ?", ('CLOSED', int(index),))
@@ -275,7 +278,7 @@ class Owner(commands.Cog):
                     raise e
                 else:
                     if not ticket:
-                        await ctx.send(f"**Bug** `{index}` was `not found`.")
+                        await ctx.send(f"**Bug** `{index}` was `not found`")
                     else:
                         user = await self.bot.fetch_user(ticket['user_id'])
                         e = discord.Embed(
