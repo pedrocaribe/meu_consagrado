@@ -44,7 +44,7 @@ ticket_db = db_connect(TICKET_DB)
 # Set up Logging
 logger = logging.getLogger("discord")
 logger.setLevel(logging.DEBUG)
-logging.getLogger('discord.http').setLevel(logging.INFO)
+logging.getLogger('discord.http').setLevel(logging.DEBUG)
 
 handler = logging.handlers.RotatingFileHandler(
     filename="logs/debugs.log",

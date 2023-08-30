@@ -36,8 +36,6 @@ class Owner(commands.Cog):
 
             await ctx.send(embed=embed)
 
-            print(f'{Fore.BLACK + Back.RED}ERROR -> {e}')
-
         # If no error, return success to user
         else:
 
