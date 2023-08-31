@@ -11,35 +11,7 @@ from discord.ui import Button, View
 from utils import *
 
 
-# Define Modal class
-class EnableModal(discord.ui.Modal, title=" Formulário📝"):
-    
-    admin_role = ui.TextInput(
-        label='Nome da Role para Administradores', 
-        placeholder='Admins', 
-        style=discord.TextStyle.short
-    )
-
-    mod_role = ui.TextInput(
-        label='Nome da Role para Moderadores',
-        placeholder='Mods',
-        style=discord.TextStyle.short
-    )
-
-    nsfw_role = ui.TextInput(
-        label='Nome da Role para acesso a conteudo NSFW',
-        placeholder='+18', 
-        style=discord.TextStyle.short
-    )
-
-    async def on_submit(self, interaction: discord.Interaction):
-        db = sqlite3.connect(GUILD_DB)
-        with db:
-            cursor = db.cursor()
-            cursor.execute()
-
-
-# Define class
+# Define cog class
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
