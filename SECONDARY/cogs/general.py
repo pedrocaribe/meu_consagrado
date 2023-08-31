@@ -1,5 +1,11 @@
 # Import main modules
-import discord, random, asyncio, time, difflib, requests, json
+import discord
+import random
+import asyncio
+import time
+import difflib
+import requests
+import json
 
 # Import secondary modules
 from discord import app_commands
@@ -11,17 +17,12 @@ import translators as ts
 # Import variables and standard functions from local file
 from utils import *
 
+
 class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    '''Commands defined in this cog are general purpose commands
-    mostly fun and useful commands for users to enjoy
-    
-    v1.0'''
-
     # TODO: Add meeting command to create a voice channel and invite users specified after command
-
 
     @app_commands.command(name='pesquisa', description='Google Search. Uso: "Termo" qtDeLinks (de 1 a 10)')
     async def pesquisa(self, interaction: discord.Interaction, term: str, am: int):
@@ -33,19 +34,15 @@ class General(commands.Cog):
             await interaction.response.send_message(f'O número máximo de resultados é 15, **{random.choice(FRASE_MEIO)}**, segue abaixo os 15 resultados.')
 
         else:
-
-            # Reply to user informing the next messages will be regarding their search
             await interaction.response.send_message(f'Segue abaixo o que encontrei no Google **{random.choice(FRASE_MEIO)}**')
 
         # Perform search
         results = search(term, num_results=am)
 
-        counter = 0
-        for result in results:
+        for counter, result in enumerate(results):
             if counter == am:
                 break
-            counter += 1
-            await interaction.followup.send(f'**Resultado {counter} de {am}\n\n{result}**')
+            await interaction.followup.send(f'**Resultado {counter + 1} de {am}\n\n{result}**')
 
     @app_commands.command(name='translate', description='Uso: Sua Frase Aqui // LinguaDestino(Opcional - padrão PTBR). Acentuação importa.')
     async def translate(self, interaction: discord.Interaction, *, text:str, lang: str = 'pt'):
