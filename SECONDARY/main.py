@@ -125,6 +125,7 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
 
     Redefinition of on_command_error method to handle errors differently according to
     user owner necessity.
+    In case of reported bugs, create a bug Ticket.
 
     Parameters:
         ctx: commands.Context
