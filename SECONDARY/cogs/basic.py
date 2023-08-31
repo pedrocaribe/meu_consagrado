@@ -2,6 +2,7 @@
 import random
 import math
 import discord
+import sympy
 
 # Import secondary modules
 from discord.ext import commands
@@ -78,10 +79,9 @@ class Basic(commands.Cog):
     @app_commands.command(name="matematica", description="Resolva expressões matemáticas de forma rápida")
     async def math(self, interaction: discord.Interaction, expression: str):
 
-        symbols = ['+', '-', '/', '*', '%']
-
-        if any(s in expression for s in symbols):
-
+        try:
+            # Parse expression
+            parsed_expr = sympy.sympify(expression)
             calculated = eval(expression)
             
             embed = discord.Embed(
