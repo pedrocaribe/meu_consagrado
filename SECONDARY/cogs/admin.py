@@ -16,11 +16,25 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Command to retrieve user information
     @app_commands.guild_only()
     @app_commands.command(name='user_info',
                           description="Verificar informações detalhadas de usuários. Uso: @NomeDoUsuario (opcional)")
     async def status(self, interaction: discord.Interaction, member: discord.Member = None):
+        """A command to retrieve detailed information about a user.
+
+        This command can be used to retrieve detailed information about a specific user,
+        including their ID, username, nickname, status, creation date, and join date in the server.
+        If no member is provided, it defaults to the user who invoked the command.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            member: discord.Member [OPTIONAL]
+                The member for whom to retrieve the information. Defaults to None.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Check if member was provided, if not default to user
         if not member:
