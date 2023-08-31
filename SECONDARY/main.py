@@ -166,7 +166,7 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
             f'Este comando não pode ser utilizado em conversa privada **{random.choice(FRASE_MEIO)}**')
 
     # If issue is not related to private message return to user informing that syntax is incorrect.
-    elif isinstance(er, (commands.BadArgument, commands.CommandNotFound)):
+    elif isinstance(er, (commands.BadArgument, commands.CommandNotFound, commands.MissingRequiredArgument)):
         return await ctx.reply(
             f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
     else:
