@@ -1,11 +1,14 @@
 # Import main modules
-import discord, random, openai, os
-from dotenv import load_dotenv
+import discord
+import random
+import openai
+import os
 
 # Import secondary modules
 from discord.ext import commands
 from discord import app_commands
 from math import floor
+from dotenv import load_dotenv
 
 # Import variables and standard functions from local file
 from utils import *
