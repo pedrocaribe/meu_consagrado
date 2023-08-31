@@ -93,6 +93,8 @@ class Cs50(commands.Cog):
             This function does Not return anything.
         """
 
+        # TODO: Re-do algorithm, use regex maybe? https://www.informit.com/articles/article.aspx?p=1223879&seqNum=12
+
         # Initialize variables
         ccnumber2 = ccnumber // 10
         cc = ccnumber
