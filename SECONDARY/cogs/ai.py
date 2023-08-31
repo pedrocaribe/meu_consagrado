@@ -67,7 +67,7 @@ class ChatGPT(commands.Cog):
         await interaction.followup.send(
             f"**Pergunta:**\n\n"
             f"`{message}`\n\n"
-            f"**Resposta:**"
+            f"**Resposta:**\n"
             f"{bot_response}", ephemeral=False)
 
 
