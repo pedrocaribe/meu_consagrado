@@ -2,6 +2,7 @@ import os
 import sqlite3
 from itertools import cycle
 from discord.ext import commands
+from translators import server
 
 SETTINGS_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(SETTINGS_DIR)
@@ -31,6 +32,11 @@ SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
 
 # MISC
 IGNORE_ERRORS = ()
+MONITOR_ERRORS = (commands.BadArgument,
+                  commands.CommandNotFound,
+                  commands.MissingRequiredArgument,
+                  server.TranslatorError
+                  )
 
 FRASE_MEIO = [
             'meu Magnata',
