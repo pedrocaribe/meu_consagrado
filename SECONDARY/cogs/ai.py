@@ -20,7 +20,6 @@ load_dotenv()
 openai.api_key = CHATGPT_API_TOKEN
 
 
-# Define class
 class ChatGPT(commands.Cog):
     """A Cog for integrating ChatGPT AI functionality into the bot.
 
