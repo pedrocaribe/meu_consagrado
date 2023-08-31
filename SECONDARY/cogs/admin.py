@@ -58,10 +58,21 @@ class Admin(commands.Cog):
         
         return await interaction.response.send_message(embed=embed)
 
-    # Command to retrieve server information
     @app_commands.guild_only()
     @app_commands.command(name='server_info', description='Verificar informações detalhadas do servidor.')
     async def server_info(self, interaction: discord.Interaction):
+        """A command to retrieve detailed information about the server.
+
+        This command provides information about the server, including its name, member count, channel count, owner,
+        creation date, and more.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Create Embed
         embed = discord.Embed(
