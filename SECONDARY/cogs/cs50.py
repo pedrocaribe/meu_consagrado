@@ -40,7 +40,7 @@ class Cs50(commands.Cog):
     async def mario_more(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
-        if bricks < 1 or bricks > 8:
+        if not 1 <= bricks <= 8:
             await interaction.response.send_message(f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
 
         else:
