@@ -8,6 +8,8 @@ from discord.ext import commands
 from discord import app_commands, ui
 from discord.interactions import Interaction
 from discord.ui import Button, View
+
+# Import variables and standard functions from local file
 from utils import *
 
 

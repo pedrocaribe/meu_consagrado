@@ -1,5 +1,6 @@
 # Import main modules
-import discord, random
+import discord
+import random
 
 # Import secondary modules
 from discord import app_commands
