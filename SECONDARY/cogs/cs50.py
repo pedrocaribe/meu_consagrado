@@ -19,39 +19,33 @@ class Cs50(commands.Cog):
     async def mario_less(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
-        # if bricks < 1 or bricks > 8:
         if not 1 <= bricks <= 8:
-            await interaction.response.send_message(f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
-        
-        else:
+            return await interaction.response.send_message(
+                f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
 
-            # Send bricks increasing in one message
-            if bricks == 1:
-                await interaction.response.send_message(f'#')
-            else:
-                text = ''
-                for i in range(bricks):
-                    j = (bricks - i) -1
-                    text += ('...' * j + '#' * (i + 1) + '\n')
-                await interaction.response.send_message(text)
-    
+        # Send bricks increasing in one message
+        text = ''
+        for i in range(bricks):
+            j = (bricks - i) - 1
+            text += ('...' * j + '#' * (i + 1) + '\n')
+        await interaction.response.send_message(text)
+
     # Mario More Function
     @app_commands.command(name='mario-more', description='Projeto criado durante Week 1/pset1 do curso CS50. Uso: QtDeAndares (de 1 a 8)')
     async def mario_more(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
         if not 1 <= bricks <= 8:
-            await interaction.response.send_message(f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
+            return await interaction.response.send_message(
+                f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
 
-        else:
+        # Send bricks increasing in one message
+        text = ''
+        for i in range(bricks):
+            j = (bricks - i) - 1
+            text += (('...' * j) + ('#' * (i + 1)) + ' ' + ('#' * (i + 1)) + '\n')
 
-            # Send bricks increasing in one message
-            text = ''
-            for i in range(bricks):
-                j = (bricks - i) - 1
-                text += (('...' * j) + ('#' * (i + 1)) + ' ' + ('#' * (i + 1)) + '\n')
-            
-            await interaction.response.send_message(text)
+        await interaction.response.send_message(text)
 
     # Credit Card Check Function
     @app_commands.command(name='cccheck', description='Projeto criado durante Week 1/pset1 do curso CS50. Uso: NumeroDoCartao')
