@@ -205,6 +205,19 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
 # When joining a guild, confirm if guild is already set up in DB and send thankful note to owner
 @bot.event
 async def on_guild_join(guild: discord.Guild):
+    """A coroutine triggered when the bot joins a new guild (server).
+
+        This function sends a welcome message to the guild's owner via direct message,
+        providing information about the bot's features, custom functionalities, and available
+        commands. Additionally, it updates or inserts information about the guild into the database.
+
+        Args:
+            guild: discord.Guild
+                The guild (server) the bot has joined.
+
+        Returns:
+            This function does Not return anything.
+        """
 
     owner = await bot.fetch_user(guild.owner.id)
 
