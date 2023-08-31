@@ -74,7 +74,8 @@ class ChatGPT(commands.Cog):
 def chatgpt_response(prompt):
     """Generate a response from the ChatGPT AI model.
 
-    This function sends a prompt to the ChatGPT AI model and retrieves a response.
+    This function sends a prompt to the ChatGPT AI model and retrieves a response. Model utilized is
+    'text-davinci-003', with 'temperature=0.3'
 
     Args:
         prompt: str
