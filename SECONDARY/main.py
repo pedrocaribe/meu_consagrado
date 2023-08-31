@@ -274,6 +274,19 @@ async def on_guild_join(guild: discord.Guild):
 # When removed from guild, send msg to server owner and set slash commands to 'Disabled'.
 @bot.event
 async def on_guild_remove(guild: discord.Guild):
+    """A coroutine triggered when the bot leaves a guild (server).
+
+            This function sends a goodbye message to the guild's owner via direct message,
+            requesting feedback as to why the bot was removed.
+            Additionally, it updates information about the guild in the database.
+
+            Args:
+                guild: discord.Guild
+                    The guild (server) the bot was removed from.
+
+            Returns:
+                This function does Not return anything.
+            """
 
     owner = await bot.fetch_user(guild.owner.id)
     guild_id = guild.id
