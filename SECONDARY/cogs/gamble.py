@@ -67,9 +67,22 @@ class Gamble(commands.Cog):
 
         await interaction.edit_original_response(embed=embed)
 
-    # Greater than or smaller than 6 faced dices
     @app_commands.command(name='dd', description='Role dados de mais ou menos de 6 faces')
     async def dice_dd(self, interaction: discord.Interaction, faces: int):
+        """A command to roll a custom-sided dice.
+
+        This command simulates rolling a dice with a custom number of faces and sends the result.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            faces: int
+                The number of faces on the custom dice.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         await interaction.response.send_message(f'Rolando dado DD de {faces} faces...\n')
 
         embed = discord.Embed(
