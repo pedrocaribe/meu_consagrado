@@ -3,6 +3,7 @@ import discord
 import random
 import openai
 import os
+import re
 
 # Import secondary modules
 from discord.ext import commands
@@ -48,19 +49,15 @@ class ChatGPT(commands.Cog):
 
 def chatgpt_response(prompt):
     
-    response = openai.Completion.create(
-    model = 'text-davinci-003',
-    prompt = prompt,
-    temperature = 0.3,
-    max_tokens = 1000
-    )
+    response = openai.Completion.create(model='text-davinci-003', prompt=prompt, temperature=0.3, max_tokens=1000)
 
     response_dict = response.get('choices')
 
     if response_dict and len(response_dict) > 0:
         prompt_response = response_dict[0]['text']
-        # TODO: If response contains <code> or </code> replace by a `
+        prompt_response = re.sub(r"</?code>", "`", prompt_response)
         return prompt_response
-    
+
+
 async def setup(bot):
     await bot.add_cog(ChatGPT(bot))
