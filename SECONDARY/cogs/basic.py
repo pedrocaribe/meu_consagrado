@@ -22,7 +22,6 @@ class Basic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Ping Pong - Ping command
     @app_commands.command(name='ping', description='Ping, Pong. Verificar ping do BOT')
     async def ping(self, interaction: discord.Interaction):
         """A command to check the bot's ping.
@@ -40,7 +39,6 @@ class Basic(commands.Cog):
         lat = round(self.bot.latency * 1000)
         return await interaction.response.send_message(f'Pong!\n\n`Bot ping {lat} ms`')
 
-    # Ping Pong - Pong command
     @app_commands.command(name='pong', description='Pong, Ping')
     async def pong(self, interaction: discord.Interaction):
         """A command to respond with "Ping!".
@@ -57,7 +55,6 @@ class Basic(commands.Cog):
 
         return await interaction.response.send_message('Ping!')
 
-    # Invite command to generate an invitation link valid for 5 minutes
     @app_commands.command(name='invite', description='Cria convite temporário por tempo pré-determinado')
     @commands.guild_only()
     async def invite(self, interaction: discord.Interaction):
