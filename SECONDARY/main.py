@@ -56,6 +56,8 @@ formatter = logging.Formatter("[%(asctime)s] [%(levelname)-10s] %(name)-22s: %(m
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+# TODO: ADD DOCSTRINGS TO ALL CLASSES
+
 
 # Definition of main function, load all cogs and start bot
 async def main():
