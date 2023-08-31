@@ -67,6 +67,23 @@ async def main():
 # Print load message once ready
 @bot.event
 async def on_ready():
+    """A function triggered when the bot is ready to start receiving events and interact with Discord.
+
+        This function prints information about the bot's readiness and connections, including
+        Discord version, Python version, loaded cogs, bot's login details, and database connections.
+        If any database connection fails, it indicates an error code.
+        It also starts a loop for changing the bot's Rich Presence.
+
+        Note:
+            - The variables like 'bb', 'fg', 'bres', 'fw', etc., are global variables declared for
+                Styling the printed output on error.
+
+        Args:
+            This function takes no arguments.
+
+        Returns:
+            This functions does Not return anything.
+        """
 
     # Create Date/Time prefix for console
     prefix = (bb + fg + time.strftime("%H:%M:%S UTC", time.gmtime()) + bres + fw + sb)
