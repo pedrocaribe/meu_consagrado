@@ -26,6 +26,21 @@ class General(commands.Cog):
 
     @app_commands.command(name='pesquisa', description='Google Search. Uso: "Termo" qtDeLinks (de 1 a 10)')
     async def pesquisa(self, interaction: discord.Interaction, term: str, am: int):
+        """A command to perform a Google search and display search results.
+
+        This command searches Google for the specified term and displays a specified number of search results.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            term: str
+                The search term.
+            am: int
+                The number of search results to display with maximum of 15.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Check if amount of links entered by user is more than 15
         if am > 15:
