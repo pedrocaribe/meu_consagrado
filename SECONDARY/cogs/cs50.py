@@ -3,17 +3,18 @@ import discord
 import random
 
 # Import secondary modules
+from discord.ext import commands
 from discord import app_commands
+
+# Import variables and standard functions from local file
 from utils import *
 
-# Define class
+
 class Cs50(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
-    # Mario Less function
-    @app_commands.command(name="mario-less", description='Projeto criado durante Week 1/pset1 do curso CS50. Uso: QtDeAndares (de 1 a 8)')
+    @app_commands.command(name="mario-less", description='Projeto criado durante Week 1/pset1 do curso CS50')
     async def mario_less(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
