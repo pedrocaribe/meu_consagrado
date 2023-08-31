@@ -8,6 +8,7 @@ from discord import app_commands
 
 # Import variables and standard functions from local file
 from utils import *
+from settings_files import *
 
 
 class Cs50(commands.Cog):
@@ -18,7 +19,8 @@ class Cs50(commands.Cog):
     async def mario_less(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
-        if bricks < 1 or bricks > 8 or bricks == None:
+        # if bricks < 1 or bricks > 8:
+        if not 1 <= bricks <= 8:
             await interaction.response.send_message(f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
         
         else:
@@ -38,7 +40,7 @@ class Cs50(commands.Cog):
     async def mario_more(self, interaction: discord.Interaction, bricks: int):
 
         # Check if user inputted value between 1 and 8
-        if bricks < 1 or bricks > 8 or bricks == None:
+        if bricks < 1 or bricks > 8:
             await interaction.response.send_message(f'Quantidade deve ser entre 1 e 8, **{random.choice(FRASE_MEIO)}**.')
 
         else:
