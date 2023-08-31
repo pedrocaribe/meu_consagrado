@@ -20,6 +20,9 @@ class General(commands.Cog):
     
     v1.0'''
 
+    # TODO: Add meeting command to create a voice channel and invite users specified after command
+
+
     @app_commands.command(name='pesquisa', description='Google Search. Uso: "Termo" qtDeLinks (de 1 a 10)')
     async def pesquisa(self, interaction: discord.Interaction, term: str, am: int):
 
