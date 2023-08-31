@@ -22,6 +22,16 @@ openai.api_key = CHATGPT_API_TOKEN
 
 # Define class
 class ChatGPT(commands.Cog):
+    """A Cog for integrating ChatGPT AI functionality into the bot.
+
+    This Cog provides a command to interact with the ChatGPT model, allowing users to have conversations with the AI.
+    The AI's responses are limited to 1000 characters per message.
+
+    Attributes:
+        bot: discord.ext.commands.Bot
+            The bot instance associated with the cog.
+    """
+
     def __init__(self, bot):
         self.bot = bot
 
