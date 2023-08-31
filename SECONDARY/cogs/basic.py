@@ -82,7 +82,8 @@ class Basic(commands.Cog):
         try:
             # Parse expression
             parsed_expr = sympy.sympify(expression)
-            calculated = eval(expression)
+            # Evaluate parsed expression (replaced eval)
+            calculated = parsed_expr.evalf()
             
             embed = discord.Embed(
                 title='Expressão Matemática', 
@@ -93,7 +94,7 @@ class Basic(commands.Cog):
 
             await interaction.response.send_message(embed=embed)
 
-        else:
+        except (sympy.SympifyError, ValueError):
             await interaction.response.send_message("Isto não é um problema matemático. Tente novamente.")
 
 
