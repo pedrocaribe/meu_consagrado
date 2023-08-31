@@ -110,13 +110,13 @@ class Cs50(commands.Cog):
         if cc_digits == 13:
             vendor = "VISA"
             loopCounter = 7
-        elif cc_digits == 16 and (ccnumber > 4000000000000000 and ccnumber < 5000000000000000):
+        elif cc_digits == 16 and (4e15 < ccnumber < 5e15):
             vendor = "VISA"
             loopCounter = 8
-        elif cc_digits == 16 and (ccnumber > 5100000000000000 and ccnumber < 5600000000000000):
+        elif cc_digits == 16 and (51e14 < ccnumber < 56e14):
             vendor = "MASTERCARD"
             loopCounter = 8
-        elif cc_digits == 15 and ((ccnumber > 340000000000000 and ccnumber < 350000000000000) or (ccnumber > 370000000000000 and ccnumber < 380000000000000)):
+        elif cc_digits == 15 and ((34e13 < ccnumber < 35e13) or (37e13 < ccnumber < 38e13)):
             vendor = "AMEX"
             loopCounter = 7
         else:
