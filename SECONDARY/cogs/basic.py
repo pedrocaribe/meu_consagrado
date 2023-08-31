@@ -78,6 +78,20 @@ class Basic(commands.Cog):
 
     @app_commands.command(name="matematica", description="Resolva expressões matemáticas de forma rápida")
     async def math(self, interaction: discord.Interaction, expression: str):
+        """A command to solve mathematical expressions quickly.
+
+        This command takes a mathematical expression as input and attempts to solve it using the sympy
+        library. It then sends a message with the original expression and its calculated result.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            expression: str
+                The mathematical expression to be solved.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         try:
             # Parse expression
@@ -94,7 +108,7 @@ class Basic(commands.Cog):
 
             await interaction.response.send_message(embed=embed)
 
-        except (sympy.SympifyError, ValueError):
+        except (sympy.SympifyError, ValueError, TypeError):
             await interaction.response.send_message("Isto não é um problema matemático. Tente novamente.")
 
 
