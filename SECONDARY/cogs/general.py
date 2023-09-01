@@ -117,12 +117,11 @@ class General(commands.Cog):
     @app_commands.command(name='avatar', description='Nome de usuário opcional.')
     async def avatar(self, interaction: discord.Interaction, member: discord.Member = None):
         
-        # If user did not specify another user to treieve the avatar from, retrieve his own avatar
-        if member == None:
-            member = interaction.user
+        # If user did not specify another user to retrieve the avatar from, retrieve his own avatar
+        member = interaction.user if not member else member
 
         # If requested user does not have an avatar
-        if member.avatar.url == None:
+        if not member.avatar:
             return await interaction.response.send_message(f'Esse usuário não tem um avatar.')
         
         url = member.avatar.url
@@ -143,7 +142,6 @@ class General(commands.Cog):
         embed.set_footer(text=f'Solicitado por {interaction.user.name}')
 
         return await interaction.response.send_message(embed=embed)
-    
 
     @app_commands.command(name='timer', description='Tempo em minutos. Ex.: 120 Lembrar de boostar o servidor!')
     async def timer(self, interaction: discord.Interaction, minutes: int, *, reason: str = None):
