@@ -219,56 +219,15 @@ class General(commands.Cog):
         # Mention member
         await interaction. response.send_message(f'{member.mention}, {insult}')
 
-        
     @app_commands.command(name='motivacional', description='Frase motivacional para boostar o ânimo!')
-    async def timer(self, interaction: discord.Interaction):
+    async def complimentr(self, interaction: discord.Interaction):
 
-        # TODO: Add timer tracker by user in order user wants to cancel the timer
         compliment = requests.get('https://complimentr.com/api').text
         compliment = json.loads(compliment)
 
         trans = ts.translate_text(translator='bing', query_text=compliment['compliment'], to_language='pt')
         await interaction.response.send_message(trans.capitalize())
 
-    # @app_commands.command(name='pomodoro', description='Sistema pomodoro de estudos')
-    # async def pomodoro(self, interaction: discord.Interaction, total: int, study: int, pause: int):
-
-    #     if study > total or pause > total:
-    #         return await interaction.response.send_message(f'Tempo inválido. Maior que o tempo total de estudo.')
-
-    #     try:
-    #         db = sqlite3.connect(STUDY_DB)
-    #     except Exception as e:
-    #         raise SystemError
-        
-    #     with db:
-    #         cursor = db.cursor()
-
-    #         validate = cursor.execute("SELECT * FROM study WHERE user_id = ? AND study = ?", (interaction.user.id, True))
-
-    #         if validate:
-    #             return await interaction.response.send_message(f'Você já está num estudo programado, **{random.choice(FRASE_MEIO)}**, pra configurar um novo estudo, execute o comando /pomodoro com a opção stop!')
-            
-
-    #     embed = discord.Embed(
-    #         title=f'__MÉTODO POMODORO DE ESTUDOS__ - {datetime.now().strftime("%d/%m - %H:%M")} - TOTAL **__{total} MINUTOS__**',
-    #         description=''
-    #     )
-    #     embed.set_footer(
-    #         text = '\nO método Pomodoro é uma técnica de produtividade que envolve períodos de trabalho focado seguidos por pausas curtas e regulares.'
-    #         )
-    #     embed.add_field(
-    #         name = f'Intervalo de estudo: `{study} min`', 
-    #         value = '---'
-    #         )
-    #     embed.add_field(
-    #         name = f'Intervalo de pausa: `{pause} min`', 
-    #         value = '---'
-    #         )
-
-    #     # Create task
-    #     coro = asyncio.sleep()
-    #     task = await asyncio.create_task(name=interaction.user.name)
 
 async def setup(bot):
     await bot.add_cog(General(bot))
