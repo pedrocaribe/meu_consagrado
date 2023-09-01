@@ -197,9 +197,21 @@ class General(commands.Cog):
         # Send response to user
         await interaction.followup.send(new_resp)
 
-
     @app_commands.command(name='insulto', description='Ofenda a mãe dos seus colegas')
     async def insult(self, interaction: discord.Interaction, member: discord.Member):
+        """A command to send a playful insult to a user.
+
+        This command generates a playful insult and sends it to the specified user, mentioning their username.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            member: discord.Member
+                The user to whom the insult will be sent.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Call external method to collect random insult from local file
         insult = await get_jokes()
