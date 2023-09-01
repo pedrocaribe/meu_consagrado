@@ -12,6 +12,7 @@ from discord import app_commands
 # Import variables and standard functions from local file
 from settings import REDDIT_APP_ID, REDDIT_APP_SECRET, REDDIT_SAFE_MEME_SUBREDDITS
 
+
 # Define class
 class Images(commands.Cog):
     def __init__(self, bot):
