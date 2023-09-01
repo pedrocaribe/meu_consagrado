@@ -63,6 +63,23 @@ class Mod(commands.Cog):
                                        "Uso: !ban @usuario motivo")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx: commands.Context, user: discord.Member, *, reason: str):
+        """A command to ban a user from the server.
+
+        This command allows administrators to ban a user from the server. It sends a message to
+        the banned user with the reason for the ban and then performs the ban.
+
+        Args:
+            ctx: commands.Context
+                The context object representing the command invocation.
+            user: discord.Member
+                The user to ban.
+            reason: str
+                The reason for the ban.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         e_user = discord.Embed(
             title="Você foi banido!",
             description=f"Você foi banido do servidor **{ctx.guild.name}**",
