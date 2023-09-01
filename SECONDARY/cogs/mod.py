@@ -11,11 +11,17 @@ class Mod(commands.Cog):
         self.bot = bot
 
     # Delete specified number of messages from current channel
-    @commands.command(name='clear', help='Comando habilitado apenas para Admins!\n\nUso: %clear numDeMsgs (entre 1 e 100)\n\nO comando deve ser executado dentro do canal que deseja limpar\n\nComando habilitado apenas para Admins!')
+    @commands.command(name='clear', help='Comando habilitado apenas para Admins!\n\n'
+                                         'Uso: %clear numDeMsgs (entre 1 e 100)\n\n'
+                                         'O comando deve ser executado dentro do canal que deseja limpar\n\n'
+                                         'Comando habilitado apenas para Admins!')
     @commands.has_permissions(manage_messages=True)
-    async def clear(self, ctx, amt: int):
+    async def clear(self, ctx: commands.Context, amt: int):
 
-        await ctx.channel.purge(limit=amt)
+        if not 1 <= amt <= 100:
+            return await ctx.send("A quantidade deve ser entre 1 e 100")
+
+        await ctx.channel.purge(limit=amt + 1)  # + 1 due to the message sent requesting the purge
 
         embed = discord.Embed(
             title=f'{amt} Mensagens apagadas',
