@@ -1,5 +1,9 @@
 # Import main modules
-import random, discord, aiohttp, praw, asyncpraw
+import random
+import discord
+import aiohttp
+import praw
+import asyncpraw
 
 # Import secondary modules
 from discord.ext import commands
