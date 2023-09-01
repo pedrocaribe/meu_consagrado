@@ -159,12 +159,28 @@ class General(commands.Cog):
 
     @app_commands.command(name='timer', description='Tempo em minutos. Ex.: 120 Lembrar de boostar o servidor!')
     async def timer(self, interaction: discord.Interaction, minutes: int, *, reason: str = None):
+        """A command to set a timer for a specified number of minutes.
+
+        This command sets a timer for the specified number of minutes and sends a reminder to the user after
+        the timer expires. An optional reason can be provided for the timer.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            minutes: int
+                The duration of the timer in minutes.
+            reason: str [OPTIONAL]
+                The reason for setting the timer. Defaults to None.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Standard response
-        resp = (f'Ok, **{random.choice(FRASE_MEIO)}**, vou te lembrar em {minutes} minutos')
+        resp = f'Ok, **{random.choice(FRASE_MEIO)}**, vou te lembrar em {minutes} minutos'
 
         # If a reason was given, append to response
-        if reason != None:
+        if reason:
             resp += f'de "__{reason}__".'
         await interaction.response.send_message(resp)
 
@@ -175,7 +191,7 @@ class General(commands.Cog):
         new_resp = f'{interaction.user.mention} Apenas para te lembrar que o timer finalizou, **{random.choice(FRASE_MEIO)}**\n**Tempo decorrido**: {minutes} minutos.'
 
         # If a reason was given, append to response
-        if reason != None:
+        if reason:
             new_resp += f'\n**Descrição**: "{reason}".'
 
         # Send response to user
