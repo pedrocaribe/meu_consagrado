@@ -59,20 +59,27 @@ class General(commands.Cog):
                 break
             await interaction.followup.send(f'**Resultado {counter + 1} de {am}\n\n{result}**')
 
-    @app_commands.command(name='translate', description='Uso: Sua Frase Aqui // LinguaDestino(Opcional - padrão PTBR). Acentuação importa.')
-    async def translate(self, interaction: discord.Interaction, *, text:str, lang: str = 'pt'):
+    @app_commands.command(name='translate',
+                          description='Uso: LinguaDestino(Opcional - padrão PTBR). Acentuação importa.')
+    async def translate(self, interaction: discord.Interaction, *, text: str, lang: str = 'pt'):
 
         # Usage of translator api to translate portions of text to desired language
 
         embed = discord.Embed(
-            title=f'Tradução:', description='', colour=discord.Color.purple()
-            )
+            title=f'Tradução:',
+            description='',
+            colour=discord.Color.purple())
+
         async with interaction.channel.typing():
-            transText = ts.translate_text(
-                translator='google', 
-                query_text=text, 
-                to_language=lang
+            try:
+                trans_text = ts.translate_text(
+                    translator='google',
+                    query_text=text,
+                    to_language=lang
                 )
+            except (commands.CommandInvokeError, ts.server.TranslatorError):
+                await interaction.response.send_message(f"A lingua `{lang}` não existe, "
+                                                        f"**{random.choice(FRASE_MEIO)}**. Vamos tentar novamente?")
 
         embed.add_field(
             name='Frase Original:', 
@@ -81,12 +88,12 @@ class General(commands.Cog):
             )
         embed.add_field(
             name='Frase Traduzida:', 
-            value=transText, 
+            value=trans_text,
             inline=False
             )
         embed.add_field(
             name='Lingua Destino:', 
-            value=lang.upper(), 
+            value=f"{lang.upper()} : {LANGUAGES[lang]}",
             inline=False
             )
         
