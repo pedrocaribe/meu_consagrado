@@ -91,7 +91,6 @@ class Images(commands.Cog):
         else:
             return await interaction.response.send_message("Erro no comando, contate um Admin")
 
-    # Command to retrieve random cat image
     @app_commands.command(name='gato', description='Imagem aleatória de um gato')
     async def cat(self, interaction: discord.Interaction):
         """A command to retrieve a random cat image.
@@ -121,7 +120,6 @@ class Images(commands.Cog):
 
                 await interaction.response.send_message(embed=embed)
 
-    # Command to retrieve random dog image
     @app_commands.command(name='cachorro', description='Imagem aleatória de um cachorro')
     async def dog(self, interaction: discord.Interaction):
         """A command to retrieve a random dog image.
