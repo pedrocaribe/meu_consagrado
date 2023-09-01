@@ -169,6 +169,7 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     elif isinstance(er, MONITOR_ERRORS):
         return await ctx.reply(
             f'Tem um erro na sua sintaxe **{random.choice(FRASE_MEIO)}**, da uma conferida por favor.')
+
     else:
         # Open bug report, inform owner and user.
         owner_user = await bot.fetch_user(bot.owner_id)
