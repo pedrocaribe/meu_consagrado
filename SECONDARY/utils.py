@@ -4,6 +4,8 @@ import os
 import random
 import discord
 import dill
+import requests
+import translators as ts
 
 # Import secondary modules
 from settings import *
@@ -137,3 +139,23 @@ class Ticket:
                  "OPEN")
                 )
             self.db.commit()
+
+
+async def motivate():
+    """Motivate phrase
+
+    Function used to retrieve a motivational phrase to be placed at the
+    footer of the application.
+    Functions uses complimentr public API.
+
+    Parameters:
+        This functions does Not take any parameters.
+
+    Returns:
+        This function returns a text string, capitalized.
+    """
+
+    url = "https://complimentr.com/api"
+    compliment = json.loads(requests.get(url).text)['compliment'].capitalize()
+    trans = ts.translate_text(translator='bing', query_text=compliment, to_language='pt')
+    return trans
