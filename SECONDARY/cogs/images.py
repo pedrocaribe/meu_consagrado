@@ -91,10 +91,21 @@ class Images(commands.Cog):
         else:
             return await interaction.response.send_message("Erro no comando, contate um Admin")
 
-
     # Command to retrieve random cat image
     @app_commands.command(name='gato', description='Imagem aleatória de um gato')
     async def cat(self, interaction: discord.Interaction):
+        """A command to retrieve a random cat image.
+
+        This command makes an API request to get a random cat image and sends it as a message with
+        a footer link.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # API Request
         async with aiohttp.ClientSession() as cs:
@@ -110,10 +121,21 @@ class Images(commands.Cog):
 
                 await interaction.response.send_message(embed=embed)
 
-
     # Command to retrieve random dog image
     @app_commands.command(name='cachorro', description='Imagem aleatória de um cachorro')
     async def dog(self, interaction: discord.Interaction):
+        """A command to retrieve a random dog image.
+
+        This command makes an API request to get a random dog image and sends it as a message with
+        a footer link.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # API Request
         async with aiohttp.ClientSession() as cs:
