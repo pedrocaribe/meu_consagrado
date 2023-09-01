@@ -221,12 +221,19 @@ class General(commands.Cog):
 
     @app_commands.command(name='motivacional', description='Frase motivacional para boostar o ânimo!')
     async def complimentr(self, interaction: discord.Interaction):
+        """A command to send a motivational phrase to boost morale.
 
-        compliment = requests.get('https://complimentr.com/api').text
-        compliment = json.loads(compliment)
+        This command retrieves a motivational phrase using the 'motivate' function and sends it as a message.
 
-        trans = ts.translate_text(translator='bing', query_text=compliment['compliment'], to_language='pt')
-        await interaction.response.send_message(trans.capitalize())
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+
+        Returns:
+            This function does Not return anything.
+        """
+
+        return await interaction.response.send_message(await motivate())
 
 
 async def setup(bot):
