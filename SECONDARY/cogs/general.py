@@ -116,7 +116,21 @@ class General(commands.Cog):
 
     @app_commands.command(name='avatar', description='Nome de usuário opcional.')
     async def avatar(self, interaction: discord.Interaction, member: discord.Member = None):
-        
+        """A command to display the avatar of a user.
+
+        This command retrieves and displays the avatar of the specified user. If no user is provided,
+        it displays the avatar of the user who invoked the command.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            member: discord.Member [OPTIONAL]
+                The user whose avatar needs to be displayed. Defaults to None.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         # If user did not specify another user to retrieve the avatar from, retrieve his own avatar
         member = interaction.user if not member else member
 
