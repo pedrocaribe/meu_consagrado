@@ -62,8 +62,22 @@ class General(commands.Cog):
     @app_commands.command(name='translate',
                           description='Uso: LinguaDestino(Opcional - padrão PTBR). Acentuação importa.')
     async def translate(self, interaction: discord.Interaction, *, text: str, lang: str = 'pt'):
+        """A command to translate text to the specified language.
 
-        # Usage of translator api to translate portions of text to desired language
+        This command translates the provided text to the desired language using the translators API.
+        The translator engine used is 'google'.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            text: str
+                The text to be translated.
+            lang: str [OPTIONAL]
+                The destination language for translation. Defaults to 'pt'.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         embed = discord.Embed(
             title=f'Tradução:',
