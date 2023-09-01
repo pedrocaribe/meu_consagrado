@@ -21,13 +21,24 @@ class Images(commands.Cog):
         if REDDIT_APP_SECRET and REDDIT_APP_ID:
             self.reddit = asyncpraw.Reddit(client_id=REDDIT_APP_ID, client_secret=REDDIT_APP_SECRET, user_agent=f'DISCORD_BOT:{REDDIT_APP_ID}:1.0')
 
-        '''Commands defined in this cog are for the entertainment and use with images.
-
-        images v1.00'''
-
-    # Command to retrieve images/gifs from reddit
     @app_commands.command(name='reddit', description='Busca imagens do Reddit')
     async def reddit(self, interaction: discord.Interaction, *, subreddit: str = ""):
+        """A command to search for images on Reddit.
+
+        This command searches for images on Reddit from a specified subreddit. If no subreddit is specified,
+        it defaults to safe subreddits or 'funny' subreddit.
+        If the command is run in an NSFW channel, any subreddit is allowed and an image will be returned to
+        user without restrictions.
+
+        Args:
+            interaction: discord.Interaction
+                The interaction object representing the command invocation.
+            subreddit: str [OPTIONAL]
+                The subreddit to search for images. Defaults to an empty string.
+
+        Returns:
+            This function does Not return anything.
+        """
 
         # Check if reddit ID and SECRET are functional
         if self.reddit:
@@ -49,7 +60,6 @@ class Images(commands.Cog):
                 to_send = random.choice([submission async for submission in pool])
                 return await interaction.response.send_message(to_send.url)
 
-
             # If command was not ran from +18 channel, consider only list of safe subreddits, and default to 'funny'.
             chosen_subreddit = REDDIT_SAFE_MEME_SUBREDDITS[0]
 
@@ -60,7 +70,10 @@ class Images(commands.Cog):
 
                 # If specified subreddit is not present, return instructions to user.
                 else:
-                    return await interaction.response.send_message(f"Por favor selecione um subreddit da lista a seguir: **{', '.join(REDDIT_SAFE_MEME_SUBREDDITS)}**.\nPara subreddits 🔞, solicite acesso à area para um Admin.")
+                    return await interaction.response.send_message(
+                        f"Por favor selecione um subreddit da lista a seguir: "
+                        f"**{', '.join(REDDIT_SAFE_MEME_SUBREDDITS)}**.\n"
+                        f"Para subreddits 🔞, solicite acesso à area para um Admin.")
             
             # Retrieve pool of submissions
             submissions = await self.reddit.subreddit(chosen_subreddit)
