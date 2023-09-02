@@ -157,6 +157,21 @@ class Mod(commands.Cog):
     @commands.command(name="banlist", help="Comando habilitado para MODs e Admins! Uso: !banlist")
     @commands.has_permissions(ban_members=True)
     async def banlist(self, ctx: commands.Context, *, member: str = None):
+        """A command to list banned users on the server or retrieve information about a specific banned user.
+
+            This command allows moderators and administrators to list banned users on the server.
+            If a specific member is mentioned, it provides information about the ban for that member.
+
+            Args:
+                ctx: commands.Context
+                    The context object representing the command invocation.
+                member: str [OPTIONAL]
+                    The username and discriminator (in the format "username#discriminator") of the banned
+                        user to retrieve information about.
+
+            Returns:
+                This function does Not return anything.
+            """
 
         bans = [entry async for entry in ctx.guild.bans(limit=15)]
 
