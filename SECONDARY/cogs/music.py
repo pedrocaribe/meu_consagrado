@@ -119,7 +119,7 @@ class Player(commands.Cog):
 
         async def playlist_(self, interaction: discord.Interaction, pl: str):
 
-            # Parse playlist and extract url for each videos in playlist
+            # Parse playlist and extract url for each video in playlist
             pl_p = Playlist.getVideos(pl)
 
             # Variables
