@@ -183,10 +183,9 @@ class Player(commands.Cog):
                 except:
                     pass
                 return await interaction.response.send_message(
-                    f"Mas eu não estou nem tocando, **{random.choice(FRASE_MEIO)}**..."
-                )
+                    f"Mas eu não estou nem tocando, **{random.choice(FRASE_MEIO)}**...")
 
-        async def ads_(self, interaction):
+        async def ads_(self, interaction: discord.Interaction):
             linkedin = Button(
                 label="LinkedIn",
                 style=discord.ButtonStyle.green,
@@ -217,12 +216,36 @@ class Player(commands.Cog):
         async def skip_(self):
             ...
 
-        async def queue_(self):
-            ...
+        async def queue_(self, interaction: discord.Interaction):
+            # If no songs in queue and not currently playing
+            if len(self.song_queue) == 0 and not self.isPlaying:
+                return await interaction.response.send_message(
+                    f"Não tem nenhuma música na lista, **{random.choice(FRASE_MEIO)}**")
+            # If playing song and no other songs in queue
+            elif len(self.song_queue) == 0 and self.isPlaying:
+                await interaction.response.send_message(f"Só tem a música que está tocando, na lista. Dá uma olhadinha")
+                return await self.now_(interaction)
+
+            e = discord.Embed(
+                title=":notes: Lista de músicas do momento:",
+                description="",
+                colour=discord.Color.dark_gold())
+
+            for i, music in enumerate(self.song_queue):
+                actual = await self.music_info_(music)
+                title = actual[0]
+
+                # Check if embed fits next song
+                if len(str(e)) < 5800 and len(e.description) < 4000:
+                    e.description += f"{i + 1}) {title}\n"
+                else:
+                    e.description += f"{i + 1}) [...]\n"
+                    break
+            e.set_footer(text=f"\nProntinho, **{random.choice(FRASE_MEIO)}**. Da uma olhada na lista.")
+            return await interaction.response.send_message(embed=e)
 
         async def search_(self):
             ...
-
 
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
@@ -248,10 +271,8 @@ class Player(commands.Cog):
     async def stop(self, interaction: discord.Interaction):
         guild_id = interaction.guild_id
         player = self.playing_guilds[guild_id]
-        try:
-            await player.stop_leave_(interaction)
-        except Exception as e:
-            print(e)
+        await player.stop_leave_(interaction)
+
 
 async def setup(bot):
     await bot.add_cog(Player(bot))
