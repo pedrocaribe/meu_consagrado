@@ -14,6 +14,7 @@ from youtube_dl import YoutubeDL
 from youtubesearchpython import *
 from urllib.request import urlopen
 from spotipy.oauth2 import SpotifyClientCredentials
+from discord.ui import Button, View
 
 # Import variables and standard functions from local file
 from utils import *
@@ -146,30 +147,66 @@ class Player(commands.Cog):
             secret = SPOTIFY_SECRET
 
             # Set IDs for usage with API
-            client_credentials_manager = SpotifyClientCredentials(client_id=cid,client_secret=secret)
-            sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+            client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
+            sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
             # Extract URI from url provided
             playlist_URI = url.split("/")[-1].split("?")[0]
-            track_uris = [x["track"]["uri"] for x in sp.playlist_tracks(playlist_URI)["items"]]
+            track_uris = [x["track"] for x in sp.playlist_tracks(playlist_URI)["items"]]
 
             # List to be returned after parsign data
             data = []
 
             # Extract Song and Artist name for each track
-            for track in sp.playlist_tracks(playlist_URI)["items"]:
-
-                # Name
-                track_name = track["track"]["name"]
-
-                # Artist Name
-                artist_uri = track["track"]["artists"][0]["name"]
+            for track in track_uris:
+                track_name = track["name"]  # Name
+                artist_uri = track["artists"][0]["name"]  # Artist Name
 
                 # Add to data list combining both information and adding - in between them
                 data += [track_name + ' - ' + artist_uri]
 
             # Return data to caller
             return data
+
+        async def stop_leave_(self, interaction: discord.Interaction):
+            if self.vc:
+                self.vc.stop()
+                self.isPlaying = False
+                await self.vc.disconnect()
+                self.vc = None
+                self.song_queue.clear()
+                return await self.ads_(interaction)
+            else:
+                try:
+                    await self.vc.disconnect()
+                    return await self.ads_(interaction)
+                except:
+                    pass
+                return await interaction.response.send_message(
+                    f"Mas eu não estou nem tocando, **{random.choice(FRASE_MEIO)}**..."
+                )
+
+        async def ads_(self, interaction):
+            linkedin = Button(
+                label="LinkedIn",
+                style=discord.ButtonStyle.green,
+                url="https://www.linkedin.com/in/pedro-caribe/")
+            github = Button(
+                label="GitHub",
+                style=discord.ButtonStyle.green,
+                url="https://github.com/pedrocaribe")
+
+            view = View()
+            view.add_item(linkedin)
+            view.add_item(github)
+            e = discord.Embed(
+                title="**Desconectado**",
+                description="Curtiu o bot? Manda uma alô pro criador:\n\nAté a próxima!",
+                colour=discord.Color.green())
+
+            thumb, e = await icon("profile", e)
+            return await interaction.response.send_message(embed=e, file=thumb, view=view)
+
 
         async def pause_(self):
             ...
@@ -187,7 +224,7 @@ class Player(commands.Cog):
             ...
 
 
-    @app_commands.command(name='play', description='Play music')
+    @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
         guild_id = interaction.guild_id
 
@@ -204,9 +241,17 @@ class Player(commands.Cog):
         # Else, if there isn't a queue, and user didn't provide URL
         if url is None: return await interaction.response.send_message(f'Tem que colocar uma música aí né, **{random.choice(FRASE_MEIO)}**!')
 
-        joinChannel = await player.join_(interaction)
-        if joinChannel != 0: return
+        join_channel = await player.join_(interaction)
+        if join_channel != 0: return
 
+    @app_commands.command(name="stop", description="Parar musicas e desconectar do canal de voz")
+    async def stop(self, interaction: discord.Interaction):
+        guild_id = interaction.guild_id
+        player = self.playing_guilds[guild_id]
+        try:
+            await player.stop_leave_(interaction)
+        except Exception as e:
+            print(e)
 
 async def setup(bot):
     await bot.add_cog(Player(bot))
