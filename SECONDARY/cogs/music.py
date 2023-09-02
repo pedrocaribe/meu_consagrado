@@ -18,7 +18,7 @@ from utils import *
 class Player(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.playing_guilds = {} # dict of Play objects representing guilds playing -> guild_id : object
+        self.playing_guilds = {}  # dict of Play objects representing guilds playing -> guild_id : object
 
     class Play:
             def __init__(self, interaction: discord.Interaction, bot):
