@@ -59,8 +59,7 @@ class Mod(commands.Cog):
 
         await msg.delete(delay=5)
 
-    @commands.command(name="ban", help="Comando habilitado apenas para Admins!\n\n"
-                                       "Uso: !ban @usuario motivo")
+    @commands.command(name="ban", help="Comando habilitado apenas para Admins! Uso: !ban @usuario motivo")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx: commands.Context, user: discord.Member, *, reason: str):
         """A command to ban a user from the server.
@@ -103,8 +102,7 @@ class Mod(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
 
-    @commands.command(name="unban", help="Comando habilitado apenas para Admins!\n\n"
-                                         "Uso: !unban @usuario#id")
+    @commands.command(name="unban", help="Comando habilitado apenas para Admins! Uso: !unban usuario#id")
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx: commands.Context, *, member: str):
         """A command to unban a previously banned user from the server.
@@ -154,7 +152,7 @@ class Mod(commands.Cog):
         )
         return await ctx.send(embed=e_ret)
 
-    @commands.command(name="banlist", help="Comando habilitado para MODs e Admins! Uso: !banlist")
+    @commands.command(name="banlist", help="Comando habilitado apenas para Admins! Uso: !banlist usuario#id (opcional)")
     @commands.has_permissions(ban_members=True)
     async def banlist(self, ctx: commands.Context, *, member: str = None):
         """A command to list banned users on the server or retrieve information about a specific banned user.
@@ -197,8 +195,42 @@ class Mod(commands.Cog):
         else:
             for entry in entries:
                 e.add_field(name="", value=f"{entry['name']}#{entry['discriminator']} /// {entry['reason']}")
+                await ctx.reply(embed=e)
 
-        return await ctx.reply(embed=e)
+        # Add reaction
+        return await ctx.message.add_reaction("✅")
+
+    @commands.command(name="kick", help="Comando habilitado para MODs e Admins! Uso: !kick @membro")
+    @commands.has_permissions(kick_members=True)
+    async def kick(self, ctx: commands.Context, members: commands.Greedy[discord.Member]):
+        """A command to kick one or more members from the server.
+
+            This command allows moderators and administrators to kick one or more members from the server.
+            It accepts one or more mentions of the members to be kicked.
+
+            Args:
+                ctx: commands.Context
+                    The context object representing the command invocation.
+                members: List[discord.Member]
+                    A list of member objects to be kicked from the server.
+
+            Returns:
+                This function does Not return anything.
+            """
+
+        e = discord.Embed(
+            title="Usuários Kickados!",
+            description="Os seguintes usuários foram kickados:",
+            colour=discord.Color.teal()
+        )
+        for member in members:
+            e.add_field(name="", value=member.name, inline=False)
+            await member.kick()
+
+        await ctx.reply(embed=e)
+
+        # Add reaction
+        return await ctx.message.add_reaction("✅")
 
 
 async def setup(bot):
