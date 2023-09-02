@@ -154,6 +154,37 @@ class Mod(commands.Cog):
         )
         return await ctx.send(embed=e_ret)
 
+    @commands.command(name="banlist", help="Comando habilitado para MODs e Admins! Uso: !banlist")
+    @commands.has_permissions(ban_members=True)
+    async def banlist(self, ctx: commands.Context, *, member: str = None):
+
+        bans = [entry async for entry in ctx.guild.bans(limit=15)]
+
+        if not bans:
+            return await ctx.reply("Sem usuários banidos no momento.")
+
+        entries = [{
+            "name": ban_entry.user.name,
+            "reason": ban_entry.reason,
+            "discriminator": ban_entry.user.discriminator} for ban_entry in bans]
+
+        e = discord.Embed(
+            title="Usuários Banidos",
+            description="**Usuário /// Motivo**",
+            colour=discord.Color.red())
+
+        if member:
+            for entry in entries:
+                if member == f"{entry['name']}#{entry['discriminator']}":
+                    e.add_field(name="", value=f"{member} /// {entry['reason']}")
+                    return await ctx.reply(embed=e)
+
+        else:
+            for entry in entries:
+                e.add_field(name="", value=f"{entry['name']}#{entry['discriminator']} /// {entry['reason']}")
+
+        return await ctx.reply(embed=e)
+
 
 async def setup(bot):
     await bot.add_cog(Mod(bot))
