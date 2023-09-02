@@ -103,6 +103,57 @@ class Mod(commands.Cog):
         # Add reaction
         return await ctx.message.add_reaction("✅")
 
+    @commands.command(name="unban", help="Comando habilitado apenas para Admins!\n\n"
+                                         "Uso: !unban @usuario#id")
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx: commands.Context, *, member: str):
+        """A command to unban a previously banned user from the server.
+
+        This command allows administrators to unban a user from the server. It takes the username
+        and discriminator or just the username to fit new Discord username pattern and looks for
+        the banned user to unban.
+
+        Args:
+            ctx: commands.Context
+                The context object representing the command invocation.
+            member: str
+                The username and discriminator (in the format "username#discriminator") of the
+                    banned user.
+
+        Returns:
+            This function does Not return anything.
+        """
+
+        banned_users = ctx.guild.bans()
+        member_name = member_discriminator = str()
+
+        if "#" in member:
+            member_name, member_discriminator = member.split("#")
+        else:
+            member_name = member
+
+        async for ban_entry in banned_users:
+            user = ban_entry.user
+
+            if (user.name, user.discriminator) == (member_name, member_discriminator):
+                await ctx.guild.unban(user)
+
+                e = discord.Embed(
+                    description=f":white_check_mark: ***{user.name}#{user.discriminator} "
+                                f"foi desbanido.*** :white_check_mark:",
+                    colour=discord.Color.green()
+                )
+                await ctx.send(embed=e)
+
+                # Add reaction
+                return await ctx.message.add_reaction("✅")
+
+        e_ret = discord.Embed(
+            description="**Usuário não encontrado!**",
+            colour=discord.Color.orange()
+        )
+        return await ctx.send(embed=e_ret)
+
 
 async def setup(bot):
     await bot.add_cog(Mod(bot))
