@@ -1,4 +1,9 @@
 # Ignore all env files
 *.env
 *.env.*
+
+# Ignore all db files
 *.db
+
+# Ignore pycache folders
+__pycache__/
