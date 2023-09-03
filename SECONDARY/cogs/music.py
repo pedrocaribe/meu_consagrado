@@ -78,10 +78,10 @@ class Player(commands.Cog):
                     return True
 
         async def play_(self, interaction: discord.Interaction, song: str):
-            self.isPlaying = True
             try:
                 url = pafy.new(song).getbestaudio().url
-                self.song_queue.pop(0)
+                if len(self.song_queue) > 1:
+                    self.song_queue.pop(0)
             except Exception as e:
                 print(e)
                 self.vc.stop()  # This is due to YouTube error for when a video is rated for over 18 audience
@@ -102,12 +102,11 @@ class Player(commands.Cog):
             if len(self.song_queue) > 0:
                 self.current = queue[0]
                 await self.play_(interaction, queue[0])
-                self.isPlaying = True
                 await self.now_(interaction)
 
             # If no song in queue
             else:
-                self.isPlaying = False
+                self.vc.stop()
 
         async def now_(self, interaction: discord.Interaction):
 
@@ -356,10 +355,8 @@ class Player(commands.Cog):
 
                             await interaction.followup.send(f"Adicionei {counter} músicas na playlist!")
                             if player.vc.is_playing():
-                                print("got into is_playing")
                                 return
                             else:
-                                print("got into else after is_playing")
                                 await interaction.followup.send(f"Tocando: {queue[0]}")
                                 await player.play_(interaction, queue[0])
 
@@ -384,7 +381,6 @@ class Player(commands.Cog):
                                 f"Música adicionada à lista na posição **{q_len + 1}**. Essa é braba!"
                             )
                         else:
-                            print("got into else after is_playing for track")
                             await interaction.followup.send(f"Tocando: {queue[0]}")
                             await player.play_(interaction, queue[0])
 
@@ -402,7 +398,13 @@ class Player(commands.Cog):
                             if player.vc.is_playing():
                                 return
                             await interaction.followup.send(f"Tocando: {queue[0]}")
-                            return player.play_(interaction, queue[0])
+                            return await player.play_(interaction, queue[0])
+                    else:
+                        queue.append(url)
+                        await player.play_(interaction, queue[0])
+                        return await interaction.response.send_message(f"Tocando: {queue[0]}")
+
+
             else:
                 ...
 
