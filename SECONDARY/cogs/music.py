@@ -22,6 +22,7 @@ from utils import *
 
 # TODO: Add artist to now playing
 
+@app_commands.guild_only()
 class Player(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
