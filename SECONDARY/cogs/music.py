@@ -291,7 +291,7 @@ class Player(commands.Cog):
             guild_id = interaction.guild_id
 
             # If no Voice Client for the caller Guild
-            if not guild_id in self.playing_guilds:
+            if guild_id not in self.playing_guilds:
                 self.playing_guilds[guild_id] = Player.Play(interaction, self.bot)
             player = self.playing_guilds[guild_id]
 
