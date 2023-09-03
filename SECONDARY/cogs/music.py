@@ -141,7 +141,7 @@ class Player(commands.Cog):
             # Returns a tuple [0] and [1] values
             return title, thumb, channel_name
 
-        async def playlist_(self, interaction: discord.Interaction, pl: str):
+        async def youtube_playlist_(self, interaction: discord.Interaction, pl: str):
 
             # Parse playlist and extract url for each video in playlist
             pl_p = Playlist.getVideos(pl)
@@ -388,8 +388,21 @@ class Player(commands.Cog):
                             await interaction.followup.send(f"Tocando: {queue[0]}")
                             await player.play_(interaction, queue[0])
 
-                else:
-                    ...
+                # Check if URL is from YouTube
+                elif "youtube.com" in url or "youtu.be" in url:
+                    # Check if URL is for a Playlist in YouTube
+                    if "playlist?" in url:
+                        await interaction.response.send_message(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
+                                                                f"Analisando músicas!")
+
+                        async with interaction.channel.typing():
+                            counter = await player.youtube_playlist_(interaction, url)
+                            await interaction.followup.send(f"Adicionei {counter} músicas na playlist.")
+
+                            if player.vc.is_playing():
+                                return
+                            await interaction.followup.send(f"Tocando: {queue[0]}")
+                            return player.play_(interaction, queue[0])
             else:
                 ...
 
