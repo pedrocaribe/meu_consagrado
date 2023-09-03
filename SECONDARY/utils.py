@@ -159,3 +159,8 @@ async def motivate():
     compliment = json.loads(requests.get(url).text)['compliment'].capitalize()
     trans = ts.translate_text(translator='bing', query_text=compliment, to_language='pt')
     return trans
+
+
+def chosen_phrase():
+    return random.choice(FRASE_MEIO)
+

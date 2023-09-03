@@ -81,7 +81,7 @@ class Player(commands.Cog):
             self.isPlaying = True
             try:
                 url = pafy.new(song).getbestaudio().url
-                # self.song_queue.pop(0)
+                self.song_queue.pop(0)
             except Exception as e:
                 print(e)
                 self.vc.stop()  # This is due to YouTube error for when a video is rated for over 18 audience
@@ -162,7 +162,7 @@ class Player(commands.Cog):
             # Return counter to caller in order to inform how many songs were added to queue
             return counter
 
-        async def spotify_parse_playlist_(self, interaction: discord.Interaction, url: str):
+        async def spotify_parse_(self, interaction: discord.Interaction, url: str, playlist: bool = True):
 
             cid = SPOTIFY_CID
 
@@ -173,20 +173,27 @@ class Player(commands.Cog):
             client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
             sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-            # Extract URI from url provided
-            playlist_URI = url.split("/")[-1].split("?")[0]
-            track_uris = [x["track"] for x in sp.playlist_tracks(playlist_URI)["items"]]
-
-            # List to be returned after parsign data
+            # List to be returned after parsing data
             data = []
 
-            # Extract Song and Artist name for each track
-            for track in track_uris:
-                track_name = track["name"]  # Name
-                artist_uri = track["artists"][0]["name"]  # Artist Name
+            if playlist:
+                # Extract URI from url provided
+                playlist_URI = url.split("/")[-1].split("?")[0]
+                track_uris = [x["track"] for x in sp.playlist_tracks(playlist_URI)["items"]]
 
-                # Add to data list combining both information and adding - in between them
-                data += [track_name + ' - ' + artist_uri]
+                # Extract Song and Artist name for each track
+                for track in track_uris:
+                    track_name = track["name"]  # Track Name
+                    artist = track["artists"][0]["name"]  # Artist Name
+
+                    # Add to data list combining both information and adding - in between them
+                    data += [track_name + " - " + artist]
+            else:
+                track_uri = url.split("/")[-1].split("?")[0]
+                track = sp.track(track_uri)
+                track_name = track["name"]  # Track Name
+                artist = track["artists"][0]["name"]
+                data += [track_name + " - " + artist]
 
             # Return data to caller
             return data
@@ -307,20 +314,90 @@ class Player(commands.Cog):
         try:
             guild_id = interaction.guild_id
 
-            # If no Voice Client for the caller Guild
+            # If no Voice Client for the caller Guild, instantiate
             if guild_id not in self.playing_guilds:
                 self.playing_guilds[guild_id] = Player.Play(interaction, self.bot)
+
+            # Set variables for easier reference
             player = self.playing_guilds[guild_id]
             queue = player.song_queue
             q_len = len(queue)
 
+            # Try to join Voice Channel
             error_joined = await player.join_(interaction)
             if error_joined:
-                print("error joined")
                 return
 
-            print("past error joined")
+            # Check if user provided a URL or Song Name
+            if url:
+
+                # Check if URL is from Spotify
+                if "spotify" in url:
+                    # Check if URL is for a Playlist in Spotify
+                    if "playlist" in url:
+                        await interaction.response.send_message(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
+                                                                f"Analisando músicas!")
+                        async with interaction.channel.typing():
+                            song_names_array = await player.spotify_parse_(interaction, url)
+                            counter = 0
+
+                            for song in song_names_array:
+                                result = await player.search_(1, f"music {song}", get_url=True)
+
+                                if not result:
+                                    await interaction.followup.send(
+                                        f"Não rolou de adicionar a música {song}. Parece que o formato está errado "
+                                        f"ou a música não existe. Tenta uma palavra diferente?"
+                                    )
+                                else:
+                                    song_url = result[0]
+                                    queue.append(song_url)
+                                    counter += 1
+
+                            await interaction.followup.send(f"Adicionei {counter} músicas na playlist!")
+                            if player.vc.is_playing():
+                                print("got into is_playing")
+                                return
+                            else:
+                                print("got into else after is_playing")
+                                await interaction.followup.send(f"Tocando: {queue[0]}")
+                                await player.play_(interaction, queue[0])
+
+                    # Check if URL is for a Track in Spotify
+                    elif "track" in url:
+                        await interaction.response.send_message(f"Segura aí **{chosen_phrase()}**!")
+
+                        song_name = await player.spotify_parse_(interaction, url, playlist=False)
+                        result = await player.search_(1, f"music {song_name}", get_url=True)
+
+                        if not result:
+                            await interaction.followup.send(
+                                f"Não rolou de adicionar a música {song_name}. Parece que o formato está errado "
+                                f"ou a música não existe. Tenta uma palavra diferente?"
+                            )
+                        else:
+                            song_url = result[0]
+                            queue.append(song_url)
+
+                        if player.vc.is_playing():
+                            return await interaction.followup.send(
+                                f"Música adicionada à lista na posição **{q_len + 1}**. Essa é braba!"
+                            )
+                        else:
+                            print("got into else after is_playing for track")
+                            await interaction.followup.send(f"Tocando: {queue[0]}")
+                            await player.play_(interaction, queue[0])
+
+                else:
+                    ...
+            else:
+                ...
+
+
+
+
         except Exception as e:
+            print("error")
             print(e)
         else:
             print("else after exception")
