@@ -1,0 +1,3 @@
+# for pafy:
+#   Edit file backend_youtube_dl.py and comment lines 50 and 54 which refer to 'average_rating' and 'dislike_count'
+
