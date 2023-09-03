@@ -213,8 +213,29 @@ class Player(commands.Cog):
         async def stop_(self):
             ...
 
-        async def skip_(self):
-            ...
+        async def skip_(self, interaction: discord.Interaction, qty: int=1):
+            # If bot is not in a Voice Channel
+            if not self.vc:
+                return await interaction.response.send_message(f"Não estamos com serviço couvert hoje. Obrigado.")
+            # If caller is not in a Voice Channel
+            if interaction.user.voice is None:
+                return await interaction.response.send_message(f"Entra num canal de voz primeiro, e me chama de lá, "
+                                                               f"**{random.choice(FRASE_MEIO)}**.")
+            # If caller's Voice Channel is different from the Bot's
+            if interaction.user.voice.channel.id != self.vc.channel.id:
+                return await interaction.response.send_message(f"A banda já está tocando em outro canal de voz, "
+                                                               f"**{random.choice(FRASE_MEIO)}**. Vamos ter que "
+                                                               f"aguardar ela finalizar lá, ou utilizar outro bot "
+                                                               f"no meio tempo.")
+
+            # If no more music in queue
+            if not self.song_queue[0] or not self.song_queue:
+                return await interaction.response.send_message(f"Não tem mais músicas na lista. Se quiser parar "
+                                                               f"completamente a música, utilize o /stop")
+
+            self.song_queue = self.song_queue[qty - 1:]
+            self.vc.stop()
+
 
         async def queue_(self, interaction: discord.Interaction):
             # If no songs in queue and not currently playing
@@ -244,19 +265,31 @@ class Player(commands.Cog):
             e.set_footer(text=f"\nProntinho, **{random.choice(FRASE_MEIO)}**. Da uma olhada na lista.")
             return await interaction.response.send_message(embed=e)
 
-        async def search_(self):
-            ...
+        async def search_(self, amount: int, song: str, get_url=False):
+            # Loop until YoutubeDL returns the expected amount of links
+            info = await self.bot.loop.run_in_executor(
+                None, lambda: YoutubeDL({"format": "bestaudio/best", "quiet": True, "noplaylist": True}).extract_info(
+                    f"ytsearch{amount}:{song}", download=False, ie_key="YoutubeSearch"))
+
+            # If nothing found, return
+            if len(info['entries']) == 0:
+                return None
+
+            # If results were found, return the URLs for parsing or the whole list
+            return [entry['webpage_url'] for entry in info['entries']] if get_url \
+                else [[entry['webpage_url'], entry['title'], entry['thumbnails'][0]['url']] for entry in info['entries']]
 
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
         guild_id = interaction.guild_id
 
+        # If no Voice Client for the caller Guild
         if not guild_id in self.playing_guilds:
             self.playing_guilds[guild_id] = Player.Play(interaction, self.bot)
         player = self.playing_guilds[guild_id]
         
         # If user didn't provide URL, but there is a song queue, means player is paused
-        if url is None and len(player.song_queue) != 0 and player.isPlaying == False:
+        if url is None and len(player.song_queue) != 0 and not player.isPlaying:
             player.isPlaying = True
             await player.play_(interaction, player.song_queue[0])
             return player.song_queue.pop(0)
@@ -265,7 +298,8 @@ class Player(commands.Cog):
         if url is None: return await interaction.response.send_message(f'Tem que colocar uma música aí né, **{random.choice(FRASE_MEIO)}**!')
 
         join_channel = await player.join_(interaction)
-        if join_channel != 0: return
+        if join_channel != 0:
+            return
 
     @app_commands.command(name="stop", description="Parar musicas e desconectar do canal de voz")
     async def stop(self, interaction: discord.Interaction):
