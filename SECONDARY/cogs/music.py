@@ -33,7 +33,7 @@ class Player(commands.Cog):
             self.bot = bot
             self.song_queue = []
             self.vc = None
-            self.isPlaying = False
+            # self.isPlaying = False
             self.current = ""
             self.FFMPEG_OPTIONS = {
                 'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'
@@ -294,88 +294,112 @@ class Player(commands.Cog):
             if guild_id not in self.playing_guilds:
                 self.playing_guilds[guild_id] = Player.Play(interaction, self.bot)
             player = self.playing_guilds[guild_id]
-
-            # If user didn't provide URL, and Voice Client is paused
-            if url is None and player.vc.is_paused():
-                return await player.vc.resume()
-
-            # Else, if there isn't a queue, and user didn't provide URL
-            if url is None:
-                return await interaction.response.send_message(
-                    f'Tem que colocar uma música aí né, **{random.choice(FRASE_MEIO)}**!')
-
-            join_channel = await player.join_(interaction)
-            if join_channel != 0:
-                return
-
             queue = player.song_queue
             q_len = len(queue)
 
-            # If Spotify in link, search and play from YouTube
-            if "spotify" in url:
-                if "playlist" in url:  # If link provided is for a playlist
-                    await interaction.response.send_message(f"Isso aí é uma playlist, né **{random.choice(FRASE_MEIO)}**? "
-                                                            f"Analisando músicas!")
+            if url:
+                # If Spotify in link, search and play from YouTube
+                if "spotify" in url:
+                    if "playlist" in url:  # If link provided is for a spotify playlist
+                        await interaction.response.send_message(f"Isso aí é uma playlist, né **{random.choice(FRASE_MEIO)}**? "
+                                                                f"Analisando músicas!")
+                        async with interaction.channel.typing():
+                            song_names_array = await player.spotify_parse_playlist_(interaction, url)
+                            counter = 0
+
+                            for song in song_names_array:
+                                result = await player.search_(1, f"music {song}", get_url=True)
+
+                                if not result:
+                                    await interaction.followup.send(
+                                        f"Não rolou de adicionar a música {song}. Parece que o formato está errado "
+                                        f"ou a música não existe. Tenta uma palavra diferente?")
+                                else:
+                                    url = result[0]
+                                    queue.append(url)
+                                    counter += 1
+
+                        await interaction.followup.send(f"Adicionei {counter} músicas na playlist!")
+                        if player.isPlaying:
+                            return
+                        await interaction.followup.send(f"Tocando: {queue[0]}")
+
+                        # NEW WAY
+                        # return await player.play_(interaction, queue[0])
+
+                        # OLD WAY
+                        await player.play_(interaction, queue[0])
+                        return queue.pop(0)
+
+                elif not ("youtube.com" in url or "youtu.be" in url):
+                    await interaction.response.send_message(f"Vou procurar sua música aqui na lista de CDs que o patrão deixou. "
+                                                    f"Segura aí que vai demorar uns segundinhos, **{random.choice(FRASE_MEIO)}**")
                     async with interaction.channel.typing():
-                        song_names_array = await player.spotify_parse_playlist_(interaction, url)
-                        counter = 0
+                        result = await player.search_(1, url, get_url=True)
 
-                        for song in song_names_array:
-                            result = await player.search_(1, f"music {song}", get_url=True)
+                    if not result:
+                        return interaction.followup.send(
+                            f"Não rolou de baixar essa música. Parece que o formato tá errado ou a música não existe. "
+                            f"Tenta uma palavra diferente?")
 
-                            if not result:
-                                await interaction.followup.send(
-                                    f"Não rolou de adicionar a música {song}. Parece que o formato está errado "
-                                    f"ou a música não existe. Tenta uma palavra diferente?")
-                            else:
-                                url = result[0]
-                                queue.append(url)
-                                counter += 1
+                    url = result[0]
 
-                    await interaction.followup.send(f"Adicionei {counter} músicas na playlist!")
+                # If link is for a playlist, add all songs
+                elif "playlist?" in url:
+                    await interaction.response.send_message(f"Isso aí é uma playlist né, **{random.choice(FRASE_MEIO)}**? Adicionando!")
+
+                    async with interaction.channel.typing():
+                        counter = await player.playlist_(interaction, url)
+
+                    await interaction.followup.send(f"Adicionei {counter} músicas na playlist.")
+
                     if player.isPlaying:
                         return
                     await interaction.followup.send(f"Tocando: {queue[0]}")
 
                     # NEW WAY
-                    # return await player.play_(interaction, queue[0])
+                    return player.play_(interaction, queue[0])
 
                     # OLD WAY
-                    await player.play_(interaction, queue[0])
-                    return queue.pop(0)
+                    # await player.play_(interaction, queue[0])
+                    # return queue.pop(0)
 
-            elif not ("youtube.com" in url or "youtu.be" in url):
-                await interaction.response.send_message(f"Vou procurar sua música aqui na lista de CDs que o patrão deixou. "
-                                                f"Segura aí que vai demorar uns segundinhos, **{random.choice(FRASE_MEIO)}**")
-                async with interaction.channel.typing():
-                    result = await player.search_(1, url, get_url=True)
 
-                if not result:
-                    return interaction.followup.send(
-                        f"Não rolou de baixar essa música. Parece que o formato tá errado ou a música não existe. "
-                        f"Tenta uma palavra diferente?")
 
-                url = result[0]
 
-            # If link is for a playlist, add all songs
-            elif "playlist?" in url:
-                await interaction.response.send_message(f"Isso aí é uma playlist né, **{random.choice(FRASE_MEIO)}**? Adicionando!")
 
-                async with interaction.channel.typing():
-                    counter = await player.playlist_(interaction, url)
 
-                await interaction.followup.send(f"Adicionei {counter} músicas na playlist.")
 
-                if player.isPlaying:
+
+
+
+
+
+
+                # If user didn't provide URL, and Voice Client is paused
+                if url is None:
+                    if player.vc.is_paused():
+                        return await player.vc.resume()
+                    elif player.vc.is_playing():
+                        queue.append(url)
+
+                # Else, if there isn't a queue, and user didn't provide URL
+                if url is None:
+                    return await interaction.response.send_message(
+                        f'Tem que colocar uma música aí né, **{random.choice(FRASE_MEIO)}**!')
+
+                join_channel = await player.join_(interaction)
+                if join_channel != 0:
                     return
-                await interaction.followup.send(f"Tocando: {queue[0]}")
 
-                # NEW WAY
-                return player.play_(interaction, queue[0])
 
-                # OLD WAY
-                # await player.play_(interaction, queue[0])
-                # return queue.pop(0)
+
+
+
+
+
+
+
         except Exception as e:
             await interaction.response.send_message(f"{e}")
             return await interaction.followup.send(f"Não consegui processar nenhuma música ou playlist a partir "
