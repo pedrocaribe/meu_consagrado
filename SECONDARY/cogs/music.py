@@ -295,11 +295,9 @@ class Player(commands.Cog):
                 self.playing_guilds[guild_id] = Player.Play(interaction, self.bot)
             player = self.playing_guilds[guild_id]
 
-            # If user didn't provide URL, but there is a song queue, means player is paused
-            if url is None and len(player.song_queue) != 0 and not player.isPlaying:
-                player.isPlaying = True
-                await player.play_(interaction, player.song_queue[0])
-                return player.song_queue.pop(0)
+            # If user didn't provide URL, and Voice Client is paused
+            if url is None and player.vc.is_paused():
+                return await player.vc.resume()
 
             # Else, if there isn't a queue, and user didn't provide URL
             if url is None:
