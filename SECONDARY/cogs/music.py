@@ -482,6 +482,19 @@ class Player(commands.Cog):
 
     @app_commands.command(name="pause", description="Pausar música em reprodução")
     async def pause(self, interaction: discord.Interaction):
+        """Pause or Resume Voice Client
+
+        Pauses or resumes the currently playing music within that guild.
+
+        Parameters:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         guild_id = interaction.guild_id
         player = self.playing_guilds[guild_id]
 
