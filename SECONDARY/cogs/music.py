@@ -232,12 +232,6 @@ class Player(commands.Cog):
             thumb, e = await icon("profile", e)
             return await interaction.response.send_message(embed=e, file=thumb, view=view)
 
-        async def pause_(self):
-            ...
-
-        async def stop_(self):
-            ...
-
         async def skip_(self, interaction: discord.Interaction, qty: int = 1):
             # If bot is not in a Voice Channel
             if not self.vc:
@@ -556,6 +550,10 @@ class Player(commands.Cog):
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
             await player.now_(interaction)
+
+    @app_commands.command(name="criador", description="Mostra informações do criador do Bot")
+    async def creator(self, interaction: discord.Interaction):
+        ...
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
