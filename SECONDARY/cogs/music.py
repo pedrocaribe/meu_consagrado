@@ -508,6 +508,33 @@ class Player(commands.Cog):
                 await interaction.response.send_message("Continuando música")
                 return player.vc.resume()
 
+    @app_commands.command(name="resume", description="Continuar música em reprodução")
+    async def resume(self, interaction: discord.Interaction):
+        """Resumes Voice Client
+
+        Checks if Bot is playing within this guild, and pauses the Voice Client.
+
+        Parameters:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+
+        Returns:
+            This function does Not return anything.
+        """
+
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
+        else:
+            if player.vc.is_paused():
+                return player.vc.resume()
+            else:
+                return await interaction.response.send_message(f"A música não está pausada, **{chosen_phrase()}**. "
+                                                               f"Pra pausar é só mandar um `/pause`.")
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
