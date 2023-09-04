@@ -559,6 +559,20 @@ class Player(commands.Cog):
 
     @app_commands.command(name="queue", description="Mostra a fila de músicas, se houver")
     async def queue(self, interaction: discord.Interaction):
+        """Displays the queue of songs, if there are any.
+
+        This command allows users to view the list of songs that are currently in the queue for playback.
+        If there are no songs in the queue, it will inform the user that the queue is empty.
+
+        Parameters:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         try:
             guild_id = interaction.guild_id
             player = self.playing_guilds[guild_id]
