@@ -59,7 +59,7 @@ class Player(commands.Cog):
             # If user is not in Voice Channel
             if interaction.user.voice is None:
                 await interaction.response.send_message(
-                    f'Não deu pra entrar no canal de voz não, **{random.choice(FRASE_MEIO)}**. '
+                    f'Não deu pra entrar no canal de voz não, **{chosen_phrase()}**. '
                     f'Tenta entrar lá primeiro e me chama.')
                 return True
 
@@ -74,7 +74,7 @@ class Player(commands.Cog):
                     if interaction.user.voice.channel.id == self.vc.channel.id:  # if same channel as user, do nothing
                         return False
                     await interaction.response.send_message(
-                        f'A banda já está tocando em outro canal de voz, **{random.choice(FRASE_MEIO)}**.')
+                        f'A banda já está tocando em outro canal de voz, **{chosen_phrase()}**.')
                     return True
 
         async def play_(self, interaction: discord.Interaction, song: str):
@@ -113,7 +113,7 @@ class Player(commands.Cog):
 
             if not self.vc.is_playing():
                 return await interaction.response.send_message(
-                    f'Não estamos com serviço couvert hoje, **{random.choice(FRASE_MEIO)}**. Obrigado.')
+                    f'Não estamos com serviço couvert hoje, **{chosen_phrase()}**. Obrigado.')
 
             # Create embedded message containing Title and Thumbnail
             music = await self.music_info_(self.current)
@@ -210,7 +210,7 @@ class Player(commands.Cog):
                 except:
                     pass
                 return await interaction.response.send_message(
-                    f"Mas eu não estou nem tocando, **{random.choice(FRASE_MEIO)}**...")
+                    f"Mas eu não estou nem tocando, **{chosen_phrase()}**...")
 
         async def ads_(self, interaction: discord.Interaction):
             linkedin = Button(
@@ -240,11 +240,11 @@ class Player(commands.Cog):
             # If caller is not in a Voice Channel
             if interaction.user.voice is None:
                 return await interaction.response.send_message(f"Entra num canal de voz primeiro, e me chama de lá, "
-                                                               f"**{random.choice(FRASE_MEIO)}**.")
+                                                               f"**{chosen_phrase()}**.")
             # If caller's Voice Channel is different from the Bot's
             if interaction.user.voice.channel.id != self.vc.channel.id:
                 return await interaction.response.send_message(f"A banda já está tocando em outro canal de voz, "
-                                                               f"**{random.choice(FRASE_MEIO)}**. Vamos ter que "
+                                                               f"**{chosen_phrase()}**. Vamos ter que "
                                                                f"aguardar ela finalizar lá, ou utilizar outro bot "
                                                                f"no meio tempo.")
 
@@ -260,7 +260,7 @@ class Player(commands.Cog):
             # If no songs in queue and not currently playing
             if len(self.song_queue) == 0 and not self.isPlaying:
                 return await interaction.response.send_message(
-                    f"Não tem nenhuma música na lista, **{random.choice(FRASE_MEIO)}**")
+                    f"Não tem nenhuma música na lista, **{chosen_phrase()}**")
             # If playing song and no other songs in queue
             elif len(self.song_queue) == 0 and self.isPlaying:
                 await interaction.response.send_message(f"Só tem a música que está tocando, na lista. Dá uma olhadinha")
@@ -281,7 +281,7 @@ class Player(commands.Cog):
                 else:
                     e.description += f"{i + 1}) [...]\n"
                     break
-            e.set_footer(text=f"\nProntinho, **{random.choice(FRASE_MEIO)}**. Da uma olhada na lista.")
+            e.set_footer(text=f"\nProntinho, **{chosen_phrase()}**. Da uma olhada na lista.")
             return await interaction.response.send_message(embed=e)
 
         async def search_(self, amount: int, song: str, get_url=False):
