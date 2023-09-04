@@ -552,10 +552,6 @@ class Player(commands.Cog):
         else:
             return await player.now_(interaction)
 
-    @app_commands.command(name="criador", description="Mostra informações do criador do Bot")
-    async def creator(self, interaction: discord.Interaction):
-        ...
-
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
