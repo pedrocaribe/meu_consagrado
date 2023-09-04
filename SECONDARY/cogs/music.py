@@ -80,6 +80,7 @@ class Player(commands.Cog):
         async def play_(self, interaction: discord.Interaction, song: str):
             try:
                 url = pafy.new(song).getbestaudio().url
+                self.current = song
                 if len(self.song_queue) >= 1:
                     self.song_queue.pop(0)
             except Exception as e:
@@ -549,7 +550,7 @@ class Player(commands.Cog):
             return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
-            await player.now_(interaction)
+            return await player.now_(interaction)
 
     @app_commands.command(name="criador", description="Mostra informações do criador do Bot")
     async def creator(self, interaction: discord.Interaction):
