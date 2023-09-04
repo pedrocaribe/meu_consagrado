@@ -480,6 +480,18 @@ class Player(commands.Cog):
         await player.stop_leave_(interaction)
         self.playing_guilds.pop(guild_id)
 
+    @app_commands.command(name="pause", description="Pausar música em reprodução")
+    async def pause(self, interaction: discord.Interaction):
+        guild_id = interaction.guild_id
+        player = self.playing_guilds[guild_id]
+
+        if player:
+            if player.vc.is_playing():
+                return player.vc.pause()
+            else:
+                return player.vc.resume()
+        await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
