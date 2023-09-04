@@ -554,6 +554,10 @@ class Player(commands.Cog):
 
     @app_commands.command(name="search_music", description="Busca de músicas, para que o Bot reproduza")
     async def search_music(self, interaction: discord.Interaction):
+        # TODO: The idea of this command if to look for the song requested by the user,
+        #   Provide maybe 5 results and an option to play any of them.
+        #       In order to do it we have to store the results somewhere, to then add to queue
+
         ...
 
     @commands.Cog.listener()
