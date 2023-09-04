@@ -28,6 +28,7 @@ class Player(commands.Cog):
         self.bot = bot
         self.playing_guilds = {}  # dict of Play objects representing guilds playing -> guild_id : object
 
+    # noinspection PyUnresolvedReferences
     class Play:
         def __init__(self, interaction: discord.Interaction, bot):
             self.bot = bot
@@ -122,6 +123,7 @@ class Player(commands.Cog):
                 description=f'[{music[0]}]({self.current})',
                 colour=discord.Colour.green()
             )
+            embed.set_thumbnail(url=music[1])
             embed.add_field(name="Artista", value=music[2])
 
             # Reply to user
@@ -257,12 +259,13 @@ class Player(commands.Cog):
             self.vc.stop()
 
         async def queue_(self, interaction: discord.Interaction):
+            q_len = len(self.song_queue)
             # If no songs in queue and not currently playing
-            if len(self.song_queue) == 0 and not self.isPlaying:
+            if q_len == 0 and not self.vc.is_playing():
                 return await interaction.response.send_message(
                     f"Não tem nenhuma música na lista, **{chosen_phrase()}**")
             # If playing song and no other songs in queue
-            elif len(self.song_queue) == 0 and self.isPlaying:
+            elif q_len == 0 and self.vc.is_playing():
                 await interaction.response.send_message(f"Só tem a música que está tocando, na lista. Dá uma olhadinha")
                 return await self.now_(interaction)
 
@@ -281,7 +284,7 @@ class Player(commands.Cog):
                 else:
                     e.description += f"{i + 1}) [...]\n"
                     break
-            e.set_footer(text=f"\nProntinho, **{chosen_phrase()}**. Da uma olhada na lista.")
+            e.set_footer(text=f"\nProntinho, {chosen_phrase()}. Da uma olhada na lista.")
             return await interaction.response.send_message(embed=e)
 
         async def search_(self, amount: int, song: str, get_url=False):
@@ -562,7 +565,15 @@ class Player(commands.Cog):
 
     @app_commands.command(name="queue", description="Mostra a fila de músicas, se houver")
     async def queue(self, interaction: discord.Interaction):
-        ...
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+                                                           f"**{chosen_phrase()}**. Obrigado.")
+        else:
+            await player.queue_(interaction)
+
 
     @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
     async def skip(self, interaction: discord.Interaction):
