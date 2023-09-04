@@ -2,9 +2,6 @@
 import discord
 import asyncio
 import pafy
-import random
-import requests
-import re
 import spotipy
 
 # Import secondary modules
@@ -12,7 +9,6 @@ from discord import app_commands
 from discord.ext import commands
 from youtube_dl import YoutubeDL
 from youtubesearchpython import *
-from urllib.request import urlopen
 from spotipy.oauth2 import SpotifyClientCredentials
 from discord.ui import Button, View
 
