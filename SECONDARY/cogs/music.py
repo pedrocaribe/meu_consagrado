@@ -534,6 +534,17 @@ class Player(commands.Cog):
 
     @app_commands.command(name="now", description="Mostra a música tocando no momento")
     async def now(self, interaction: discord.Interaction):
+        """Display the currently playing song.
+
+        Parameters:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         try:
             guild_id = interaction.guild_id
             player = self.playing_guilds[guild_id]
