@@ -388,17 +388,25 @@ class Player(commands.Cog):
                 elif "youtube.com" in url or "youtu.be" in url:
                     # Check if URL is for a Playlist in YouTube
                     if "playlist?" in url:
+                        # Initial response
                         await interaction.response.send_message(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
                                                                 f"Analisando músicas!")
 
                         async with interaction.channel.typing():
+                            # Parse all songs in playlist and add to queue
                             counter = await player.youtube_playlist_(interaction, url)
+                            # Inform user how many songs were successfully processed and added to queue
                             await interaction.followup.send(f"Adicionei {counter} músicas na playlist.")
 
+                            # If Bot is already playing, return
                             if player.vc.is_playing():
                                 return
+
+                            # If Bot is Not playing, initiate call play method
                             await interaction.followup.send(f"Tocando: {queue[0]}")
                             return await player.play_(interaction, queue[0])
+
+                    # If URL from YouTube, but not playlist handle as individual video
                     else:
                         queue.append(url)
                         await player.play_(interaction, queue[0])
