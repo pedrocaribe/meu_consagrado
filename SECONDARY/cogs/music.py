@@ -261,7 +261,6 @@ class Player(commands.Cog):
             self.song_queue = self.song_queue[qty - 1:]
             self.vc.stop()
 
-
         async def queue_(self, interaction: discord.Interaction):
             # If no songs in queue and not currently playing
             if len(self.song_queue) == 0 and not self.isPlaying:
@@ -542,7 +541,7 @@ class Player(commands.Cog):
             return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
-            player.music_info_(player.current)
+            await player.now_(interaction)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
