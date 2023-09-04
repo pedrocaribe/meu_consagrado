@@ -560,6 +560,14 @@ class Player(commands.Cog):
 
         ...
 
+    @app_commands.command(name="queue", description="Mostra a fila de músicas, se houver")
+    async def queue(self, interaction: discord.Interaction):
+        ...
+
+    @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
+    async def skip(self, interaction: discord.Interaction):
+        ...
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
