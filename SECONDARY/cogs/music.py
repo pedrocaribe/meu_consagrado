@@ -412,12 +412,33 @@ class Player(commands.Cog):
                         await player.play_(interaction, queue[0])
                         return await interaction.response.send_message(f"Tocando: {queue[0]}")
 
+                else:
+                    await interaction.response.send_message(
+                        f"Vou procurar sua música aqui na lista de CDs que o patrão "
+                        f"deixou. Segura aí que vai demorar alguns segundinhos, "
+                        f"**{chosen_phrase()}**")
+                    async with interaction.channel.typing():
+                        result = await player.search_(1, url, get_url=True)
+
+                    if not result:
+                        return interaction.followup.send(
+                            f"Não rolou de baixar essa música. Parece que o formato tá errado "
+                            f"ou a música não existe. Tenta uma palavra diferente?")
+
+                    song_url = result[0]
+                    queue.append(song_url)
+
+                    if player.vc.is_playing():
+                        return
+                    else:
+                        await interaction.followup.send(f"Tocando: {queue[0]}")
+                        await player.play_(interaction, queue[0])
 
             else:
-                ...
-
-
-
+                if player.vc.is_playing():
+                    await interaction.response.send_message(f"Mas eu já estou tocando, **{chosen_phrase()}**")
+                elif player.vc.is_paused():
+                    player.vc.resume()
 
         except Exception as e:
             print("error")
