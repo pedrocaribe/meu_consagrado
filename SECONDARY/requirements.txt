@@ -1,3 +1,5 @@
 # for pafy:
 #   Edit file backend_youtube_dl.py and comment lines 50 and 54 which refer to 'average_rating' and 'dislike_count'
+# In order to resolve the 'unresolved reference' error for utils imports, set SECONDARY folder as a SOURCE FOLDER.
+#   In Pycharm you can do that by right-clicking the folder > Make Directory as > Sources Root
 
