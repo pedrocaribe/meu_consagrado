@@ -110,8 +110,6 @@ class Player(commands.Cog):
 
         async def now_(self, interaction: discord.Interaction):
 
-            # TODO: Test if channel_name actually works
-
             if not self.vc.is_playing():
                 return await interaction.response.send_message(
                     f'Não estamos com serviço couvert hoje, **{random.choice(FRASE_MEIO)}**. Obrigado.')
@@ -534,6 +532,17 @@ class Player(commands.Cog):
             else:
                 return await interaction.response.send_message(f"A música não está pausada, **{chosen_phrase()}**. "
                                                                f"Pra pausar é só mandar um `/pause`.")
+
+    @app_commands.command(name="now", description="Mostra a música tocando no momento")
+    async def now(self, interaction: discord.Interaction):
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+                                                           f"**{chosen_phrase()}**. Obrigado.")
+        else:
+            player.music_info_(player.current)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
