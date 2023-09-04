@@ -15,6 +15,7 @@ from utils import *
 # app_commands and commands are being imported from utils
 
 
+# noinspection PyUnresolvedReferences
 @app_commands.guild_only()
 class Player(commands.Cog):
     def __init__(self, bot):
@@ -566,7 +567,6 @@ class Player(commands.Cog):
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
             await player.queue_(interaction)
-
 
     @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
     async def skip(self, interaction: discord.Interaction):
