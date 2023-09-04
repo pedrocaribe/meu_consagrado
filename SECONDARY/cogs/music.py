@@ -495,16 +495,18 @@ class Player(commands.Cog):
             This function does Not return anything.
         """
 
-        guild_id = interaction.guild_id
-        player = self.playing_guilds[guild_id]
-
-        # Check if Bot is playing in guild
-        if player:
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
+        else:
             if player.vc.is_playing():
+                await interaction.response.send_message("Música pausada")
                 return player.vc.pause()
             else:
+                await interaction.response.send_message("Continuando música")
                 return player.vc.resume()
-        await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
