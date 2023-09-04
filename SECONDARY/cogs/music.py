@@ -552,6 +552,10 @@ class Player(commands.Cog):
         else:
             return await player.now_(interaction)
 
+    @app_commands.command(name="search_music", description="Busca de músicas, para que o Bot reproduza")
+    async def search_music(self, interaction: discord.Interaction):
+        ...
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
