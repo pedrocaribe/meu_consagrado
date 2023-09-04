@@ -5,8 +5,6 @@ import pafy
 import spotipy
 
 # Import secondary modules
-from discord import app_commands
-from discord.ext import commands
 from youtube_dl import YoutubeDL
 from youtubesearchpython import *
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -14,9 +12,8 @@ from discord.ui import Button, View
 
 # Import variables and standard functions from local file
 from utils import *
+# app_commands and commands are being imported from utils
 
-
-# TODO: Add artist to now playing
 
 @app_commands.guild_only()
 class Player(commands.Cog):
