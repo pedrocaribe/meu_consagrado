@@ -536,6 +536,9 @@ class Player(commands.Cog):
     async def now(self, interaction: discord.Interaction):
         """Display the currently playing song.
 
+        This command displays information of the currently playing song, including Song Name,
+        URL and Channel name.
+
         Parameters:
             self: The instance of the cog.
             interaction: discord.Interaction
