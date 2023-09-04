@@ -485,6 +485,7 @@ class Player(commands.Cog):
         guild_id = interaction.guild_id
         player = self.playing_guilds[guild_id]
 
+        # Check if Bot is playing in guild
         if player:
             if player.vc.is_playing():
                 return player.vc.pause()
