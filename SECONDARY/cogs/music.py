@@ -313,7 +313,7 @@ class Player(commands.Cog):
         Play a song or playlist from a URL either from YouTube or Spotify, or search for a song by name
         and add it to the queue.
 
-        Args:
+        Parameters:
             self: The instance of the cog.
             interaction: discord.Interaction
                 The interaction object representing the user's command.
@@ -466,7 +466,7 @@ class Player(commands.Cog):
 
         This command stops the playback of music and disconnects the bot from the voice channel.
 
-        Args:
+        Parameters:
             self: The instance of the cog.
             interaction: discord.Interaction
                 The interaction object representing the user's command.
@@ -501,7 +501,7 @@ class Player(commands.Cog):
         This listener checks for voice state updates in the server and disconnects the bot from the voice
         channel if it's not playing for 180 seconds. Events from users are ignored.
 
-        Args:
+        Parameters:
             self: The instance of the cog.
             member: discord.Member
                 The member whose voice state was updated.
