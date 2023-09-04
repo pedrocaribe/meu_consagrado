@@ -234,7 +234,6 @@ class Player(commands.Cog):
             thumb, e = await icon("profile", e)
             return await interaction.response.send_message(embed=e, file=thumb, view=view)
 
-
         async def pause_(self):
             ...
 
@@ -309,6 +308,22 @@ class Player(commands.Cog):
 
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
+        """Play music.
+
+        Play a song or playlist from a URL either from YouTube or Spotify, or search for a song by name
+        and add it to the queue.
+
+        Args:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+            url: str [OPTIONAL]
+                The URL of the song or playlist to play or name of the song/artist/video. Defaults to None.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         try:
             guild_id = interaction.guild_id
 
@@ -447,10 +462,61 @@ class Player(commands.Cog):
 
     @app_commands.command(name="stop", description="Parar musicas e desconectar do canal de voz")
     async def stop(self, interaction: discord.Interaction):
+        """Stops music playback and disconnects from the voice channel.
+
+        This command stops the playback of music and disconnects the bot from the voice channel.
+
+        Args:
+            self: The instance of the cog.
+            interaction: discord.Interaction
+                The interaction object representing the user's command.
+
+        Returns:
+            This function does Not return anything.
+        """
+
         guild_id = interaction.guild_id
         player = self.playing_guilds[guild_id]
         await player.stop_leave_(interaction)
         self.playing_guilds.pop(guild_id)
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
+                                    after: discord.VoiceState):
+        """A listener to monitor voice state updates and disconnect the bot if it's not playing for 180 seconds.
+
+        This listener checks for voice state updates in the server and disconnects the bot from the voice
+        channel if it's not playing for 180 seconds. Events from users are ignored.
+
+        Args:
+            self: The instance of the cog.
+            member: discord.Member
+                The member whose voice state was updated.
+            before: discord.VoiceState
+                The voice state before the update.
+            after: discord.VoiceState
+                The voice state after the update.
+
+        Returns:
+            This function does Not return anything.
+        """
+
+        guild_id = member.guild.id
+        player = self.playing_guilds[guild_id]
+
+        # If change of Voice Channel not from Bot
+        if not member.id == self.bot.user.id:
+            return
+
+        # Check if playing when IN Voice Channel, every 180 seconds
+        else:
+            while True:
+                await asyncio.sleep(180)
+                if not player.vc.is_playing():
+                    await player.vc.disconnect()
+                    self.playing_guilds.pop(guild_id)
+                    player.vc = None
+                    break
 
 
 async def setup(bot):
