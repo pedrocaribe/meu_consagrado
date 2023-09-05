@@ -1,5 +1,4 @@
 # Import main modules
-import discord
 import asyncio
 import pafy
 import spotipy
@@ -12,9 +11,10 @@ from discord.ui import Button, View
 
 # Import variables and standard functions from local file
 from utils import *
-# app_commands and commands are being imported from utils
+# discord, app_commands and commands are being imported from utils
 
 # TODO: ADD VERIFICATION IF USER IS IN SAME VC FOR EVERY COMMAND
+
 
 # noinspection PyUnresolvedReferences
 @app_commands.guild_only()
