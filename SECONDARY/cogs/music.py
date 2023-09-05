@@ -311,7 +311,7 @@ class Player(commands.Cog):
                  This method returns a Bool
             """
 
-            ...
+            return True if interaction.user.voice.channel == self.vc else False
 
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
