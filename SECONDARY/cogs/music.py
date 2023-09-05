@@ -296,6 +296,9 @@ class Player(commands.Cog):
             return [entry['webpage_url'] for entry in info['entries']] if get_url \
                 else [[entry['webpage_url'], entry['title'], entry['thumbnails'][0]['url']] for entry in info['entries']]
 
+        async def same_queue_(self, interaction: discord.Interaction):
+            ...
+
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
         """Play music.
