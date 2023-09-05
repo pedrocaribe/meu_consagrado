@@ -297,6 +297,20 @@ class Player(commands.Cog):
                 else [[entry['webpage_url'], entry['title'], entry['thumbnails'][0]['url']] for entry in info['entries']]
 
         async def same_queue_(self, interaction: discord.Interaction):
+            """
+
+            This method's objective is to check if the user is in the same Voice Channel as the Bot
+            in order to be able to run the commands. It returns true if the user is in the same Voice
+            Channel, or False it Not.
+
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the user's command
+
+            Returns:
+                 This method returns a Bool
+            """
+
             ...
 
     @app_commands.command(name='play', description='Tocar musicas')
