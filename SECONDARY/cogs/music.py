@@ -210,18 +210,13 @@ class Player(commands.Cog):
                     f"Mas eu não estou nem tocando, **{chosen_phrase()}**...")
 
         async def ads_(self, interaction: discord.Interaction):
-            linkedin = Button(
-                label="LinkedIn",
+            linktree = Button(
+                label="Linktr.ee",
                 style=discord.ButtonStyle.green,
-                url="https://www.linkedin.com/in/pedro-caribe/")
-            github = Button(
-                label="GitHub",
-                style=discord.ButtonStyle.green,
-                url="https://github.com/pedrocaribe")
+                url="https://linktr.ee/caribepedro")
 
             view = View()
-            view.add_item(linkedin)
-            view.add_item(github)
+            view.add_item(linktree)
             e = discord.Embed(
                 title="**Desconectado**",
                 description="Curtiu o bot? Manda uma alô pro criador:\n\nAté a próxima!",
@@ -250,7 +245,8 @@ class Player(commands.Cog):
                 return await interaction.response.send_message(f"Não tem mais músicas na lista. Se quiser parar "
                                                                f"completamente a música, utilize o /stop")
 
-            self.song_queue = self.song_queue[qty - 1:]
+            if qty > 1:
+                self.song_queue = self.song_queue[qty - 1:]
             self.vc.stop()
 
         async def queue_(self, interaction: discord.Interaction):
@@ -310,8 +306,8 @@ class Player(commands.Cog):
             Returns:
                  This method returns a Bool
             """
-
-            return True if interaction.user.voice.channel == self.vc else False
+            print("into same queue")
+            return True if interaction.user.voice.channel.id == self.vc.channel.id else False
 
     @app_commands.command(name='play', description='Tocar musicas')
     async def play(self, interaction: discord.Interaction, *, url: str = None):
@@ -601,8 +597,28 @@ class Player(commands.Cog):
             await player.queue_(interaction)
 
     @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
-    async def skip(self, interaction: discord.Interaction):
-        ...
+    async def skip(self, interaction: discord.Interaction, qty: int = 1):
+        """
+
+        Parameters:
+            qty: int
+                The quantity of songs to be skipped
+        :param interaction:
+        :return:
+        """
+
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+                                                           f"**{chosen_phrase()}**. Obrigado.")
+        else:
+            if await player.same_queue_(interaction):
+                await player.vc.stop()
+            else:
+                return await interaction.response.send_message(f"Nós não estamos no mesmo canal de voz, "
+                                                               f"**{chosen_phrase()}**.")
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
