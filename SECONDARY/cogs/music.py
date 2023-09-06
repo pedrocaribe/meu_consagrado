@@ -504,12 +504,13 @@ class Player(commands.Cog):
         except KeyError:
             return await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
         else:
-            if player.vc.is_playing():
-                await interaction.response.send_message("Música pausada")
-                return player.vc.pause()
-            else:
-                await interaction.response.send_message("Continuando música")
-                return player.vc.resume()
+            if await player.same_queue_(interaction):
+                if player.vc.is_playing():
+                    await interaction.response.send_message("Música pausada")
+                    return player.vc.pause()
+                else:
+                    await interaction.response.send_message("Continuando música")
+                    return player.vc.resume()
 
     @app_commands.command(name="resume", description="Continuar música em reprodução")
     async def resume(self, interaction: discord.Interaction):
