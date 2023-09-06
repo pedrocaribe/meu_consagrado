@@ -225,7 +225,7 @@ class Player(commands.Cog):
             thumb, e = await icon("profile", e)
             return await interaction.response.send_message(embed=e, file=thumb, view=view)
 
-        async def skip_(self, interaction: discord.Interaction, qty: int = 1):
+        async def skip_(self, interaction: discord.Interaction, qty: int):
             # If bot is not in a Voice Channel
             if not self.vc:
                 return await interaction.response.send_message(f"Não estamos com serviço couvert hoje. Obrigado.")
@@ -532,11 +532,12 @@ class Player(commands.Cog):
         except KeyError:
             return await interaction.response.send_message(f"Mas eu não estou tocando, **{chosen_phrase()}**")
         else:
-            if player.vc.is_paused():
-                return player.vc.resume()
-            else:
-                return await interaction.response.send_message(f"A música não está pausada, **{chosen_phrase()}**. "
-                                                               f"Pra pausar é só mandar um `/pause`.")
+            if await player.same_queue_(interaction):
+                if player.vc.is_paused():
+                    return player.vc.resume()
+                else:
+                    return await interaction.response.send_message(f"A música não está pausada, **{chosen_phrase()}**. "
+                                                                   f"Pra pausar é só mandar um `/pause`.")
 
     @app_commands.command(name="now", description="Mostra a música tocando no momento")
     async def now(self, interaction: discord.Interaction):
@@ -598,14 +599,6 @@ class Player(commands.Cog):
 
     @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
     async def skip(self, interaction: discord.Interaction, qty: int = 1):
-        """
-
-        Parameters:
-            qty: int
-                The quantity of songs to be skipped
-        :param interaction:
-        :return:
-        """
 
         try:
             guild_id = interaction.guild_id
@@ -615,7 +608,7 @@ class Player(commands.Cog):
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
             if await player.same_queue_(interaction):
-                await player.vc.stop()
+                await player.skip_(interaction, qty)
             else:
                 return await interaction.response.send_message(f"Nós não estamos no mesmo canal de voz, "
                                                                f"**{chosen_phrase()}**.")
