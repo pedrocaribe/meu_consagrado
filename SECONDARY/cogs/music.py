@@ -477,11 +477,16 @@ class Player(commands.Cog):
         Returns:
             This function does Not return anything.
         """
-
-        guild_id = interaction.guild_id
-        player = self.playing_guilds[guild_id]
-        await player.stop_leave_(interaction)
-        self.playing_guilds.pop(guild_id)
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+                                                           f"**{chosen_phrase()}**. Obrigado.")
+        else:
+            if player.same_queue_(interaction):
+                await player.stop_leave_(interaction)
+                self.playing_guilds.pop(guild_id)
 
     @app_commands.command(name="pause", description="Pausar música em reprodução")
     async def pause(self, interaction: discord.Interaction):
