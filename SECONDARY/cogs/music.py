@@ -463,7 +463,7 @@ class Player(commands.Cog):
                                                    f"desse link, **{chosen_phrase()}**, bora tentar outra? "
                                                    f"Usa o comando `/search NomeDaMusica`")
 
-    @app_commands.command(name="stop", description="Parar musicas e desconectar do canal de voz")
+    @app_commands.command(name="stop", description="Parar músicas e desconectar do canal de voz")
     async def stop(self, interaction: discord.Interaction):
         """Stops music playback and disconnects from the voice channel.
 
@@ -571,7 +571,9 @@ class Player(commands.Cog):
             return await player.now_(interaction)
 
     @app_commands.command(name="search_music", description="Busca de músicas, para que o Bot reproduza")
-    async def search_music(self, interaction: discord.Interaction):
+    async def search_music(self, interaction: discord.Interaction, song_name: str):
+        await interaction.response.send_message("Pesquisando...")
+
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
         #       In order to do it we have to store the results somewhere, to then add to queue
