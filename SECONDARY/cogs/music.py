@@ -574,6 +574,16 @@ class Player(commands.Cog):
     async def search_music(self, interaction: discord.Interaction, song_name: str):
         await interaction.response.send_message("Pesquisando...")
 
+        amt = 5
+        songs = await self.bot.loop.run_in_executor(
+            None, lambda: YoutubeDL({"format": "bestaudio/best", "quiet": True, "noplaylist": True}).extract_info(
+                f"ytsearch{amt}:{song_name}", download=False, ie_key="YoutubeSearch"))
+
+        # If nothing found, return to user
+        if len(songs['entries']) == 0:
+            return await interaction.followup.send(f"Não encontrei nenhuma música com esse nome, **{chosen_phrase()}**,"
+                                                   f" Vamos tentar outra?")
+
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
         #       In order to do it we have to store the results somewhere, to then add to queue
