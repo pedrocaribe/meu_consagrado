@@ -575,8 +575,16 @@ class Player(commands.Cog):
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
         #       In order to do it we have to store the results somewhere, to then add to queue
-
-        ...
+        # search for music
+        try:
+            guild_id = interaction.guild_id
+            player = self.playing_guilds[guild_id]
+        except KeyError:
+            ...
+        else:
+            if player.same_queue_(interaction):
+                ...
+                # Create menu to add to queue
 
     @app_commands.command(name="queue", description="Mostra a fila de músicas, se houver")
     async def queue(self, interaction: discord.Interaction):
