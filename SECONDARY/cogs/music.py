@@ -13,10 +13,6 @@ from discord.ui import Button, View
 from utils import *
 # discord, app_commands and commands are being imported from utils
 
-# TODO: ADD VERIFICATION IF USER IS IN SAME VC FOR EVERY COMMAND
-
-
-# noinspection PyUnresolvedReferences
 @app_commands.guild_only()
 class Player(commands.Cog):
     def __init__(self, bot):
