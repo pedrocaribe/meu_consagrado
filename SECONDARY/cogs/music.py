@@ -19,7 +19,6 @@ class Player(commands.Cog):
         self.bot = bot
         self.playing_guilds = {}  # dict of Play objects representing guilds playing -> guild_id : object
 
-    # noinspection PyUnresolvedReferences
     class Play:
         def __init__(self, interaction: discord.Interaction, bot):
             self.bot = bot
