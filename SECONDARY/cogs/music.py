@@ -17,6 +17,19 @@ from utils import *
 
 
 # noinspection PyUnresolvedReferences
+
+class MusicSearchView(discord.ui.View):
+    def __init__(self, list_of_songs: list):
+        super().__init__()
+
+        class Song:
+            def __init__(self, list_of_buttons: list):
+                ...
+
+        for song in list_of_songs:
+            buttons = 
+
+
 @app_commands.guild_only()
 class Player(commands.Cog):
     def __init__(self, bot):
@@ -304,7 +317,7 @@ class Player(commands.Cog):
                     The interaction object representing the user's command
 
             Returns:
-                 This method returns a Bool
+                This method returns a Bool
             """
             print("into same queue")
             return True if interaction.user.voice.channel.id == self.vc.channel.id else False
@@ -583,6 +596,8 @@ class Player(commands.Cog):
         if len(songs['entries']) == 0:
             return await interaction.followup.send(f"Não encontrei nenhuma música com esse nome, **{chosen_phrase()}**,"
                                                    f" Vamos tentar outra?")
+
+        view = MusicSearchView(songs)
 
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
