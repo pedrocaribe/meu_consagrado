@@ -319,7 +319,7 @@ class Player(commands.Cog):
             Returns:
                 This method returns a Bool
             """
-            print("into same queue")
+
             return True if interaction.user.voice.channel.id == self.vc.channel.id else False
 
     @app_commands.command(name='play', description='Tocar musicas')
