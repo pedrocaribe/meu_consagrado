@@ -17,19 +17,6 @@ from utils import *
 
 
 # noinspection PyUnresolvedReferences
-
-class MusicSearchView(discord.ui.View):
-    def __init__(self, list_of_songs: list):
-        super().__init__()
-
-        class Song:
-            def __init__(self, list_of_buttons: list):
-                ...
-
-        for song in list_of_songs:
-            buttons = 
-
-
 @app_commands.guild_only()
 class Player(commands.Cog):
     def __init__(self, bot):
@@ -596,9 +583,7 @@ class Player(commands.Cog):
         if len(songs['entries']) == 0:
             return await interaction.followup.send(f"Não encontrei nenhuma música com esse nome, **{chosen_phrase()}**,"
                                                    f" Vamos tentar outra?")
-
-        view = MusicSearchView(songs)
-
+        
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
         #       In order to do it we have to store the results somewhere, to then add to queue
