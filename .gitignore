@@ -1,0 +1,10 @@
+.idea/dbnavigator.xml
+.idea/discord.xml
+MAIN/.gitignore
+SECONDARY/.cache
+SECONDARY/gitcp.bat
+SECONDARY/cogs/music.py
+SECONDARY/ICONS/profile.jpeg
+SECONDARY/logs/debugs.log
+SECONDARY/logs/debugs.log.1
+TESTS/
