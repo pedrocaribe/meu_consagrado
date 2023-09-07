@@ -583,7 +583,13 @@ class Player(commands.Cog):
         if len(songs['entries']) == 0:
             return await interaction.followup.send(f"Não encontrei nenhuma música com esse nome, **{chosen_phrase()}**,"
                                                    f" Vamos tentar outra?")
-        
+
+        await interaction.followup.send("Aqui estão 5 resultados para a música pesquisada:")
+        for song in songs["entries"]:
+            e = discord.Embed(title=song["title"], description=song["webpage_url"])
+            e.set_thumbnail(url=song["thumbnails"][0]["url"])
+            await interaction.followup.send(embed=e)
+
         # TODO: The idea of this command is to look for the song requested by the user,
         #   Provide maybe 5 results and an option to play any of them.
         #       In order to do it we have to store the results somewhere, to then add to queue
