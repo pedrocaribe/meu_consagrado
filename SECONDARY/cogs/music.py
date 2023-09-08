@@ -391,7 +391,7 @@ class Player(commands.Cog):
             Returns:
                 This method does Not return anything.
             """
-            
+
             q_len = len(self.song_queue)
             # If no songs in queue and not currently playing
             if q_len == 0 and not self.vc.is_playing():
@@ -421,6 +421,27 @@ class Player(commands.Cog):
             return await interaction.response.send_message(embed=e)
 
         async def search_(self, amount: int, song: str, get_url=False):
+            """Search for songs on YouTube and return their URLs or information.
+
+            This method searches for songs on YouTube using YouTubeDL and the provided search query, and returns a list 
+            of URLs or a list of detailed information about the search results. The number of results returned is 
+            determined by the 'amount' parameter.
+
+            Parameters:
+                amount: int
+                    The number of search results to retrieve.
+                song: str
+                    The search query for finding songs.
+                get_url: bool [OPTIONAL]
+                    Determines whether to return the URLs of the search results
+
+            Returns:
+                list or None:
+                    If 'get_url' is True, this method returns a list of URLs as strings. If 'get_url' is False, it returns
+                    a list of lists, where each inner list contains three elements: URL, title, and thumbnail URL. If no
+                    results are found, it returns None.
+            """
+            
             # Loop until YoutubeDL returns the expected amount of links
             info = await self.bot.loop.run_in_executor(
                 None, lambda: YoutubeDL({"format": "bestaudio/best", "quiet": True, "noplaylist": True}).extract_info(
