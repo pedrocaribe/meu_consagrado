@@ -311,6 +311,20 @@ class Player(commands.Cog):
                     f"Mas eu não estou nem tocando, **{chosen_phrase()}**...")
 
         async def ads_(self, interaction: discord.Interaction):
+            """Send an advertisement message.
+
+            This method sends an advertisement message to the channel where the interaction occurred, inviting users 
+            to check out a Linktree (Social Media links). It includes a clickable button with the label "Linktr.ee" 
+            that opens the specified URL when clicked.
+
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+
+            Returns:
+                This method does Not return anything.
+            """
+
             linktree = Button(
                 label="Linktr.ee",
                 style=discord.ButtonStyle.green,
