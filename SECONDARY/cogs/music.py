@@ -227,6 +227,24 @@ class Player(commands.Cog):
             return counter
 
         async def spotify_parse_(self, interaction: discord.Interaction, url: str, playlist: bool = True):
+            """Parse songs from a Spotify playlist or track URL and return their names for further processing
+
+            This method parses a Spotify playlist or track URL and extracts the names of the songs and artists to further
+            process using youtubesearchpython.
+            
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+                url: str
+                    The URL of the Spotify playlist or track.
+                playlist: bool [OPTIONAL]
+                    A boolean indicating whether the URL is for a playlist (True) or a track (False).
+                    Defaults to True (playlist).
+
+            Returns:
+                data: list
+                    A list of song names and artist names (formatted as "Song Name - Artist").
+            """
 
             cid = SPOTIFY_CID
 
@@ -263,6 +281,20 @@ class Player(commands.Cog):
             return data
 
         async def stop_leave_(self, interaction: discord.Interaction):
+            """Stop playing music and leave the voice channel.
+
+            This method stops the Voice Channel playback and disconnects the Bot from it. It also clears the Voice Channel
+            property and clears the song queue.
+            After performing the above, it calls ads_ method to send creator advertisement to user.
+
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+
+            Returns:
+                None: This method does not return anything.
+            """
+
             if self.vc:
                 self.vc.stop()
                 await self.vc.disconnect()
