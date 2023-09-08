@@ -3,3 +3,21 @@
 # In order to resolve the 'unresolved reference' error for utils imports, set SECONDARY folder as a SOURCE FOLDER.
 #   In Pycharm you can do that by right-clicking the folder > Make Directory as > Sources Root
 
+aiohttp==3.8.3
+asyncpraw==7.7.1
+colorama==0.4.6
+dill==0.3.6
+discord.py==2.3.2
+googlesearch_python==1.2.3
+humanize==4.8.0
+openai==0.27.8
+pafy==0.5.5
+praw==7.7.0
+psutil==5.9.5
+python-dotenv==1.0.0
+Requests==2.31.0
+spotipy==2.23.0
+sympy==1.12
+translators==5.7.9
+youtube_dl==2021.12.17
+youtube_search_python==1.6.6
