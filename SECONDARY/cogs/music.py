@@ -102,12 +102,11 @@ class Player(commands.Cog):
                 self.vc.source.volume = 0.5
 
         async def check_queue(self, interaction: discord.Interaction):
-            """
-            Check the song queue and initiate playback of the next song if available.
+            """Check the song queue and initiate playback of the next song if available.
 
-            This method examines the current song queue and, if there are songs in the queue, starts playing the next song.
-            If there are songs in the queue, this method updates the "current" song, initiates playback, and updates the
-            "now playing" message. If the queue is empty, it does nothing.
+            This method examines the current song queue and, if there are songs in the queue it starts playing the next song,
+            updates the "current" song, initiates playback, and updates the "now playing" message. 
+            If the queue is empty, it does nothing.
             
             Parameters:
                 interaction (discord.Interaction):
@@ -116,7 +115,7 @@ class Player(commands.Cog):
             Returns:
                 This method does Not return anything.
             """
-            
+
             queue = self.song_queue
 
             # If song in queue
@@ -130,7 +129,19 @@ class Player(commands.Cog):
                 return
 
         async def now_(self, interaction: discord.Interaction):
+            """Provide information about the currently playing song.
 
+            This method retrieves and displays information about the currently playing song. It creates an embedded message
+            that includes the song title, artist, and thumbnail. If no song is currently playing, it informs the user.
+
+            Parameters:
+                interaction (discord.Interaction):
+                    The interaction object representing the command invocation.
+
+            Returns:
+                This method does Not return anything.
+            """    
+            
             if not self.vc.is_playing():
                 return await interaction.response.send_message(
                     f'Não estamos com serviço couvert hoje, **{chosen_phrase()}**. Obrigado.')
