@@ -184,7 +184,7 @@ class Player(commands.Cog):
             title = music['title']
             channel_name = music['channel']['name']
 
-            # Returns a tuple [0] and [1] values
+            # Returns a tuple
             return title, thumb, channel_name
 
         async def youtube_playlist_(self, interaction: discord.Interaction, pl: str):
