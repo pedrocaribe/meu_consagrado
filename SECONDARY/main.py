@@ -49,7 +49,7 @@ logging.getLogger('discord.http').setLevel(logging.DEBUG)
 handler = logging.handlers.RotatingFileHandler(
     filename="logs/debugs.log",
     encoding="utf-8",
-    maxBytes=32 * 1024 * 1024,
+    maxBytes=32 * 1024,
     backupCount=15,
 )
 formatter = logging.Formatter("[%(asctime)s] [%(levelname)-10s] %(name)-22s: %(module)-10s: %(message)s", style="%")
