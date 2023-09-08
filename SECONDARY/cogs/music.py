@@ -102,6 +102,21 @@ class Player(commands.Cog):
                 self.vc.source.volume = 0.5
 
         async def check_queue(self, interaction: discord.Interaction):
+            """
+            Check the song queue and initiate playback of the next song if available.
+
+            This method examines the current song queue and, if there are songs in the queue, starts playing the next song.
+            If there are songs in the queue, this method updates the "current" song, initiates playback, and updates the
+            "now playing" message. If the queue is empty, it does nothing.
+            
+            Parameters:
+                interaction (discord.Interaction):
+                    The interaction object representing the command invocation.
+
+            Returns:
+                This method does Not return anything.
+            """
+            
             queue = self.song_queue
 
             # If song in queue
