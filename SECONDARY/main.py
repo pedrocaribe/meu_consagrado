@@ -383,7 +383,7 @@ async def on_message(message: discord.Message):
     Parameters:
         message: Message from which to retrieve all information.
     Returns:
-         This function does Not return anything.
+        This function does Not return anything.
     """
 
     m_date = datetime.today().strftime('%Y-%m-%d')
