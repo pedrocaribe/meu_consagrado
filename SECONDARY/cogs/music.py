@@ -355,7 +355,7 @@ class Player(commands.Cog):
             Returns:
                 This method does Not return anything.
             """
-            
+
             # If bot is not in a Voice Channel
             if not self.vc:
                 return await interaction.response.send_message(f"Não estamos com serviço couvert hoje. Obrigado.")
@@ -380,6 +380,18 @@ class Player(commands.Cog):
             self.vc.stop()
 
         async def queue_(self, interaction: discord.Interaction):
+            """Show the list of songs in the queue
+            
+            This method displays the list of songs currently in the queue, if any.
+
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+            
+            Returns:
+                This method does Not return anything.
+            """
+            
             q_len = len(self.song_queue)
             # If no songs in queue and not currently playing
             if q_len == 0 and not self.vc.is_playing():
