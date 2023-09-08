@@ -341,6 +341,21 @@ class Player(commands.Cog):
             return await interaction.response.send_message(embed=e, file=thumb, view=view)
 
         async def skip_(self, interaction: discord.Interaction, qty: int):
+            """Skip one or more songs in the queue and start playing the next song.
+
+            This method allows users to skip the currently playing song in the queue and starts playing the
+            next song. Users can specify the number of songs to skip by providing a quantity.
+
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+                qty: int
+                    The number of songs to skip in the queue.
+
+            Returns:
+                This method does Not return anything.
+            """
+            
             # If bot is not in a Voice Channel
             if not self.vc:
                 return await interaction.response.send_message(f"Não estamos com serviço couvert hoje. Obrigado.")
