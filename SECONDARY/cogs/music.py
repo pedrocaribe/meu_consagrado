@@ -70,6 +70,19 @@ class Player(commands.Cog):
                     return True
 
         async def play_(self, interaction: discord.Interaction, song: str):
+            """Play songs by looping through queue
+            
+            This method plays songs from the Play object's queue. It will play recursively until the last item
+            of the queue, in which the recursion will raise an error and stop the recursive action.
+            This method also attempts to use pafy to retrieve the best audio quality available for the song requested.
+            
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+                song: str
+                    The YouTube URL for the first song of the queue.
+            """
+
             try:
                 url = pafy.new(song).getbestaudio().url
                 self.current = song
