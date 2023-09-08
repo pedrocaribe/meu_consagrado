@@ -163,6 +163,22 @@ class Player(commands.Cog):
                 await interaction.followup.send(embed=embed)
 
         async def music_info_(self, url: str):
+            """Retrieve information about a music video.
+
+            This method uses youtubesearchpython to query information about a music video, including its title, 
+            thumbnail URL, and channel name.
+            
+            Parameters:
+                url: str
+                    The URL of the music video.
+
+            Returns:
+                tuple: A tuple containing the following elements:
+                    - title (str): The title of the music video.
+                    - thumb (str): The URL of the video's thumbnail.
+                    - channel_name (str): The name of the channel that uploaded the video.
+            """
+
             music = Video.getInfo(url)
             thumb = music['thumbnails'][0]['url']
             title = music['title']
