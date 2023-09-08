@@ -135,7 +135,7 @@ class Player(commands.Cog):
             that includes the song title, artist, and thumbnail. If no song is currently playing, it informs the user.
 
             Parameters:
-                interaction (discord.Interaction):
+                interaction: discord.Interaction
                     The interaction object representing the command invocation.
 
             Returns:
@@ -188,6 +188,21 @@ class Player(commands.Cog):
             return title, thumb, channel_name
 
         async def youtube_playlist_(self, interaction: discord.Interaction, pl: str):
+            """Add songs from a YouTube playlist to the queue.
+
+            This method uses youtubesearchpython to parse a YouTube playlist and add the URLs of each video in 
+            the playlist to the queue.
+            
+            Parameters:
+                interaction: discord.Interaction
+                    The interaction object representing the command invocation.
+                pl: str
+                    The URL of the YouTube playlist.
+
+            Returns:
+                counter: int
+                    The number of songs added to the queue from the playlist.
+            """
 
             # Parse playlist and extract url for each video in playlist
             pl_p = Playlist.getVideos(pl)
