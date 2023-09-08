@@ -81,6 +81,9 @@ class Player(commands.Cog):
                     The interaction object representing the command invocation.
                 song: str
                     The YouTube URL for the first song of the queue.
+            
+            Returns:
+                This method does Not return anything.
             """
 
             try:
