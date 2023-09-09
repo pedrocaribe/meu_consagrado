@@ -2,6 +2,7 @@
 #   Edit file backend_youtube_dl.py and comment lines 50 and 54 which refer to 'average_rating' and 'dislike_count'
 # In order to resolve the 'unresolved reference' error for utils imports, set SECONDARY folder as a SOURCE FOLDER.
 #   In Pycharm you can do that by right-clicking the folder > Make Directory as > Sources Root
+# A logs folder must be manually created within the root folder of the Bot.
 
 aiohttp==3.8.3
 asyncpraw==7.7.1
