@@ -126,13 +126,15 @@ class Ticket:
                 "error, "
                 "user_id, "
                 "status) VALUES (?,?,?,?,?,?,?)",
-                (self.guild_id,
-                 self.channel_id,
-                 self.message_id,
-                 self.timestamp,
-                 self.error,
-                 self.user_id,
-                 "OPEN")
+                (
+                    self.guild_id,
+                    self.channel_id,
+                    self.message_id,
+                    self.timestamp,
+                    self.error,
+                    self.user_id,
+                    "OPEN"
+                    )
                 )
             self.db.commit()
 
