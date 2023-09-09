@@ -40,7 +40,7 @@ MONITOR_ERRORS = (
     server.TranslatorError,
     commands.CommandInvokeError,
     app_commands.CommandInvokeError,
-    a)
+    )
 
 FRASE_MEIO = [
             'meu Magnata',
