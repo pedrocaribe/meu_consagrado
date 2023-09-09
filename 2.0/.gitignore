@@ -7,6 +7,7 @@ logs/
 
 # Ignore configuration files
 .vscode/
+.idea/
 
 # Ignore all db files
 *.db
