@@ -6,12 +6,11 @@ import os
 import re
 
 # Import secondary modules
-from discord.ext import commands
-from discord import app_commands
 from dotenv import load_dotenv
 
 # Import variables and standard functions from local file
 from utils import *
+# commands and app_commands are being imported within utils
 
 # Load hidden TOKEN
 load_dotenv()
