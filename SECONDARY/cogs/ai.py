@@ -8,7 +8,6 @@ import re
 # Import secondary modules
 from discord.ext import commands
 from discord import app_commands
-from math import floor
 from dotenv import load_dotenv
 
 # Import variables and standard functions from local file
