@@ -13,3 +13,6 @@ logs/
 
 # Ignore pycache folders
 __pycache__/
+
+# Ignore V1.0 Folder
+1.0/
