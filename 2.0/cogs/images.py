@@ -39,7 +39,7 @@ class Images(commands.Cog):
         Returns:
             This function does Not return anything.
         """
-
+        await interaction.response.defer()
         # Check if reddit ID and SECRET are functional
         if self.reddit:
 
@@ -85,11 +85,11 @@ class Images(commands.Cog):
 
             # Send random post from top 50 submissions of the day
             to_send = random.choice([submission async for submission in submissions])
-            return await interaction.response.send_message(to_send.url)
+            return await interaction.followup.send(f"{to_send.url}")
 
         # If credentials are invalid, contact Admin
         else:
-            return await interaction.response.send_message("Erro no comando, contate um Admin")
+            return await interaction.followup.send("Erro no comando, contate um Admin")
 
     @app_commands.command(name='gato', description='Imagem aleatória de um gato')
     async def cat(self, interaction: discord.Interaction):
