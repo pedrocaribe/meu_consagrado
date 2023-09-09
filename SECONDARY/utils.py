@@ -103,6 +103,35 @@ class EnableModal(discord.ui.Modal, title='Regras'):
 
 class Ticket:
     def __init__(self, ctx: commands.Context, db: sqlite3.Connection, error: commands.CommandError = None):
+        """A class representing a support ticket.
+
+        Attributes:
+            timestamp: datetime.datetime
+                The timestamp when the ticket was created.
+            guild_name: str
+                The name of the guild where the ticket was created, or None if created in a DM.
+            guild_id: int
+                The ID of the guild where the ticket was created, or None if created in a DM.
+            channel_id: int
+                The ID of the channel where the ticket was created, or None if created in a DM.
+            channel_name: str
+                The name of the channel where the ticket was created, or None if created in a DM.
+            message_id: int
+                The ID of the message that triggered the creation of the ticket.
+            error: str
+                A string representation of any error associated with the ticket.
+            user: str
+                The name of the user who created the ticket.
+            user_id: int
+                The ID of the user who created the ticket.
+            db: sqlite3.Connection
+                The SQLite database connection for storing the ticket.
+
+        Methods:
+            create_ticket():
+                Inserts the ticket information into the database.
+        """
+
         self.timestamp = ctx.message.created_at.now()
         self.guild_name = ctx.guild.name if ctx.guild else None
         self.guild_id = ctx.guild.id if ctx.guild else None
@@ -115,6 +144,12 @@ class Ticket:
         self.db = db
 
     def create_ticket(self):
+        """Create a Bug Ticket.
+        
+        Create a Bug ticket and insert it into the database with default status of OPEN.
+
+        """
+
         with self.db:
             cur = self.db.cursor()
             cur.execute(
