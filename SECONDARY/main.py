@@ -98,23 +98,14 @@ async def on_ready():
     error_code = 0
 
     # DB connections
-    # if guild_db:
-    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{GUILD_DB}')
-    # else:
-    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{GUILD_DB}')
-    #     error_code = 1
-    # if msg_db:
-    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{MSG_DB}')
-    # else:
-    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{MSG_DB}')
-    #     error_code = 2
-    # if ticket_db:
-    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{TICKET_DB}')
-    # else:
-    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{TICKET_DB}')
-    #     error_code = 3
+    if db_conn:
+        print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{GENERAL_DB}')
+    else:
+        print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{GENERAL_DB}')
+        error_code = 1
+    
 
-    print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
+    print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if not error_code else f'{prefix} {fw}{br}Code {error_code}{sres}'
 
     await change_status.start()
 
