@@ -219,21 +219,21 @@ class General(commands.Cog):
         # Mention member
         await interaction. response.send_message(f'{member.mention}, {insult}')
 
-    @app_commands.command(name='motivacional', description='Frase motivacional para boostar o ânimo!')
-    async def complimentr(self, interaction: discord.Interaction):
-        """A command to send a motivational phrase to boost morale.
+    # @app_commands.command(name='motivacional', description='Frase motivacional para boostar o ânimo!')
+    # async def complimentr(self, interaction: discord.Interaction):
+    #     """A command to send a motivational phrase to boost morale.
 
-        This command retrieves a motivational phrase using the 'motivate' function and sends it as a message.
+    #     This command retrieves a motivational phrase using the 'motivate' function and sends it as a message.
 
-        Args:
-            interaction: discord.Interaction
-                The interaction object representing the command invocation.
+    #     Args:
+    #         interaction: discord.Interaction
+    #             The interaction object representing the command invocation.
 
-        Returns:
-            This function does Not return anything.
-        """
-
-        return await interaction.response.send_message(await motivate())
+    #     Returns:
+    #         This function does Not return anything.
+    #     """
+        
+    #     return await interaction.response.send_message(await motivate())
 
 
 async def setup(bot):
