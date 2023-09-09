@@ -3,7 +3,6 @@ import json
 import os
 import random
 import discord
-import dill
 import requests
 import translators as ts
 
