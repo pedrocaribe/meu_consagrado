@@ -38,9 +38,6 @@ sres = Style.RESET_ALL
 
 # Set up DBs
 db_conn = db_connect(GENERAL_DB)
-# guild_db = db_connect(GUILD_DB)
-# msg_db = db_connect(MSG_DB)
-# ticket_db = db_connect(TICKET_DB)
 
 # Set up Logging
 logger = logging.getLogger("discord")
@@ -253,12 +250,12 @@ async def on_guild_join(guild: discord.Guild):
 
     await owner.send(file=thumbnail, embed=embed)
 
-    with guild_db:
+    with db_conn:
         guild_id = guild.id
         guild_name = guild.name
         guild_owner_id = guild.owner.id
         joined_date = datetime.today().strftime('%Y-%m-%d')
-        cursor = guild_db.cursor()
+        cursor = db_conn.cursor()
         result = cursor.execute("SELECT * FROM guilds WHERE guild_id = ?", (guild_id,)).fetchone()
 
         if result is None:
@@ -269,10 +266,10 @@ async def on_guild_join(guild: discord.Guild):
                            "joined_date,"
                            "active) "
                            "VALUES (?,?,?,?,?)", (guild_id, guild_name, guild_owner_id, joined_date, True))
-            guild_db.commit()
+            db_conn.commit()
         else:
             cursor.execute("UPDATE guilds SET active = (?) WHERE guild_id = (?)", (True, guild_id,))
-            guild_db.commit()
+            db_conn.commit()
 
 
 # When removed from guild, send msg to server owner and set slash commands to 'Disabled'.
