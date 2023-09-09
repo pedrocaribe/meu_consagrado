@@ -36,10 +36,6 @@ async def get_jokes():
     return bw
 
 
-async def dummy_awaitable_callable(*args, **kwargs) -> NoReturn:
-    raise NotImplementedError("This function is a dummy function and is not meant to be called.")
-
-
 # Connect to DB
 def db_connect(db):
     if os.path.isfile(db):
