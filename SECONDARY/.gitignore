@@ -2,6 +2,12 @@
 *.env
 *.env.*
 
+# Ignore all log files
+logs/
+
+# Ignore configuration files
+.vscode/
+
 # Ignore all db files
 *.db
 
