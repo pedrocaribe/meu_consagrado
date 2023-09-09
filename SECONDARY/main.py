@@ -392,14 +392,14 @@ async def on_message(message: discord.Message):
     author_id = message.author.id
     content = message.content
 
-    with msg_db:
+    with db_conn:
         if not message.author.bot:
-            msg_cursor = msg_db.cursor()
+            msg_cursor = db_conn.cursor()
             msg_cursor.execute("INSERT INTO messages("
                                "guild_id, channel_id, message_id, author_id, date, time, content) "
                                "VALUES (?, ?, ?, ?, ?, ?, ?)",
                                (guild_id, channel_id, message_id, author_id, m_date, m_time, content))
-            msg_db.commit()
+            db_conn.commit()
 
 
 @tasks.loop(seconds=20)
