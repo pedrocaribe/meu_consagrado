@@ -171,7 +171,7 @@ async def on_command_error(ctx: commands.Context, er: commands.CommandError):
     else:
         # Open bug report, inform owner and user.
         owner_user = await bot.fetch_user(bot.owner_id)
-        ticket = Ticket(ctx=ctx, error=er, db=ticket_db)
+        ticket = Ticket(ctx=ctx, error=er, db=db_conn)
 
         owner_embed = discord.Embed(
             title='***__BUG REPORT__***',
