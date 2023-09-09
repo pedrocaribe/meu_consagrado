@@ -33,12 +33,14 @@ SPOTIFY_SECRET = os.getenv("SPOTIFY_SECRET", False)
 
 # MISC
 IGNORE_ERRORS = ()
-MONITOR_ERRORS = (commands.BadArgument,
-                  commands.CommandNotFound,
-                  commands.MissingRequiredArgument,
-                  server.TranslatorError,
-                  commands.CommandInvokeError,
-                  app_commands.CommandInvokeError,)
+MONITOR_ERRORS = (
+    commands.BadArgument,
+    commands.CommandNotFound,
+    commands.MissingRequiredArgument,
+    server.TranslatorError,
+    commands.CommandInvokeError,
+    app_commands.CommandInvokeError,
+    a)
 
 FRASE_MEIO = [
             'meu Magnata',
