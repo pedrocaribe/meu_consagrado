@@ -5,9 +5,6 @@ import discord, os, time, re
 
 # Import secondary modules
 from discord.ext import commands
-from discord import app_commands
-from colorama import Fore, Back, Style
-from datetime import datetime
 # from utils import reload
 from typing import Literal, Optional
 from utils import *
