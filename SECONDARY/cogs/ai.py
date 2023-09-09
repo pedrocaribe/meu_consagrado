@@ -70,7 +70,7 @@ class ChatGPT(commands.Cog):
             f"{bot_response}", ephemeral=False)
 
 
-def chatgpt_response(prompt):
+def chatgpt_response(prompt: str):
     """Generate a response from the ChatGPT AI model.
 
     This function sends a prompt to the ChatGPT AI model and retrieves a response. Model utilized is
