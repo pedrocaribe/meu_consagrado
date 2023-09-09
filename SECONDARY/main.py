@@ -303,10 +303,10 @@ async def on_guild_remove(guild: discord.Guild):
 
     await owner.send(file=thumbnail, embed=leaving_embed)
 
-    with guild_db:
-        cursor = guild_db.cursor()
+    with db_conn:
+        cursor = db_conn.cursor()
         cursor.execute("UPDATE guilds SET active = (?) WHERE guild_id = (?)", (False, guild_id,))
-        guild_db.commit()
+        db_conn.commit()
 
 
 @bot.event
