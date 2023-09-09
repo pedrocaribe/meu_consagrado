@@ -224,7 +224,7 @@ class Owner(commands.Cog):
     @commands.is_owner()
     @commands.guild_only()
     async def list_bugs(self, ctx: commands.Context):
-        db = sqlite3.connect(TICKET_DB)
+        db = sqlite3.connect(GENERAL_DB)
         db.row_factory = sqlite3.Row
         with db:
             cur = db.cursor()
@@ -254,7 +254,7 @@ class Owner(commands.Cog):
 
         indexes = re.split("[, ]+", ticket_id)
 
-        db = sqlite3.connect(TICKET_DB)
+        db = sqlite3.connect(GENERAL_DB)
         db.row_factory = sqlite3.Row
         with db:
             cur = db.cursor()
