@@ -37,9 +37,10 @@ sb = Style.BRIGHT
 sres = Style.RESET_ALL
 
 # Set up DBs
-guild_db = db_connect(GUILD_DB)
-msg_db = db_connect(MSG_DB)
-ticket_db = db_connect(TICKET_DB)
+db_conn = db_connect(GENERAL_DB)
+# guild_db = db_connect(GUILD_DB)
+# msg_db = db_connect(MSG_DB)
+# ticket_db = db_connect(TICKET_DB)
 
 # Set up Logging
 logger = logging.getLogger("discord")
@@ -100,21 +101,21 @@ async def on_ready():
     error_code = 0
 
     # DB connections
-    if guild_db:
-        print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{GUILD_DB}')
-    else:
-        print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{GUILD_DB}')
-        error_code = 1
-    if msg_db:
-        print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{MSG_DB}')
-    else:
-        print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{MSG_DB}')
-        error_code = 2
-    if ticket_db:
-        print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{TICKET_DB}')
-    else:
-        print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{TICKET_DB}')
-        error_code = 3
+    # if guild_db:
+    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{GUILD_DB}')
+    # else:
+    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{GUILD_DB}')
+    #     error_code = 1
+    # if msg_db:
+    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{MSG_DB}')
+    # else:
+    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{MSG_DB}')
+    #     error_code = 2
+    # if ticket_db:
+    #     print(f'{prefix} {fg}Successfully {fw}Connected to DB {fy}{TICKET_DB}')
+    # else:
+    #     print(f'{prefix} {fr}ERROR {fw}Connecting to DB {fy}{TICKET_DB}')
+    #     error_code = 3
 
     print(f'{prefix} {fw}{bg}Code {error_code}{Style.RESET_ALL}') if error_code == 0 else f'{prefix} {fw}{br}Code {error_code}{sres}'
 
