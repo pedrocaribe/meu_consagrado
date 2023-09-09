@@ -39,40 +39,43 @@ async def get_jokes():
 def db_connect(db):
     if os.path.isfile(db):
         dbc = sqlite3.connect(db)
+        return dbc
+    else:
         try:
-            dbc.execute("CREATE TABLE IF NOT EXISTS guilds ( "
-                        "guild_id INTEGER PRIMARY KEY, "
-                        "guild_name TEXT, "
-                        "guild_owner_id INTEGER, "
-                        "joined_date DATE, "
-                        "premium BOOL DEFAULT False NOT NULL,  "
-                        "active BOOL DEFAULT False NOT NULL); "
-
-                        "CREATE TABLE IF NOT EXISTS messages ( "
-                        "guild_id INTEGER, "
-                        "channel_id INTEGER, "
-                        "message_id INTEGER, "
-                        "author_id INTEGER, "
-                        "date DATE, "
-                        "time TIME, "
-                        "content TEXT, "
-                        "PRIMARY KEY (channel_id, message_id)) WITHOUT ROWID; "
-
-                        "CREATE TABLE IF NOT EXISTS tickets ( "
-                        "ticket_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        "guild_id INTEGER, "
-                        "channel_id INTEGER, "
-                        "message_id INTEGER, "
-                        "timestamp TEXT, "
-                        "error TEXT, "
-                        "user_id INTEGER, "
-                        "status TEXT CHECK (status IN ('OPEN', 'CLOSED', 'INPROGRESS')) NOT NULL DEFAULT 'OPEN');")
+            dbc = sqlite3.connect(db)
+            dbc.executescript("""CREATE TABLE IF NOT EXISTS guilds (
+                        guild_id INTEGER PRIMARY KEY,
+                        guild_name TEXT,
+                        guild_owner_id INTEGER,
+                        joined_date DATE,
+                        premium BOOL DEFAULT False NOT NULL, 
+                        active BOOL DEFAULT False NOT NULL);
+                
+                        CREATE TABLE IF NOT EXISTS messages (
+                        guild_id INTEGER,
+                        channel_id INTEGER,
+                        message_id INTEGER,
+                        author_id INTEGER,
+                        date DATE,
+                        time TIME,
+                        content TEXT,
+                        PRIMARY KEY (channel_id, message_id)) WITHOUT ROWID;
+                        
+                        CREATE TABLE IF NOT EXISTS tickets (
+                        ticket_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        guild_id INTEGER,
+                        channel_id INTEGER,
+                        message_id INTEGER,
+                        timestamp TEXT,
+                        error TEXT,
+                        user_id INTEGER,
+                        status TEXT CHECK (status IN ('OPEN', 'CLOSED', 'INPROGRESS')) NOT NULL DEFAULT 'OPEN');""")
+            dbc.commit()
         except Exception as e:
             print(e)
+            return None
         else:
             return dbc
-    else:
-        return None
 
 
 # Function to load cogs when initiating Bot
