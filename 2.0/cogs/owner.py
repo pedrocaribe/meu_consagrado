@@ -288,6 +288,38 @@ class Owner(commands.Cog):
                         db.commit()
                         await ctx.send(f"**Bug** `{index}` set as `CLOSED`")
 
+    # Hidden command to broadcast start of maintenance window
+    @commands.command(hidden = True)
+    @commands.is_owner()
+    async def maintenancestart(self, ctx, est: int, *, reason: str):
+        guild = self.bot.get_guild(ctx.guild.id)
+        allowed_mentions = discord.AllowedMentions(everyone = True)
 
+        channel = discord.utils.get(guild.text_channels, name="anúncios")
+
+        e = discord.Embed(title = ':warning: Anúncio de Manutenção Programada - INÍCIO', description = f'@everyone\nO servidor será desligado por aproximadamente **{est}** minutos para que sejam aplicadas melhorias ao sistema do BOT.\n\n**Motivo**: "__{reason}__"\n\n\nAgradeço a compreensão e paciência de todos.')
+        e.set_footer(text = 'Pedro Caribé - Criador')
+        e.set_thumbnail(url = 'https://rioantigomoveis.files.wordpress.com/2016/06/maintenance-icon.png')
+
+        await channel.send(embed = e, allowed_mentions = allowed_mentions)
+
+
+    # Hidden command to broadcast end of maintenance window
+    @commands.command(hidden = True)
+    @commands.is_owner()
+    async def maintenanceend(self, ctx):
+        guild = self.bot.get_guild(ctx.guild.id)
+        allowed_mentions = discord.AllowedMentions(everyone = True)
+
+        channel = discord.utils.get(guild.text_channels, name="anúncios")
+
+        e = discord.Embed(title = ':white_check_mark: Anúncio de Manutenção Programada - TÉRMINO', description = f'@everyone\nO servidor está novamente no ar.\n\nAgradeço a compreensão e paciência de todos.')
+        e.set_footer(text = 'Pedro Caribé - Criador')
+        e.set_thumbnail(url = 'https://rioantigomoveis.files.wordpress.com/2016/06/maintenance-icon.png')
+
+        await channel.send(embed = e, allowed_mentions = allowed_mentions)
+
+
+        
 async def setup(bot):
     await bot.add_cog(Owner(bot))
