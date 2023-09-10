@@ -703,7 +703,8 @@ class Player(commands.Cog):
         else:
             if await player.same_queue_(interaction):
                 if player.vc.is_paused():
-                    return player.vc.resume()
+                    player.vc.resume()
+                    return await interaction.response.send_message(f"Continuando música!")
                 else:
                     return await interaction.response.send_message(f"A música não está pausada, **{chosen_phrase()}**. "
                                                                    f"Pra pausar é só mandar um `/pause`.")
