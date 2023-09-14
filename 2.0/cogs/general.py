@@ -236,5 +236,9 @@ class General(commands.Cog):
     #     return await interaction.response.send_message(await motivate())
 
 
+    # TODO: Add command vor voting.
+    #   Has to consider diverse types of voting
+    #   Has to be either thumbs up or down, or an intermediary
+
 async def setup(bot):
     await bot.add_cog(General(bot))
