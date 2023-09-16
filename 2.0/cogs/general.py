@@ -181,7 +181,7 @@ class General(commands.Cog):
 
         # If a reason was given, append to response
         if reason:
-            resp += f'de "__{reason}__".'
+            resp += f' de "__{reason}__".'
         await interaction.response.send_message(resp)
 
         # async sleep the request amount of minutes
