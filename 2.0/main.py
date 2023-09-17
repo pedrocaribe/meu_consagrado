@@ -22,7 +22,7 @@ from utils import *
 
 # GLOBAL Declarations
 intent = discord.Intents.all()
-bot = commands.Bot(command_prefix="!", intents=intent)
+bot = commands.Bot(command_prefix="!" if not DEBUG else "%", intents=intent)
 
 # Styling
 fy = Fore.YELLOW
