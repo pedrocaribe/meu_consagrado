@@ -588,8 +588,13 @@ class Player(commands.Cog):
                     # If URL from YouTube, but not playlist handle as individual video
                     else:
                         queue.append(url)
-                        await interaction.response.send_message(f"Tocando: {queue[0]}")
-                        await player.play_(interaction, queue[0])
+                        if player.vc.is_playing():
+                            return await interaction.response.send_message(
+                                f"Música adicionada à lista na posição **{q_len + 1}**. Essa é braba!"
+                            )
+                        else:
+                            await interaction.followup.send(f"Tocando: {queue[0]}")
+                            await player.play_(interaction, queue[0])
 
                 else:
                     await interaction.response.send_message(f"Vou procurar sua música aqui na lista de CDs que o patrão"
