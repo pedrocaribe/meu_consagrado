@@ -3,6 +3,9 @@
 # In order to resolve the 'unresolved reference' error for utils imports, set SECONDARY folder as a SOURCE FOLDER.
 #   In Pycharm you can do that by right-clicking the folder > Make Directory as > Sources Root
 # A logs folder must be manually created within the root folder of the Bot.
+# Create a .env file to store your tokens and db name
+#   Discord token should be named DISCORD_TOKEN = "---" Replace --- with your Discord Token
+#   DB should be named GENERAL_DB = "---" Replace --- with your desired db name
 
 aiohttp==3.8.3
 asyncpraw==7.7.1
