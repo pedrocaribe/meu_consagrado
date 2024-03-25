@@ -358,25 +358,26 @@ class Player(commands.Cog):
 
             # If bot is not in a Voice Channel
             if not self.vc:
-                return await interaction.response.send_message(f"Não estamos com serviço couvert hoje. Obrigado.")
+                return await interaction.followup.send(f"Não estamos com serviço couvert hoje. Obrigado.")
             # If caller is not in a Voice Channel
             if interaction.user.voice is None:
-                return await interaction.response.send_message(f"Entra num canal de voz primeiro, e me chama de lá, "
+                return await interaction.followup.send(f"Entra num canal de voz primeiro, e me chama de lá, "
                                                                f"**{chosen_phrase()}**.")
             # If caller's Voice Channel is different from the Bot's
             if interaction.user.voice.channel.id != self.vc.channel.id:
-                return await interaction.response.send_message(f"A banda já está tocando em outro canal de voz, "
+                return await interaction.followup.send(f"A banda já está tocando em outro canal de voz, "
                                                                f"**{chosen_phrase()}**. Vamos ter que "
                                                                f"aguardar ela finalizar lá, ou utilizar outro bot "
                                                                f"no meio tempo.")
 
             # If no more music in queue
             if not self.song_queue[0] or not self.song_queue:
-                return await interaction.response.send_message(f"Não tem mais músicas na lista. Se quiser parar "
+                return await interaction.followup.send(f"Não tem mais músicas na lista. Se quiser parar "
                                                                f"completamente a música, utilize o /stop")
 
             if qty > 1:
                 self.song_queue = self.song_queue[qty - 1:]
+                await interaction.followup.send(f"Próxima música da lista!")
             self.vc.stop()
 
         async def queue_(self, interaction: discord.Interaction):
@@ -491,6 +492,9 @@ class Player(commands.Cog):
         """
 
         try:
+
+            await interaction.response.defer()
+
             guild_id = interaction.guild_id
 
             # If no Voice Client for the caller Guild, instantiate
@@ -513,7 +517,7 @@ class Player(commands.Cog):
                 if "spotify" in url:
                     # Check if URL is for a Playlist in Spotify
                     if "playlist" in url:
-                        await interaction.response.send_message(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
+                        await interaction.followup.send(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
                                                                 f"Analisando músicas!")
                         async with interaction.channel.typing():
                             song_names_array = await player.spotify_parse_(interaction, url)
@@ -541,7 +545,7 @@ class Player(commands.Cog):
 
                     # Check if URL is for a Track in Spotify
                     elif "track" in url:
-                        await interaction.response.send_message(f"Segura aí **{chosen_phrase()}**!")
+                        await interaction.followup.send(f"Segura aí **{chosen_phrase()}**!")
 
                         song_name = await player.spotify_parse_(interaction, url, playlist=False)
                         result = await player.search_(1, f"music {song_name}", get_url=True)
@@ -568,7 +572,7 @@ class Player(commands.Cog):
                     # Check if URL is for a Playlist in YouTube
                     if "playlist?" in url:
                         # Initial response
-                        await interaction.response.send_message(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
+                        await interaction.followup.send(f"Isso aí é uma playlist, né **{chosen_phrase()}**? "
                                                                 f"Analisando músicas!")
 
                         async with interaction.channel.typing():
@@ -589,7 +593,7 @@ class Player(commands.Cog):
                     else:
                         queue.append(url)
                         if player.vc.is_playing():
-                            return await interaction.response.send_message(
+                            return await interaction.followup.send(
                                 f"Música adicionada à lista na posição **{q_len + 1}**. Essa é braba!"
                             )
                         else:
@@ -597,7 +601,7 @@ class Player(commands.Cog):
                             await player.play_(interaction, queue[0])
 
                 else:
-                    await interaction.response.send_message(f"Vou procurar sua música aqui na lista de CDs que o patrão"
+                    await interaction.followup.send(f"Vou procurar sua música aqui na lista de CDs que o patrão"
                                                             f" deixou. Segura aí que vai demorar alguns segundinhos, "
                                                             f"**{chosen_phrase()}**")
                     async with interaction.channel.typing():
@@ -621,12 +625,12 @@ class Player(commands.Cog):
 
             else:
                 if player.vc.is_playing():
-                    await interaction.response.send_message(f"Mas eu já estou tocando, **{chosen_phrase()}**")
+                    await interaction.followup.send(f"Mas eu já estou tocando, **{chosen_phrase()}**")
                 elif player.vc.is_paused():
                     player.vc.resume()
 
         except Exception as e:
-            await interaction.response.send_message(f"{e}")
+            await interaction.followup.send(f"{e}")
             return await interaction.followup.send(f"Não consegui processar nenhuma música ou playlist a partir "
                                                    f"desse link, **{chosen_phrase()}**, bora tentar outra? "
                                                    f"Usa o comando `/search NomeDaMusica`")
@@ -649,7 +653,7 @@ class Player(commands.Cog):
             guild_id = interaction.guild_id
             player = self.playing_guilds[guild_id]
         except KeyError:
-            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+            return await interaction.followup.send(f"Não estamos com serviço couvert hoje, "
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
             if player.same_queue_(interaction):
@@ -797,17 +801,18 @@ class Player(commands.Cog):
     @app_commands.command(name="skip", description="Pular a música para a próxima da fila, se houver")
     async def skip(self, interaction: discord.Interaction, qty: int = 1):
 
+        await interaction.response.defer()
         try:
             guild_id = interaction.guild_id
             player = self.playing_guilds[guild_id]
         except KeyError:
-            return await interaction.response.send_message(f"Não estamos com serviço couvert hoje, "
+            return await interaction.followup.send(f"Não estamos com serviço couvert hoje, "
                                                            f"**{chosen_phrase()}**. Obrigado.")
         else:
             if await player.same_queue_(interaction):
                 await player.skip_(interaction, qty)
             else:
-                return await interaction.response.send_message(f"Nós não estamos no mesmo canal de voz, "
+                return await interaction.followup.send(f"Nós não estamos no mesmo canal de voz, "
                                                                f"**{chosen_phrase()}**.")
 
     @commands.Cog.listener()
