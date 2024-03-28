@@ -392,15 +392,15 @@ class Player(commands.Cog):
             Returns:
                 This method does Not return anything.
             """
-
+            await interaction.response.defer()
             q_len = len(self.song_queue)
             # If no songs in queue and not currently playing
             if q_len == 0 and not self.vc.is_playing():
-                return await interaction.response.send_message(
+                return await interaction.followup.send(
                     f"Não tem nenhuma música na lista, **{chosen_phrase()}**")
             # If playing song and no other songs in queue
             elif q_len == 0 and self.vc.is_playing():
-                await interaction.response.send_message(f"Só tem a música que está tocando, na lista. Dá uma olhadinha")
+                await interaction.followup.send(f"Só tem a música que está tocando, na lista. Dá uma olhadinha")
                 return await self.now_(interaction)
 
             e = discord.Embed(
@@ -419,7 +419,7 @@ class Player(commands.Cog):
                     e.description += f"{i + 1}) [...]\n"
                     break
             e.set_footer(text=f"\nProntinho, {chosen_phrase()}. Da uma olhada na lista.")
-            return await interaction.response.send_message(embed=e)
+            return await interaction.followup.send(embed=e)
 
         async def search_(self, amount: int, song: str, get_url=False):
             """Search for songs on YouTube and return their URLs or information.
