@@ -1,5 +1,9 @@
 # for pafy:
 #   Edit file backend_youtube_dl.py and comment lines 50 and 54 which refer to 'average_rating' and 'dislike_count'
+#   If error on like_count, comment line 53 as well
+# for YoutubeDL under AWS in order to resolve SSL issue:
+#   Edit file YoutubeDL.py and change default parameter 'nocheckcertificate': False, to 'True'
+#   If error for uploader_id, Edit file youtube.py under youtube_dl/extractor/ and add fatal=False as parameter to 'uploader_id'
 # In order to resolve the 'unresolved reference' error for utils imports, set SECONDARY folder as a SOURCE FOLDER.
 #   In Pycharm you can do that by right-clicking the folder > Make Directory as > Sources Root
 # A logs folder must be manually created within the root folder of the Bot.
@@ -7,21 +11,21 @@
 #   Discord token should be named DISCORD_TOKEN = "---" Replace --- with your Discord Token
 #   DB should be named GENERAL_DB = "---" Replace --- with your desired db name
 
-aiohttp==3.8.3
+aiohttp==3.9.3
 asyncpraw==7.7.1
 colorama==0.4.6
 dill==0.3.6
 discord.py==2.3.2
 googlesearch_python==1.2.3
-humanize==4.8.0
-openai==0.27.8
+humanize==4.9.0
+openai==1.16.2
 pafy==0.5.5
-praw==7.7.0
-psutil==5.9.5
-python-dotenv==1.0.0
+praw==7.7.1
+psutil==5.9.8
+python-dotenv==1.0.1
 Requests==2.31.0
 spotipy==2.23.0
 sympy==1.12
-translators==5.7.9
+translators==5.9.0
 youtube_search_python==1.6.6
-youtube-dl @ git+https://github.com/ytdl-org/youtube-dl.git@07af47960f3bb262ead02490ce65c8c45c01741e
+youtube-dl==2021.12.17
