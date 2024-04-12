@@ -162,7 +162,7 @@ class Player(commands.Cog):
             # Reply to user
             try:
                 await interaction.response.send_message(embed=embed)
-            except discord.errors.InteractionResponded:
+            except [discord.errors.InteractionResponded, discord.errors.HTTPException]:
                 await interaction.followup.send(embed=embed)
 
         async def music_info_(self, url: str):
